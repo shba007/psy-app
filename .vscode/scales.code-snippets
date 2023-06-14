@@ -1,0 +1,36 @@
+{
+	// Place your psychometric-scale workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Test Data": {
+		"scope": "javascript,typescript",
+		"prefix": "data",
+		"body": ["{ index: $1, value: ${2:true} },", "$3"],
+		"description": "Print Test data"
+	},
+	"Scale": {
+		"scope": "javascript,typescript",
+		"prefix": "scale",
+		"body": ["'$1': {", "type: '${2:single}',", "count: 0,", "items: {", "T: [$3],", "F: [$4]", "},", "},"],
+		"description": "New Scale"
+	},
+	"Single Weighted Scale": {
+		"scope": "javascript,typescript",
+		"prefix": "scale-single-weight",
+		"body": ["'$1': {", "type: '${2:single-weighted}',", "count: 0,", "items: [", "{condition:${3:true}, weight:${4:1}, indexes:[${5}]},", "],", "},"],
+		"description": "New Signle Weighted Scale"
+	}
+}

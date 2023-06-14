@@ -1,0 +1,46 @@
+{
+  "name": "psy-app",
+  "version": "0.2.0",
+  "private": true,
+  "engines": {
+    "node": "^18.16.0"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "prisma generate && nuxt prepare",
+    "cleanup": "nuxt cleanup",
+    "test": "vitest",
+    "seed": "prisma db seed",
+    "migrate": "prisma migrate dev",
+    "studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "npx ts-node --project prisma/tsconfig.json prisma/scripts/seed.ts"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/test-utils": "^3.5.3",
+    "@nuxtjs/tailwindcss": "^6.7.0",
+    "@pinia/nuxt": "^0.4.11",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20",
+    "@vite-pwa/nuxt": "^0.1.0",
+    "@vueuse/core": "^10.1.2",
+    "@vueuse/nuxt": "^10.1.2",
+    "jsonwebtoken": "^9.0.0",
+    "nuxt": "^3.5.3",
+    "nuxt-icons": "^3.2.1",
+    "prisma": "^4.15.0",
+    "ts-node": "^10.9.1",
+    "vitest": "^0.31.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.15.0",
+    "@splidejs/splide-extension-grid": "^0.4.1",
+    "@splidejs/vue-splide": "^0.6.12",
+    "vee-validate": "^4.9.6"
+  }
+}

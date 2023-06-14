@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+enum ScaleName {
+  MACI
+  MCMI
+  MMPI_RF
+  TCI
+  MPQ
+  EPQ
+  EPQ_R
+  JTCI
+  SCL_90R
+  // JEPQ
+  // DSMD
+}
+
+enum ScaleType {
+  Binary
+  Pentanary
+}
+
+model Scale {
+  name         ScaleName @id
+  type         ScaleType
+  count        Int
+  monthlyPrice Int
+  subScales    String[]
+  publishedAt  DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+
+  purchaseScale PurchaseScale[]
+  subscription  Subscription[]
+}
+
+enum Gender {
+  Male
+  Female
+  Other
+}
+
+enum PaymentInstrument {
+  UPI
+  NetBanking
+  Card
+}
+
+model Preference {
+  isModeLight Boolean
+  payment     PaymentInstrument
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String?        @unique
+  phone         String         @unique
+  dob           DateTime
+  gender        Gender
+  reports       Report[]
+  subscriptions Subscription[]
+  purchases     Purchase[]
+  feedbacks     Feedback[]
+  preference    Preference?
+}
+
+model Subscription {
+  name      ScaleName
+  scale     Scale     @relation(fields: [name], references: [name])
+  expiresAt DateTime
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([name, userId])
+}
+
+enum PurchaseStatus {
+  Pending
+  Success
+  Failed
+}
+
+model Purchase {
+  id          String          @id @default(uuid())
+  scales      PurchaseScale[]
+  purchasedAt DateTime        @default(now())
+  status      PurchaseStatus  @default(Pending)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([id, userId])
+}
+
+model PurchaseScale {
+  name         ScaleName
+  scale        Scale     @relation(fields: [name], references: [name])
+  monthlyPrice Int
+  duration     Int
+  purchase     Purchase  @relation(fields: [purchaseId], references: [id])
+  purchaseId   String
+
+  @@unique([name, purchaseId])
+}
+
+model Patient {
+  id   String @id @default(uuid())
+  name String
+
+  reports Report[]
+}
+
+enum ReportStatus {
+  Draft
+  Complete
+}
+
+model Report {
+  id     String       @id @default(uuid())
+  type   ScaleName
+  status ReportStatus
+  data   Json
+  value  Json
+
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+}
+
+enum FeedbackType {
+  Compilant
+  Feedback
+}
+
+model Feedback {
+  id      String       @id @default(uuid())
+  type    FeedbackType
+  comment String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
