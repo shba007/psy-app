@@ -11,6 +11,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "prisma generate && nuxt prepare",
+    "start": "node .output/server/index.mjs",
     "cleanup": "nuxt cleanup",
     "test": "vitest",
     "seed": "prisma db seed",
