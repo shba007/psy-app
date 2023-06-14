@@ -28,7 +28,7 @@ export async function usePaymentAPI<T = unknown, R extends NitroFetchRequest = N
 
   const salt = config.private.paymentSecret as any
   opts.body.merchantId = config.private.paymentId
-  opts.body.merchantUserId = config.private.paymentUserId
+  // opts.body.merchantUserId = config.private.paymentUserId
   if (callbackUrl)
     opts.body.callbackUrl = `${config.public.apiUrl}/api/payment/webhook`
   console.log("usePaymentAPI ", { body: opts.body });
