@@ -75,7 +75,7 @@ onBeforeMount(async () => {
     authStore.setInfo(response.user)
 
     if (response.isRegistered)
-      router.replace({ path: '/dasboard' })
+      router.replace({ path: '/dashboard' })
     else
       tab.value = 'register'
   } catch (error) {
