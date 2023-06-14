@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
-import { PurchaseStatus } from "~/utils/models";
 import { createUPIPayment } from "~~/server/utils/payment";
+import { PurchaseStatus, DBScaleNameToScaleName } from "~/utils/models";
 
 const prisma = new PrismaClient()
 

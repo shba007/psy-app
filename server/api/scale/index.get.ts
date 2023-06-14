@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { ScaleType, SubscribedScale } from "~/utils/models"
+import { ScaleType, SubscribedScale, DBScaleNameToScaleName } from "~/utils/models"
 
 const prisma = new PrismaClient()
 
