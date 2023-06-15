@@ -8,7 +8,7 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
   try {
     const { scale, data } = await readBody<{
       scale: ScaleName,
-      data: { index: number; value: boolean | number; }[]
+      data: { index: number; value: number; }[]
     }>(event)
 
     const { expiresAt, scale: DBScale } = await prisma.subscription.findUniqueOrThrow({
@@ -35,12 +35,22 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
 
     let result: {} = {}
     // Calculate
-    if (DBScale.type = 'Binary')
+    if (DBScale.type === 'Binary') {
+      for (const item of data) {
+        if (item.value === null || !(item.value === 0 || item.value === 1))
+          throw createError({ statusCode: 400, statusMessage: 'Invalid value detected. Value must be 0 or 1' });
+      }
       // @ts-ignore
       result = BinaryCalculate(scale, data)
-    else if (DBScale.type = 'Pentanary')
+    }
+    else if (DBScale.type === 'Pentanary') {
+      for (const item of data) {
+        if (item.value === null || !(item.value === 1 || item.value === 2 || item.value === 3 || item.value === 4 || item.value === 5))
+          throw createError({ statusCode: 400, statusMessage: 'Invalid value detected. Value must be 1, 2, 3, 4, or 5' });
+      }
       // @ts-ignore
       result = PentanaryCalculate(scale, data)
+    }
 
     return Object.entries(result).map(([name, value]) => ({ name, value: value as number }));
   } catch (error: any) {

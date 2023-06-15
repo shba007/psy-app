@@ -80,9 +80,15 @@ function onOpenTest() {
       <BaseButton icon="plus" :rounded="true" size="S" @click="emit('openPayment')" />
     </div>
     <h6 class="text-lg col-start-1">{{ name }}</h6>
-    <span class="col-start-1 opacity-50">Items {{ count }}</span>
+    <div class="col-start-1 col-span-3 flex gap-2 text-sm opacity-50">
+      <span>Sub Scales {{ subScales.length }}</span>
+      <span>&#x2022</span>
+      <span class="capitalize">{{ type }}</span>
+      <span>&#x2022</span>
+      <span>Item {{ count }}</span>
+    </div>
     <div class="col-start-1 col-span-3">
-      <div class="flex flex-wrap gap-2 max-h-[104px] overflow-y-scroll">
+      <div class="flex flex-wrap gap-2 max-h-[104px] overflow-y-scroll scrollbar">
         <BaseChips v-for="subScale in subScales" :key="subScale" :title="subScale.replaceAll('-', ' ')"
           class="capitalize cursor-text" />
       </div>

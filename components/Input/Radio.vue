@@ -16,7 +16,7 @@ watch(() => props.selected, () => {
   propsUpdated.value = true
 })
 
-watch(value, (newValue) => {
+watch(value, () => {
   if (!propsUpdated.value)
     emit('update:value', props.content);
 

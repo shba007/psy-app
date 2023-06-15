@@ -20,10 +20,11 @@ function onLogout() {
 </script>
 
 <template>
+  <!-- TODO: Make it collapsable -->
   <nav class="shrink-0 relative px-4 py-8 rounded-r-[24px] w-[252px] h-full bg-dark-500 overflow-hidden">
-    <div class="flex items-center justify-center mx-auto w-fit text-primary-500">
-      <NuxtIcon name="psy" class="text-[56px] " />
-      <h1 class="font-brand text-[28px] uppercase">Psy</h1>
+    <div class="flex items-center justify-center mx-auto w-fit ">
+      <NuxtIcon name="psy" :filled="true" class="text-[56px]" />
+      <h1 class="font-brand text-[28px] text-primary-400 uppercase">Psy</h1>
     </div>
     <ul class="flex flex-col gap-4 mt-12 w-[220px] h-5/6 overflow-y-scroll z-10">
       <li v-for="{ icon }, route in routes" :key="route" :ref="route" @click="route === 'logout' ? onLogout() : null">

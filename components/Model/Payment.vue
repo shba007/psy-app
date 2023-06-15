@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PurchaseStatus, SubscribedScale } from '~/utils/models';
 
-const props = defineProps<{ isOpen: boolean, selectedScale?: string, scales: SubscribedScale[] }>()
+const props = defineProps<{ isOpen: boolean, selectedScale: string, scales: SubscribedScale[] }>()
 const emit = defineEmits<{
   (event: 'close'): void
 }>()
@@ -9,7 +9,7 @@ const emit = defineEmits<{
 const isLoading = ref(false)
 const tab = ref<'select' | 'payment' | 'complete'>('select')
 
-const selectedScales = ref(new Set<string>())
+const selectedScales = ref(new Set<string>([props.selectedScale]))
 
 const purchaseResponse = ref<{
   id: string;
@@ -18,10 +18,10 @@ const purchaseResponse = ref<{
   qrImage: string
 }>()
 
-watch(() => props.selectedScale, () => {
+/* watch(() => props.selectedScale, () => {
   if (!!props.selectedScale)
     selectedScales.value.add(props.selectedScale)
-})
+}) */
 
 const totalPrice = computed(() => {
   let total = 0

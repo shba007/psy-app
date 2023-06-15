@@ -12,7 +12,6 @@ export default defineProtectedEventHandler<{
 }>(async (event, userId) => {
   try {
     const { scales: purchasedScales } = await readBody<{ scales: string[] }>(event)
-    console.log("API purchase", { purchasedScales });
 
     if (purchasedScales.length === 0)
       throw createError({ statusCode: 400, statusMessage: "Select at least a Scale" })
@@ -26,10 +25,8 @@ export default defineProtectedEventHandler<{
 
     const duration = 30
 
-    console.log(allScales);
-
     if (allScales.length === 0)
-      throw createError({ statusCode: 400, statusMessage: "Select at least a valid Scale" })
+      throw createError({ statusCode: 404, statusMessage: "Select at least a valid Scale" })
 
     const purchase = await prisma.purchase.create({
       data: {
@@ -83,6 +80,8 @@ export default defineProtectedEventHandler<{
     console.error("API purchase/index POST", error)
 
     if (error.statusCode === 400)
+      throw error
+    else if (error.statusCode === 404)
       throw error
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })

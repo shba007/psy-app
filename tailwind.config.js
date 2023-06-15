@@ -7,6 +7,7 @@ module.exports = {
     './layouts/**/*.vue',
     './pages/**/*.vue',
   ],
+  darkMode: 'class',
   theme: {
     fontSize: {
       '2xs': ['0.5rem', '0.5625rem'],

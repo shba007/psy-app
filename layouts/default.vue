@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex w-screen h-screen bg-dark-400 text-white">
+  <div class="flex w-screen h-screen bg-dark-400">
     <!-- Navbar -->
     <NavBar :is-transition="isTransition" :route="(route.name?.toString() as 'dashboard' | 'feedbacks')" />
     <div class="flex-grow m-6 overflow-hidden">

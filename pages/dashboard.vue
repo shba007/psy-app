@@ -19,10 +19,21 @@ const splideOption: Options = {
     rows: 2,
     cols: 4,
     gap: {
-      row: '6px',
-      col: '6px',
+      row: '0.5rem',
+      col: '0.5rem',
     },
-  },
+  }, breakpoints: {
+    1280: {
+      grid: {
+        cols: 3
+      }
+    },
+    1024: {
+      grid: {
+        cols: 2
+      }
+    }
+  }
 };
 const splide = ref()
 
@@ -70,9 +81,11 @@ onBeforeMount(execute)
     <!--  <section>
       <h2>Reports</h2>
     </section> -->
-    <ModelScale :is-open="openedModel === 'scale'" :name="selectedScale?.name" :count="selectedScale?.count"
+    <ModelScale v-if="openedModel === 'scale' && selectedScale" :is-open="openedModel === 'scale'"
+      :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count"
       @close="selectedScaleName = null; openedModel = null" />
-    <ModelPayment :is-open="openedModel === 'payment'" :scales="scales ?? []" :selected-scale="selectedScale?.name"
+    <ModelPayment v-else-if="openedModel === 'payment' && selectedScale" :is-open="openedModel === 'payment'"
+      :scales="scales ?? []" :selected-scale="selectedScale.name"
       @close="selectedScaleName = null; openedModel = null; refresh()" />
   </main>
 </template>

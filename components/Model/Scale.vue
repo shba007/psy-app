@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { Options, Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide';
+import { ScaleType } from '~/utils/models';
 
-const props = defineProps<{ isOpen: boolean, name?: string, count?: number }>()
+const props = defineProps<{
+  isOpen: boolean,
+  name: string,
+  type: ScaleType,
+  count: number
+}>()
 const emit = defineEmits<{
   (event: 'close',): void,
-  (event: 'calculate', data: { index: number; value: boolean | null; }[]): void
+  (event: 'calculate', data: { index: number; value: number | null; }[]): void
 }>()
 
 const dataSplideOption: Options = {
   arrows: true,
   pagination: true,
   gap: '1rem',
-  wheel: true,
-  releaseWheel: true,
   classes: {
     pagination: 'pagination',
     page: 'pagination-page',
@@ -21,61 +25,133 @@ const dataSplideOption: Options = {
 
 const splide = ref();
 const isLoading = ref(false)
-const showCalculate = ref(false)
+const isLastSlide = ref(false)
 
-const choices = ref<{ index: number; value: boolean | null; }[]>([])
-
-watch(() => props.count, () => {
-  choices.value = new Array(props.count)
-    .fill(0)
-    .map((_, index) =>
-      ({ index: index + 1, value: null }))
-})
+const choices = ref<{ index: number; value: number | null; }[]>(new Array(props.count)
+  .fill(0)
+  .map((_, index) =>
+    ({ index: index + 1, value: null })))
 
 const choicesSlides = computed(() => {
   const slides = [];
   const groups = []
 
+  const groupPerSlide = props.type === 'binary' ? 6 : 4
+
   for (let choiceIndex = 0; choiceIndex < choices.value.length; choiceIndex += 5) {
     groups.push(choices.value.slice(choiceIndex, Math.min(choiceIndex + 5, choices.value.length)))
   }
 
-  for (let groupIndex = 0; groupIndex < groups.length; groupIndex += 6) {
-    slides.push(groups.slice(groupIndex, Math.min(groupIndex + 6, groups.length)))
+  for (let groupIndex = 0; groupIndex < groups.length; groupIndex += groupPerSlide) {
+    slides.push(groups.slice(groupIndex, Math.min(groupIndex + groupPerSlide, groups.length)))
   }
 
   return slides
 })
+
+const result = ref<{ name: string, value: number }[]>()
 
 watch(choices, () => {
   result.value = undefined
 })
 
-const result = ref<{ name: string, value: number }[]>()
+const currentChoiceIndex = ref(0)
+const currentChoiceValue = computed(() => choices.value[currentChoiceIndex.value].value)
+const invalidChoiceIndex = ref<number | null>(null)
 
-const resultSlides = computed(() => {
-  if (!result.value)
-    return
-
-  const slides = [];
-
-  for (let itemIndex = 0; itemIndex < result.value.length; itemIndex += 10) {
-    slides.push(result.value.slice(itemIndex, Math.min(itemIndex + 10, result.value.length)))
-  }
-
-  return slides
+watch(currentChoiceIndex, (value) => {
+  const groupPerSlide = props.type === 'binary' ? 6 : 4
+  splide.value.go(Math.floor(value / (5 * groupPerSlide)))
 })
 
-function onMove(_slide: any, list: { items: string | any[]; }, _prev: any, curr: { page: number; }) {
-  showCalculate.value = !result.value && (curr.page === list.items.length - 1)
+function checkScaleItemValidity(type: ScaleType, data: { index: number; value: number; }[]) {
+  invalidChoiceIndex.value = null
+
+  if (type === 'binary') {
+    for (const item of data) {
+      if (item.value === null || !(item.value === 0 || item.value === 1)) {
+        invalidChoiceIndex.value = item.index - 1
+        break;
+      }
+    }
+  } else if (type === 'pentanary') {
+    for (const item of data) {
+      if (item.value === null || !(item.value === 1 || item.value === 2 || item.value === 3 || item.value === 4 || item.value === 5)) {
+        invalidChoiceIndex.value = item.index - 1
+        break;
+      }
+    }
+  }
+
+  if (invalidChoiceIndex.value === null)
+    return true
+
+  isLastSlide.value = false
+
+  const groupPerSlide = props.type === 'binary' ? 6 : 4
+  currentChoiceIndex.value = invalidChoiceIndex.value
+  splide.value.go(Math.floor(invalidChoiceIndex.value / (5 * groupPerSlide)))
+
+  return false
 }
 
-async function onCalculate(data: { index: number; value: boolean | null; }[]) {
+function onInput(index: number, value: number) {
+  choices.value[index].value = value
+  currentChoiceIndex.value = index
+}
+
+function onMove(_slide: any, list: { items: string | any[]; }, _prev: any, curr: { page: number; }) {
+  if (curr?.page)
+    isLastSlide.value = curr.page === list.items.length - 1
+}
+
+const { arrowLeft, arrowRight, arrowUp, arrowDown, t, f, numpad1, numpad2, numpad3, numpad4, numpad5, digit1, digit2, digit3, digit4, digit5 } = useMagicKeys()
+
+watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
+  t, f,
+  numpad1, numpad2, numpad3, numpad4, numpad5,
+  digit1, digit2, digit3, digit4, digit5], ([left, right, up, down,
+    t, f,
+    numpad1, numpad2, numpad3, numpad4, numpad5,
+    digit1, digit2, digit3, digit4, digit5]) => {
+  const minLimit = props.type === 'binary' ? 0 : 1
+  const maxLimit = props.type === 'binary' ? 1 : 5
+
+  if (left) {
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1, minLimit) : minLimit
+    onInput(currentChoiceIndex.value, nextChoiceValue)
+  } else if (right) {
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.min(currentChoiceValue.value + 1, maxLimit) : minLimit
+    onInput(currentChoiceIndex.value, nextChoiceValue)
+  } else if (up) {
+    currentChoiceIndex.value -= currentChoiceIndex.value > 0 ? 1 : 0
+  } else if (down) {
+    currentChoiceIndex.value += currentChoiceIndex.value < choices.value.length - 1 ? 1 : 0
+  } else if (f) {
+    onInput(currentChoiceIndex.value, 0)
+  } else if (t) {
+    onInput(currentChoiceIndex.value, 1)
+  } else if (numpad1 || digit1) {
+    onInput(currentChoiceIndex.value, 1)
+  } else if (numpad2 || digit2) {
+    onInput(currentChoiceIndex.value, 2)
+  } else if (numpad3 || digit3) {
+    onInput(currentChoiceIndex.value, 3)
+  } else if (numpad4 || digit4) {
+    onInput(currentChoiceIndex.value, 4)
+  } else if (numpad5 || digit5) {
+    onInput(currentChoiceIndex.value, 5)
+  }
+})
+
+async function onCalculate(data: { index: number; value: number; }[]) {
+  if (!checkScaleItemValidity(props.type, data))
+    return
+
   if (isLoading.value)
     return
 
   isLoading.value = true
-
   try {
     result.value = await $fetchAPI('/api/scale', {
       method: 'POST',
@@ -85,53 +161,61 @@ async function onCalculate(data: { index: number; value: boolean | null; }[]) {
       }
     })
 
-    setTimeout(() => {
-      splide.value.go('>')
-    }, 300)
+    setTimeout(() => splide.value.go('>'), 300)
   } catch (error) {
-
-
+    console.error("Fetch API Scale", error);
   }
-
   isLoading.value = false
 }
 
-function onInput(index: number, value: boolean) {
-  choices.value[index - 1].value = value
+function onPrint(data: { index: number; value: number | null; }[]) {
+
 }
 </script>
 
 <template>
-  <ModelBase :is-open="isOpen" @close="result = undefined; emit('close')" id="scale" class="w-[700px]">
+  <ModelBase :is-open="isOpen" @close="result = undefined; emit('close')" id="scale"
+    class="w-[700px] max-h-[550px] overflow-hidden">
     <!-- <form method="dialog"> -->
-    <h4 class="text-lg mb-4">{{ name }}</h4>
+    <h4 class="text-xl ml-2 mt-2 mb-6">{{ name }}</h4>
+    <div class="absolute top-4 right-16 flex flex-col gap-1 w-fit text-sm">
+      <span>Use &#8592 / &#8594 keys to select True / False</span>
+      <span>Use &#8593 / &#8595 keys to move backward / forward</span>
+      <span v-if="type === 'binary'">Use T/F keys to select True / False</span>
+      <span v-else-if="type === 'pentanary'">Use 1/2/3/4/5 keys to select 1/2/3/4/5</span>
+    </div>
     <Splide ref="splide" :options="dataSplideOption" tag="div" :has-track="false" @splide:pagination:updated="onMove">
       <SplideTrack>
         <SplideSlide v-for="(groups, slideIndex) in choicesSlides" :key="`choice-${slideIndex}`"
-          class="grid grid-flow-col grid-rows-2 grid-cols-3 gap-6 w-full">
+          class="grid grid-flow-col grid-rows-2 gap-6 justify-items-center w-full"
+          :class="type == 'binary' ? 'grid-cols-3' : 'grid-cols-2'">
           <div v-for="(group, groupIndex) in groups" :key="groupIndex" class="flex flex-col gap-2">
-            <template v-for="{ index, value } in group">
-              <InputChoice :index="index" :value="value ?? undefined" @click="result = undefined"
-                @update="(value) => onInput(index, value)" />
+            <template v-for="{ index, value } in group" :key="index">
+              <InputChoice :type="type" :index="index" :value="value ?? undefined"
+                :is-selected="currentChoiceIndex === index - 1" :is-invalid="invalidChoiceIndex === index - 1"
+                @click="result = undefined" @update="(value) => onInput(index - 1, value)" />
             </template>
           </div>
         </SplideSlide>
         <template v-if="result">
-          <SplideSlide v-for="(slide, slideIndex) in resultSlides" :key="`result-${slideIndex}`">
-            <table class="table-auto w-full rounded-md overflow-hidden ">
-              <tbody class="bg-dark-400">
-                <tr v-for="{ name, value }, index in slide">
-                  <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== slide.length - 1 }">
-                    {{ name.replaceAll('-', ' ') }}
-                  </td>
-                  <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== slide.length - 1 }">
-                    {{ value }}
-                  </td>
-                  <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== slide.length - 1 }">
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- <SplideSlide v-for="(slide, slideIndex) in resultSlides" :key="`result-${slideIndex}`"> -->
+          <SplideSlide>
+            <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
+              <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
+                <tbody class="bg-dark-400">
+                  <tr v-for="{ name, value }, index in result" :key="name">
+                    <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
+                      {{ name.replaceAll('-', ' ') }}
+                    </td>
+                    <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                      {{ value }}
+                    </td>
+                    <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </SplideSlide>
         </template>
       </SplideTrack>
@@ -139,11 +223,13 @@ function onInput(index: number, value: boolean) {
         <button class="splide__arrow splide__arrow--prev">
           <NuxtIcon name="chevron-bold" />
         </button>
-        <button v-show="!showCalculate" class="splide__arrow splide__arrow--next transform rotate-180">
+        <button v-show="!isLastSlide" class="splide__arrow splide__arrow--next transform rotate-180">
           <NuxtIcon name="chevron-bold" />
         </button>
-        <BaseButton v-show="showCalculate" :is-loading="isLoading" title="Calculate" size="M"
+        <BaseButton v-show="isLastSlide && !result" :is-loading="isLoading" title="Calculate" size="M"
           class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onCalculate(choices)" />
+        <BaseButton v-show="isLastSlide && result" title="Print" size="M"
+          class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onPrint(choices)" />
       </div>
     </Splide>
     <!-- </form> -->

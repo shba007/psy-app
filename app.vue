@@ -46,11 +46,11 @@ useHead({
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  @apply rounded-md bg-light-500 dark:bg-dark-600;
+  @apply rounded-md bg-light-500 dark:bg-dark-400;
 }
 
 html {
-  @apply text-black font-body bg-white;
+  @apply text-black dark:text-white font-body bg-white dark:bg-black;
 }
 
 .nuxt-icon>svg {

@@ -1,31 +1,51 @@
 <script setup lang="ts">
-const props = defineProps<{
-  index: number,
-  value?: boolean
-}>()
-const emit = defineEmits<{
-  (event: 'update', value: boolean): void
-}>()
-const selectedChoice = ref<boolean>(props.value)
+import { ScaleType } from '~/utils/models';
 
-watch(selectedChoice, (value) => {
-  emit('update', value)
+const props = withDefaults(defineProps<{
+  type: ScaleType,
+  index: number,
+  value?: number,
+  isSelected?: boolean
+  isInvalid?: boolean
+}>(), {
+  isSelected: false,
+  isInvalid: false
+})
+const emit = defineEmits<{
+  (event: 'update', value: number): void
+}>()
+
+const selectedChoice = computed(() => props.value)
+
+const choices = computed(() => {
+  if (props.type === 'binary')
+    return [
+      { label: "false", value: 0 },
+      { label: "true", value: 1 },
+    ]
+  else if (props.type === 'pentanary')
+    return [
+      { label: "1", value: 1 },
+      { label: "2", value: 2 },
+      { label: "3", value: 3 },
+      { label: "4", value: 4 },
+      { label: "5", value: 5 },
+    ]
 })
 </script>
 
 <template>
   <div class="w-max">
     <label class="inline-flex justify-center rounded-full py-1 w-[50px]"
-      :class="selectedChoice !== undefined ? 'bg-secondary-600' : 'bg-black'">{{ index }}</label>
-    <span class="inline-flex justify-center ml-2 mr-[6px] rounded-full px-3 py-1 w-[66px] cursor-pointer"
-      :class="selectedChoice == true ? 'bg-primary-500' : 'bg-black'" @click="selectedChoice = true">
-      <!-- <input type="radio" :id="`${index}-true`" :value="true" v-model="selectedChoice" class="w-full h-full"> -->
-      <label for="true" class="cursor-pointer">True</label>
-    </span>
-    <span class="inline-flex justify-center rounded-full px-3 py-1 w-[66px] cursor-pointer"
-      :class="selectedChoice == false ? 'bg-primary-500' : 'bg-black'" @click="selectedChoice = false">
-      <!-- <input type="radio" :id="`${index}-false`" :value="true" v-model="selectedChoice" class="hidden w-full h-full"> -->
-      <label for="false" class="cursor-pointer">False</label>
-    </span>
+      :class="isInvalid && selectedChoice === undefined ? 'bg-alert-500' : (isSelected ? 'bg-secondary-500' : (selectedChoice !== undefined ? 'bg-success-500' : 'bg-black'))">
+      {{ index }}
+    </label>
+    <div class="inline-flex gap-[6px] ml-2">
+      <span v-for="{ label, value } in choices" class="inline-flex justify-center rounded-full px-3 py-1 cursor-pointer"
+        :class="[(selectedChoice == value ? 'bg-primary-500' : 'bg-black'), { 'w-[66px]': type === 'binary' }, { 'w-[36px]': type === 'pentanary' }]"
+        @click="emit('update', value)">
+        <label for="false" class="capitalize cursor-pointer">{{ label }}</label>
+      </span>
+    </div>
   </div>
 </template>

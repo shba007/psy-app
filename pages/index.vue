@@ -162,7 +162,7 @@ onBeforeMount(() => {
     <ClientOnly>
       <div class="realtive flex justify-center items-center px-20 w-[25rem] h-full bg-dark-500 ">
         <article v-if="tab === 'login'" class="flex flex-col gap-4 w-full">
-          <h1 class="text-2xl mx-auto my-4">Welcome Back</h1>
+          <h1 class="text-xl mx-auto my-4">Welcome Back</h1>
           <section class="flex flex-col gap-3">
             <button @click="handleOAuth('google')"
               class="flex justify-center items-center gap-1 bg-dark-400 rounded-full w-full h-12">
