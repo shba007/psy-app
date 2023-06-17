@@ -72,7 +72,7 @@ function checkScaleItemValidity({ minLimit, maxLimit }: { minLimit: number, maxL
   invalidChoiceIndex.value = null
 
   for (const { index, value } of data) {
-    if (value === null && !(value >= minLimit && value <= maxLimit)) {
+    if (value === null || !(value >= minLimit && value <= maxLimit)) {
       invalidChoiceIndex.value = index - 1
       break;
     }
@@ -112,9 +112,6 @@ watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
     t, f,
     numpad0, numpad1, numpad2, numpad3, numpad4, numpad5,
     digit0, digit1, digit2, digit3, digit4, digit5]) => {
-
-  // const minLimit = props.type === 'binary' ? 0 : 1
-  // const maxLimit = props.type === 'binary' ? 1 : 5
 
   if (left) {
     const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1, minLimit.value) : minLimit.value
@@ -238,12 +235,10 @@ function onPrint(data: { index: number; value: number | null; }[]) {
 }
 
 :deep(.pagination-page) {
-  /* drop-shadow-[0_0px_2px_rgba(0,0,0,0.5)] */
   @apply rounded-full w-[6px] h-[6px] bg-white transition-colors duration-300;
 }
 
 :deep(.pagination-page.is-active) {
-  /* drop-shadow-[0_0px_4px_rgba(37,99,235,0.2)] */
   @apply w-[10px] h-[10px] bg-primary-500;
 }
 
