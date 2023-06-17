@@ -42,17 +42,16 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
       result = BinaryCalculate(scale, data.map(({ index, value }) => ({ index, value: !!value })))
     else if (DBScale.type === ScaleType.Pentanary)
       result = PentanaryCalculate(scale, data)
-  }
 
     return Object.entries(result).map(([name, value]) => ({ name, value: value as number }));
-} catch (error: any) {
-  console.error("API scale/index POST", error)
+  } catch (error: any) {
+    console.error("API scale/index POST", error)
 
-  if (error.statusCode === 400)
-    throw error
-  else if (error.code = "P2025")
-    throw createError({ statusCode: 404, statusMessage: 'Subscription Not Found' })
+    if (error.statusCode === 400)
+      throw error
+    else if (error.code = "P2025")
+      throw createError({ statusCode: 404, statusMessage: 'Subscription Not Found' })
 
-  throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
-}
+    throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })
+  }
 })

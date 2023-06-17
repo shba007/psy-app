@@ -31,7 +31,6 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
         expiresAt: true
       }
     })
-    console.log({ scales });
 
     return scales.map(({ name, type, count, subScales, labels, monthlyPrice, publishedAt, updatedAt }) => {
       const subscribedScale = subscribedScales.find((subscribedScale) => subscribedScale.name === name)
