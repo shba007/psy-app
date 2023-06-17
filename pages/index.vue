@@ -16,7 +16,26 @@ const authStore = useAuth()
 const { isPhoneVerified } = storeToRefs(authStore)
 const { handleSubmit } = useForm()
 const isLoading = ref(false)
-const isOTPSent = ref(false)
+
+const otp = ref<{
+  isSent: boolean;
+  timeoutAt: null | string;
+  retryTimeoutAt: null | string;
+}>({
+  isSent: false,
+  timeoutAt: null,
+  retryTimeoutAt: null
+})
+const { now } = useNow({ interval: 1000, controls: true })
+const otpComputed = computed(() => {
+  const timeoutIn = Math.floor((otp.value.timeoutAt ? new Date(otp.value.timeoutAt).getTime() - now.value.getTime() : 0) / 1000)
+  const retryTimeoutIn = Math.floor((otp.value.retryTimeoutAt ? new Date(otp.value.retryTimeoutAt).getTime() - now.value.getTime() : 0) / 1000)
+
+  return {
+    timeoutIn: timeoutIn > 60 ? `${Math.floor(timeoutIn / 60)} min ${timeoutIn % 60} sec` : `${timeoutIn} sec`,
+    retryTimeoutIn: retryTimeoutIn > 60 ? `${Math.floor(retryTimeoutIn / 60)} min ${retryTimeoutIn % 60} sec` : `${retryTimeoutIn} sec`
+  }
+})
 const code = ref<string | undefined>(route.query?.code as string ?? undefined)
 
 const tab = ref<'login' | 'register'>('login')
@@ -34,13 +53,16 @@ const onLoginSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
   try {
-    if (!isOTPSent.value) {
+    if (!otp.value.isSent) {
       const response = await $fetchAuth<AuthResponse>('/sms/otp', {
         method: "POST",
         body: { action: 'login', phone: values.phone }
       })
 
-      isOTPSent.value = true
+      otp.value.isSent = true
+      otp.value.retryTimeoutAt = response.retryTimeoutAt
+      otp.value.timeoutAt = response.timeoutAt
+
       authStore.setToken(response)
     } else {
       const response = await $fetchAuth<AuthResponse>("/sms/verify", {
@@ -51,7 +73,11 @@ const onLoginSubmit = handleSubmit(async (values) => {
       authStore.setToken(response)
       authStore.setInfo(values)
       isPhoneVerified.value = true
-      router.replace({ path: response.isRegistered ? "/dashboard" : "/auth/register" })
+
+      if (response.isRegistered)
+        router.replace({ path: '/dashboard' })
+      else
+        tab.value = 'register'
     }
   } catch (error) {
     console.error("Page Login", error)
@@ -84,26 +110,32 @@ onBeforeMount(async () => {
   isLoading.value = false
 })
 
+function resendOTP() {
+  otp.value.isSent = false
+}
+
 const handleOTP = handleSubmit(async (values) => {
   isLoading.value = true
 
   if (isRegistered.value) {
-    router.replace({ path: "/auth/login" })
+    tab.value = 'login'
     return
   }
   try {
     if (!isPhoneVerified.value) {
-      if (!isOTPSent.value) {
+      if (!otp.value.isSent) {
         const response = await $fetchAuth<AuthResponse>('/sms/otp', {
           method: "POST",
           body: { action: 'register', phone: values.phone }
         })
 
         isRegistered.value = response.isRegistered
+        otp.value.retryTimeoutAt = response.retryTimeoutAt
+        otp.value.timeoutAt = response.timeoutAt
         authStore.setToken(response)
 
         if (!isRegistered.value)
-          isOTPSent.value = true
+          otp.value.isSent = true
       } else {
         const response = await $fetchAuth<AuthResponse>("/sms/verify", {
           method: "POST",
@@ -181,7 +213,15 @@ onBeforeMount(() => {
           </div>
           <form class="flex flex-col gap-6" @submit.prevent="onLoginSubmit">
             <InputText type="phone" name="phone" icon="phone" placeholder="Your Phone" />
-            <InputCode v-if="isOTPSent" name="otp" />
+            <div v-if="otp.isSent" class="flex flex-col gap-4 justify-center">
+              <InputCode name="otp" />
+              <div class="flex justify-between text-sm">
+                <span>{{ otpComputed.timeoutIn }}</span>
+                <BaseButton size="S" :title="otp.retryTimeoutAt && !isExpired(otp.retryTimeoutAt) ? otpComputed.retryTimeoutIn :
+                  'Resend'" class="px-4" @click="resendOTP"
+                  :disabled="otp.retryTimeoutAt && !isExpired(otp.retryTimeoutAt)" />
+              </div>
+            </div>
             <button type="submit" :disabled="isLoading"
               class="flex justify-center items-center gap-1 mx-8 rounded-full  h-10 text-white bg-primary-500">
               <template v-if="isLoading">
@@ -189,7 +229,7 @@ onBeforeMount(() => {
                 Loading
               </template>
               <template v-else>
-                {{ !isOTPSent ? 'Send OTP' : 'Verify' }}
+                {{ !otp.isSent ? 'Send OTP' : 'Verify' }}
               </template>
             </button>
           </form>
@@ -200,7 +240,14 @@ onBeforeMount(() => {
             <div class="flex flex-col gap-6">
               <InputText type="phone" name="phone" icon="phone" :value="phone" placeholder="Your Phone"
                 :disabled="!!phone" />
-              <InputCode v-if="!isPhoneVerified && isOTPSent" name="otp" />
+              <div v-if="!isPhoneVerified && otp.isSent" class="flex flex-col gap-4 justify-center">
+                <InputCode name="otp" />
+                <div class="flex justify-between text-sm">
+                  <span>{{ otpComputed.timeoutIn }}</span>
+                  <BaseButton size="S" :title="otp.retryTimeoutAt && !isExpired(otp.retryTimeoutAt) ? otpComputed.retryTimeoutIn :
+                    'Resend'" @click="resendOTP" :disabled="otp.retryTimeoutAt && !isExpired(otp.retryTimeoutAt)" />
+                </div>
+              </div>
             </div>
             <InputText type="email" name="email" icon="attherate" :value="email" placeholder="Your Email"
               :disabled="!!email" />
@@ -215,7 +262,7 @@ onBeforeMount(() => {
               </template>
               <template v-else>
                 {{ !isRegistered ? (!isPhoneVerified ?
-                  (!isOTPSent ? 'Send OTP' : 'Verify') : 'Register')
+                  (!otp.isSent ? 'Send OTP' : 'Verify') : 'Register')
                   : 'Go to Login' }}
               </template>
             </button>

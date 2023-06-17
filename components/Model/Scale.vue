@@ -6,7 +6,8 @@ const props = defineProps<{
   isOpen: boolean,
   name: string,
   type: ScaleType,
-  count: number
+  count: number,
+  labels: { name: string, value: number }[]
 }>()
 const emit = defineEmits<{
   (event: 'close',): void,
@@ -58,6 +59,8 @@ watch(choices, () => {
 const currentChoiceIndex = ref(0)
 const currentChoiceValue = computed(() => choices.value[currentChoiceIndex.value].value)
 const invalidChoiceIndex = ref<number | null>(null)
+const minLimit = computed(() => props.labels.reduce((min, { value }) => value < min ? value : min, 9999))
+const maxLimit = computed(() => props.labels.reduce((max, { value }) => value > max ? value : max, 0))
 
 watch(currentChoiceIndex, (value) => {
   const groupPerSlide = props.type === 'binary' ? 6 : 4
@@ -96,6 +99,9 @@ function checkScaleItemValidity(type: ScaleType, data: { index: number; value: n
 }
 
 function onInput(index: number, value: number) {
+  if (!(value >= minLimit.value && value <= maxLimit.value))
+    return
+
   choices.value[index].value = value
   currentChoiceIndex.value = index
 }
@@ -105,33 +111,32 @@ function onMove(_slide: any, list: { items: string | any[]; }, _prev: any, curr:
     isLastSlide.value = curr.page === list.items.length - 1
 }
 
-const { arrowLeft, arrowRight, arrowUp, arrowDown, t, f, numpad1, numpad2, numpad3, numpad4, numpad5, digit1, digit2, digit3, digit4, digit5 } = useMagicKeys()
+const { arrowLeft, arrowRight, arrowUp, arrowDown, t, f, numpad0, numpad1, numpad2, numpad3, numpad4, numpad5, digit0, digit1, digit2, digit3, digit4, digit5 } = useMagicKeys()
 
 watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
   t, f,
-  numpad1, numpad2, numpad3, numpad4, numpad5,
-  digit1, digit2, digit3, digit4, digit5], ([left, right, up, down,
+  numpad0, numpad1, numpad2, numpad3, numpad4, numpad5,
+  digit0, digit1, digit2, digit3, digit4, digit5], ([left, right, up, down,
     t, f,
-    numpad1, numpad2, numpad3, numpad4, numpad5,
-    digit1, digit2, digit3, digit4, digit5]) => {
-  const minLimit = props.type === 'binary' ? 0 : 1
-  const maxLimit = props.type === 'binary' ? 1 : 5
+    numpad0, numpad1, numpad2, numpad3, numpad4, numpad5,
+    digit0, digit1, digit2, digit3, digit4, digit5]) => {
+
+  // const minLimit = props.type === 'binary' ? 0 : 1
+  // const maxLimit = props.type === 'binary' ? 1 : 5
 
   if (left) {
-    const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1, minLimit) : minLimit
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1, minLimit.value) : minLimit.value
     onInput(currentChoiceIndex.value, nextChoiceValue)
   } else if (right) {
-    const nextChoiceValue = currentChoiceValue.value !== null ? Math.min(currentChoiceValue.value + 1, maxLimit) : minLimit
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.min(currentChoiceValue.value + 1, maxLimit.value) : minLimit.value
     onInput(currentChoiceIndex.value, nextChoiceValue)
   } else if (up) {
     currentChoiceIndex.value -= currentChoiceIndex.value > 0 ? 1 : 0
   } else if (down) {
     currentChoiceIndex.value += currentChoiceIndex.value < choices.value.length - 1 ? 1 : 0
-  } else if (f) {
+  } else if (f || numpad0 || digit0) {
     onInput(currentChoiceIndex.value, 0)
-  } else if (t) {
-    onInput(currentChoiceIndex.value, 1)
-  } else if (numpad1 || digit1) {
+  } else if (t || numpad1 || digit1) {
     onInput(currentChoiceIndex.value, 1)
   } else if (numpad2 || digit2) {
     onInput(currentChoiceIndex.value, 2)
@@ -176,10 +181,9 @@ function onPrint(data: { index: number; value: number | null; }[]) {
 <template>
   <ModelBase :is-open="isOpen" @close="result = undefined; emit('close')" id="scale"
     class="w-[700px] max-h-[550px] overflow-hidden">
-    <!-- <form method="dialog"> -->
     <h4 class="text-xl ml-2 mt-2 mb-6">{{ name }}</h4>
     <div class="absolute top-4 right-16 flex flex-col gap-1 w-fit text-sm">
-      <span>Use &#8592 / &#8594 keys to select True / False</span>
+      <span>Use &#8592 / &#8594 keys to select {{ type === 'binary' ? "True / False" : "1/2/3/4/5" }}</span>
       <span>Use &#8593 / &#8595 keys to move backward / forward</span>
       <span v-if="type === 'binary'">Use T/F keys to select True / False</span>
       <span v-else-if="type === 'pentanary'">Use 1/2/3/4/5 keys to select 1/2/3/4/5</span>
@@ -191,33 +195,30 @@ function onPrint(data: { index: number; value: number | null; }[]) {
           :class="type == 'binary' ? 'grid-cols-3' : 'grid-cols-2'">
           <div v-for="(group, groupIndex) in groups" :key="groupIndex" class="flex flex-col gap-2">
             <template v-for="{ index, value } in group" :key="index">
-              <InputChoice :type="type" :index="index" :value="value ?? undefined"
+              <InputChoice :labels="labels" :index="index" :value="value ?? undefined"
                 :is-selected="currentChoiceIndex === index - 1" :is-invalid="invalidChoiceIndex === index - 1"
                 @click="result = undefined" @update="(value) => onInput(index - 1, value)" />
             </template>
           </div>
         </SplideSlide>
-        <template v-if="result">
-          <!-- <SplideSlide v-for="(slide, slideIndex) in resultSlides" :key="`result-${slideIndex}`"> -->
-          <SplideSlide>
-            <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
-              <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
-                <tbody class="bg-dark-400">
-                  <tr v-for="{ name, value }, index in result" :key="name">
-                    <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
-                      {{ name.replaceAll('-', ' ') }}
-                    </td>
-                    <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
-                      {{ value }}
-                    </td>
-                    <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </SplideSlide>
-        </template>
+        <SplideSlide v-if="result">
+          <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
+            <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
+              <tbody class="bg-dark-400">
+                <tr v-for="{ name, value }, index in result" :key="name">
+                  <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
+                    {{ name.replaceAll('-', ' ') }}
+                  </td>
+                  <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                    {{ value }}
+                  </td>
+                  <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </SplideSlide>
       </SplideTrack>
       <div class="splide__arrows flex justify-between mt-4">
         <button class="splide__arrow splide__arrow--prev">
@@ -232,7 +233,6 @@ function onPrint(data: { index: number; value: number | null; }[]) {
           class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onPrint(choices)" />
       </div>
     </Splide>
-    <!-- </form> -->
   </ModelBase>
 </template>
 

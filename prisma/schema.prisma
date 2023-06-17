@@ -29,17 +29,27 @@ enum ScaleType {
   Pentanary
 }
 
+model Label {
+  name      String
+  value     Int
+  scale     Scale     @relation(fields: [scaleName], references: [name])
+  scaleName ScaleName
+
+  @@unique([name, scaleName])
+}
+
 model Scale {
   name         ScaleName @id
   type         ScaleType
+  labels       Label[]
   count        Int
   monthlyPrice Int
   subScales    String[]
   publishedAt  DateTime  @default(now())
   updatedAt    DateTime  @default(now())
 
-  purchaseScale PurchaseScale[]
-  subscription  Subscription[]
+  purchaseScales PurchaseScale[]
+  subscriptions  Subscription[]
 }
 
 enum Gender {

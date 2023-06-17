@@ -82,7 +82,7 @@ onBeforeMount(execute)
       <h2>Reports</h2>
     </section> -->
     <ModelScale v-if="openedModel === 'scale' && selectedScale" :is-open="openedModel === 'scale'"
-      :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count"
+      :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count" :labels="selectedScale.labels"
       @close="selectedScaleName = null; openedModel = null" />
     <ModelPayment v-else-if="openedModel === 'payment' && selectedScale" :is-open="openedModel === 'payment'"
       :scales="scales ?? []" :selected-scale="selectedScale.name"

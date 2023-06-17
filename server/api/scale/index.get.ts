@@ -5,7 +5,23 @@ const prisma = new PrismaClient()
 
 export default defineProtectedEventHandler<SubscribedScale[]>(async (event, userId) => {
   try {
-    const scales = await prisma.scale.findMany()
+    const scales = await prisma.scale.findMany({
+      select: {
+        name: true,
+        type: true,
+        count: true,
+        subScales: true,
+        labels: {
+          select: {
+            name: true,
+            value: true
+          }
+        },
+        monthlyPrice: true,
+        publishedAt: true,
+        updatedAt: true,
+      }
+    })
     const subscribedScales = await prisma.subscription.findMany({
       where: {
         userId
@@ -15,16 +31,18 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
         expiresAt: true
       }
     })
+    console.log({ scales });
 
-    return scales.map(({ name, type, count, monthlyPrice, subScales, updatedAt }) => {
+    return scales.map(({ name, type, count, subScales, labels, monthlyPrice, publishedAt, updatedAt }) => {
       const subscribedScale = subscribedScales.find((subscribedScale) => subscribedScale.name === name)
 
       return {
         name: DBScaleNameToScaleName[name],
         type: type.toLowerCase() as ScaleType,
         count,
-        monthlyPrice,
+        labels,
         subScales,
+        monthlyPrice,
         expiresAt: subscribedScale?.expiresAt.toISOString() ?? null,
         updatedAt: updatedAt.toISOString()
       }

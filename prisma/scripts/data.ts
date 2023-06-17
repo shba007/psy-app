@@ -6,6 +6,10 @@ interface Scale {
   count: number;
   monthlyPrice: number;
   subScales: string[];
+  labels: {
+    name: string;
+    value: number;
+  }[]
 }
 
 const scales: Scale[] = [/* {
@@ -19,12 +23,20 @@ const scales: Scale[] = [/* {
     count: 101,
     monthlyPrice: 20,
     subScales: ["psychoticism", "neuroticism", "extraversion", "lie-scale"],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "EPQ-R",
     type: 'binary',
     count: 90,
     monthlyPrice: 18,
     subScales: ["psychoticism", "neuroticism", "extraversion", "lie-scale"],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   },  /* {
   name: "JEPQ",
   count: 108,
@@ -36,6 +48,10 @@ const scales: Scale[] = [/* {
     count: 108,
     monthlyPrice: 21,
     subScales: ["novelty-seeking", "harm-avoidance", "reward-dependence", "persistence", "self-directedness", "cooperativeness", "self-transcendence-(1)", "self-transcendence-(2)", "validity"],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "MACI",
     type: 'binary',
@@ -72,6 +88,10 @@ const scales: Scale[] = [/* {
       'debasement',
       'reliability',
     ],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "MCMI",
     type: 'binary',
@@ -103,7 +123,12 @@ const scales: Scale[] = [/* {
       'thought-disorder',
       'major-depression',
       'delusional-disorder',
-      'validity'],
+      'validity'
+    ],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "MMPI-RF",
     type: 'binary',
@@ -158,7 +183,11 @@ const scales: Scale[] = [/* {
       'PSYCr',
       'DISCr',
       'NEGEr',
-      'INTRr',],
+      'INTRr'
+    ], labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "MPQ",
     type: 'binary',
@@ -172,7 +201,11 @@ const scales: Scale[] = [/* {
       'schizophrenia',
       'repressive-sensitization',
       'personality-disorder',
-      'k-(lie)',],
+      'k-(lie)'
+    ], labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   }, {
     name: "TCI",
     type: 'binary',
@@ -187,14 +220,20 @@ const scales: Scale[] = [/* {
       'cooperativeness',
       'self-transcendence',
       'numb',
-      'run'],
+      'run'
+    ],
+    labels: [
+      { name: "False", value: 0 },
+      { name: "True", value: 1 },
+    ]
   },
   {
     name: "SCL-90R",
     type: 'pentanary',
     count: 90,
     monthlyPrice: 27,
-    subScales: ['somalization',
+    subScales: [
+      'somalization',
       'psychoticism',
       'hostility',
       'depression',
@@ -202,7 +241,15 @@ const scales: Scale[] = [/* {
       'oc',
       'interpersonal',
       'phobia',
-      "paranoid-ideation"],
+      "paranoid-ideation"
+    ],
+    labels: [
+      { name: "0", value: 0 },
+      { name: "1", value: 1 },
+      { name: "2", value: 2 },
+      { name: "3", value: 3 },
+      { name: "4", value: 4 },
+    ]
   },
 ]
 

@@ -2,7 +2,7 @@
 const props = withDefaults(defineProps<{
   icon?: string;
   title?: string;
-  size?: string;
+  size?: "XS" | "S" | "M" | "L";
   rounded?: boolean;
   to?: string;
   isLoading?: boolean;

@@ -248,7 +248,7 @@ export default {
 		},
 	},
 	numb: {
-		type: 'count',
+		type: 'binary-count',
 		start: 1,
 		count: 240,
 	},

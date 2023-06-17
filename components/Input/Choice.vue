@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ScaleType } from '~/utils/models';
 
 const props = withDefaults(defineProps<{
-  type: ScaleType,
+  labels: { name: string, value: number }[],
   index: number,
   value?: number,
   isSelected?: boolean
@@ -16,22 +15,6 @@ const emit = defineEmits<{
 }>()
 
 const selectedChoice = computed(() => props.value)
-
-const choices = computed(() => {
-  if (props.type === 'binary')
-    return [
-      { label: "false", value: 0 },
-      { label: "true", value: 1 },
-    ]
-  else if (props.type === 'pentanary')
-    return [
-      { label: "1", value: 1 },
-      { label: "2", value: 2 },
-      { label: "3", value: 3 },
-      { label: "4", value: 4 },
-      { label: "5", value: 5 },
-    ]
-})
 </script>
 
 <template>
@@ -41,10 +24,10 @@ const choices = computed(() => {
       {{ index }}
     </label>
     <div class="inline-flex gap-[6px] ml-2">
-      <span v-for="{ label, value } in choices" class="inline-flex justify-center rounded-full px-3 py-1 cursor-pointer"
-        :class="[(selectedChoice == value ? 'bg-primary-500' : 'bg-black'), { 'w-[66px]': type === 'binary' }, { 'w-[36px]': type === 'pentanary' }]"
+      <span v-for="{ name, value } in labels" class="inline-flex justify-center rounded-full px-3 py-1 cursor-pointer"
+        :class="[(selectedChoice == value ? 'bg-primary-500' : 'bg-black'), { 'w-[66px]': labels.length === 2 }, { 'w-[36px]': labels.length === 5 }]"
         @click="emit('update', value)">
-        <label for="false" class="capitalize cursor-pointer">{{ label }}</label>
+        <label for="false" class="capitalize cursor-pointer">{{ name }}</label>
       </span>
     </div>
   </div>

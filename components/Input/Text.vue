@@ -49,7 +49,7 @@ function validatePhone(value: string) {
   if (!value)
     return `${props.placeholder} is required`;
 
-  if (!value.match(/((\+*)((0[ -]*)*|((91 )*))((\d{12})+|(\d{10})+))|\d{5}([- ]*)\d{6}/g))
+  if (!value.match(/^\d{10}$/g))
     return "Enter a valid Phone Number"
 
   return true;

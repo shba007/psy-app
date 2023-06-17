@@ -6,7 +6,7 @@ import { ScaleNameToDBScaleName } from "../../utils/models";
 const prisma = new PrismaClient();
 
 async function createOrUpdateScales() {
-  for await (const scale of dataScales) {
+  for (const scale of dataScales) {
     await prisma.scale.upsert({
       where: {
         name: ScaleNameToDBScaleName[scale.name] as ScaleName,
@@ -17,9 +17,25 @@ async function createOrUpdateScales() {
         count: scale.count,
         monthlyPrice: scale.monthlyPrice,
         subScales: scale.subScales,
+        labels: {
+          createMany: {
+            data: scale.labels.map(({ name, value }) => ({
+              name,
+              value
+            }))
+          }
+        }
       },
       update: {
         monthlyPrice: scale.monthlyPrice,
+        labels: {
+          createMany: {
+            data: scale.labels.map(({ name, value }) => ({
+              name,
+              value
+            }))
+          }
+        }
       }
     })
   }

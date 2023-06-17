@@ -35,11 +35,11 @@ function validateInput(event: any, index: number) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 mx-auto w-fit">
+  <div class="flex flex-col gap-2 mx-auto w-fit self-center justify-self-center">
     <span class="inline-flex gap-2">
       <input ref="inputs" v-for="index of range(6)" @focus="currentIndex = index" :value="code[index]"
         @beforeinput="validateBeforeInput($event, index)" @input="validateInput($event, index)" type="number"
-        class="border-b-2 border-black/30 w-10 text-center bg-transparent outline-none"
+        class="border-b-2 border-black/30 w-8 text-center bg-transparent outline-none"
         :class="{ 'border-black/100': currentIndex > index, 'border-primary-500/80': currentIndex === index }" />
     </span>
     <!-- <span class="text-alert-500 text-sm font-semi-bold">{{ errors[0] }}</span> -->

@@ -1,16 +1,15 @@
-import { ScaleName } from '~/utils/models';
-import { CountScale, PairScale, AverageRatingScale, ShiftScale, SingleScale, SingleWeightedScale } from '~~/server/utils/class';
-import { Scales } from "~/server/utils/scale";
+import { ScaleName } from '../../utils/models';
+import { BinaryCountScale, PairScale, PentanaryAverageScale, PentanaryCountScale, ShiftScale, SingleScale, SingleWeightedScale } from './class';
+import { Scales } from "./scale";
 
 function BinaryCalculate(scale: ScaleName, data: { index: number; value: boolean; }[]) {
   const result: { name: string, score: number }[] = []
 
   for (const SubScaleName in Scales[scale]) {
-
     try {
       // @ts-ignore
       const SubScaleMeta = Scales[scale][SubScaleName];
-      let SubScale: SingleScale | SingleWeightedScale | PairScale | ShiftScale | CountScale;
+      let SubScale: SingleScale | SingleWeightedScale | PairScale | ShiftScale | BinaryCountScale;
 
       switch (SubScaleMeta.type) {
         case 'single':
@@ -25,8 +24,8 @@ function BinaryCalculate(scale: ScaleName, data: { index: number; value: boolean
         case 'shift':
           SubScale = new ShiftScale()
           break;
-        case 'count':
-          SubScale = new CountScale(SubScaleMeta.start, SubScaleMeta.count)
+        case 'binary-count':
+          SubScale = new BinaryCountScale(SubScaleMeta.start, SubScaleMeta.count)
           break;
       }
 
@@ -47,15 +46,17 @@ function PentanaryCalculate(scale: ScaleName, data: { index: number; value: numb
   for (const SubScaleName in Scales[scale]) {
     // @ts-ignore
     const SubScaleMeta = Scales[scale][SubScaleName];
-    let SubScale: AverageRatingScale;
+    let SubScale: PentanaryAverageScale | PentanaryCountScale;
 
     switch (SubScaleMeta.type) {
-      case 'rating-average':
+      case 'pentanary-average':
         if (typeof SubScaleMeta.modifier === 'number')
-          SubScale = new AverageRatingScale(SubScaleMeta.items, SubScaleMeta.modifier)
+          SubScale = new PentanaryAverageScale(SubScaleMeta.items, SubScaleMeta.modifier)
         else
-          SubScale = new AverageRatingScale(SubScaleMeta.items, result.find((scale) => scale === SubScaleMeta.modifier)?.score ?? 0)
-
+          SubScale = new PentanaryAverageScale(SubScaleMeta.items, result.find((scale) => scale === SubScaleMeta.modifier)?.score ?? 0)
+        break;
+      case 'pentanary-count':
+        SubScale = new PentanaryCountScale(SubScaleMeta.items,)
         break
     }
 
