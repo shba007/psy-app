@@ -72,24 +72,11 @@ function checkScaleItemValidity({ minLimit, maxLimit }: { minLimit: number, maxL
   invalidChoiceIndex.value = null
 
   for (const { index, value } of data) {
-    if (value === null && !(value >= minLimit && value <= maxLimit))
+    if (value === null && !(value >= minLimit && value <= maxLimit)) {
       invalidChoiceIndex.value = index - 1
-    break;
+      break;
+    }
   }
-
-  /*   if (type === 'binary') {
-        if (item.value === null || !(item.value === 0 || item.value === 1)) {
-          invalidChoiceIndex.value = item.index - 1
-          break;
-        }
-      }
-    } else if (type === 'pentanary') {
-      for (const item of data) {
-        if (item.value === null || !(item.value === 1 || item.value === 2 || item.value === 3 || item.value === 4 || item.value === 5)) {
-          invalidChoiceIndex.value = item.index - 1
-          break;
-        }
-      } */
 
   if (invalidChoiceIndex.value === null)
     return true
