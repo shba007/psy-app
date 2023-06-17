@@ -32,6 +32,7 @@ const choices = ref<{ index: number; value: number | null; }[]>(new Array(props.
   .fill(0)
   .map((_, index) =>
     ({ index: index + 1, value: null })))
+// Math.random() > 0.5 ? 0 : 1
 
 const choicesSlides = computed(() => {
   const slides = [];
@@ -67,24 +68,28 @@ watch(currentChoiceIndex, (value) => {
   splide.value.go(Math.floor(value / (5 * groupPerSlide)))
 })
 
-function checkScaleItemValidity(type: ScaleType, data: { index: number; value: number; }[]) {
+function checkScaleItemValidity({ minLimit, maxLimit }: { minLimit: number, maxLimit: number }, data: { index: number; value: number; }[]) {
   invalidChoiceIndex.value = null
 
-  if (type === 'binary') {
-    for (const item of data) {
-      if (item.value === null || !(item.value === 0 || item.value === 1)) {
-        invalidChoiceIndex.value = item.index - 1
-        break;
-      }
-    }
-  } else if (type === 'pentanary') {
-    for (const item of data) {
-      if (item.value === null || !(item.value === 1 || item.value === 2 || item.value === 3 || item.value === 4 || item.value === 5)) {
-        invalidChoiceIndex.value = item.index - 1
-        break;
-      }
-    }
+  for (const { index, value } of data) {
+    if (value === null && !(value >= minLimit && value <= maxLimit))
+      invalidChoiceIndex.value = index - 1
+    break;
   }
+
+  /*   if (type === 'binary') {
+        if (item.value === null || !(item.value === 0 || item.value === 1)) {
+          invalidChoiceIndex.value = item.index - 1
+          break;
+        }
+      }
+    } else if (type === 'pentanary') {
+      for (const item of data) {
+        if (item.value === null || !(item.value === 1 || item.value === 2 || item.value === 3 || item.value === 4 || item.value === 5)) {
+          invalidChoiceIndex.value = item.index - 1
+          break;
+        }
+      } */
 
   if (invalidChoiceIndex.value === null)
     return true
@@ -150,7 +155,7 @@ watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
 })
 
 async function onCalculate(data: { index: number; value: number; }[]) {
-  if (!checkScaleItemValidity(props.type, data))
+  if (!checkScaleItemValidity({ minLimit: minLimit.value, maxLimit: maxLimit.value }, data))
     return
 
   if (isLoading.value)

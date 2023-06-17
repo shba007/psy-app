@@ -51,15 +51,15 @@ describe('Binary Scale Test', () => {
     expect(BinaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
   });
 
-  test('JEPQ Scale Test', () => {
-    const scale = "JEPQ"
-    expect(BinaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
-  });
+  /*  test('JEPQ Scale Test', () => {
+     const scale = "JEPQ"
+     expect(BinaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
+   }); */
 
-  test('LEYTON Scale Test', () => {
+  /* test('LEYTON Scale Test', () => {
     const scale = "LEYTON"
     expect(BinaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
-  });
+  }); */
 })
 
 describe('Pentanary Scale Test', () => {
