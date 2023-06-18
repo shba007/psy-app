@@ -1,4 +1,4 @@
-import { PrismaClient, ScaleName as DBScaleName, ScaleType } from "@prisma/client";
+import { PrismaClient, ScaleName as DBScaleName, ScaleType, ReportStatus } from "@prisma/client";
 import { ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
 import { isExpired } from "~~/utils/helpers";
 
@@ -14,7 +14,7 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
     const { expiresAt, scale: DBScale } = await prisma.subscription.findUniqueOrThrow({
       where: {
         name_userId: {
-          name: ScaleNameToDBScaleName[scale] as DBScaleName,
+          name: ScaleNameToDBScaleName[scale],
           userId
         }
       },
@@ -43,7 +43,19 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
     else if (DBScale.type === ScaleType.Pentanary)
       result = PentanaryCalculate(scale, data)
 
-    return Object.entries(result).map(([name, value]) => ({ name, value: value as number }));
+    const formattedResult = Object.entries(result).map(([name, value]) => ({ name, value: value as number }));
+
+    await prisma.report.create({
+      data: {
+        scale: ScaleNameToDBScaleName[scale],
+        status: ReportStatus.Complete,
+        data,
+        value: formattedResult,
+        userId: userId
+      }
+    })
+
+    return formattedResult
   } catch (error: any) {
     console.error("API scale/index POST", error)
 

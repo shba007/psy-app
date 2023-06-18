@@ -20,6 +20,9 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
         monthlyPrice: true,
         publishedAt: true,
         updatedAt: true,
+      },
+      orderBy: {
+        publishedAt: 'desc'
       }
     })
     const subscribedScales = await prisma.subscription.findMany({
@@ -43,7 +46,8 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
         subScales,
         monthlyPrice,
         expiresAt: subscribedScale?.expiresAt.toISOString() ?? null,
-        updatedAt: updatedAt.toISOString()
+        updatedAt: updatedAt.toISOString(),
+        publishedAt: publishedAt.toISOString()
       }
     })
   } catch (error: any) {

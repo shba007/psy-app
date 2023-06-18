@@ -28,14 +28,6 @@ async function createOrUpdateScales() {
       },
       update: {
         monthlyPrice: scale.monthlyPrice,
-        labels: {
-          createMany: {
-            data: scale.labels.map(({ name, value }) => ({
-              name,
-              value
-            }))
-          }
-        }
       }
     })
   }

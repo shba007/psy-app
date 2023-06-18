@@ -1,5 +1,6 @@
 // "JEPQ" | "DSMD"
-export type ScaleName = "MACI" | "MCMI" | "TCI" | "MPQ" | "EPQ" | "JTCI" | "EPQ-R" | "MMPI-RF" | "SCL-90R" | "DSMD-A" | "DSMD-C"
+export type ScaleName = "MACI" | "MCMI" | "TCI" | "MPQ" | "EPQ" | "JTCI" | "EPQ-R" | "MMPI-RF" | "SCL-90R" | "DSMD-A"
+// | "DSMD-C"
 
 export type ScaleType = "binary" | "pentanary"
 
@@ -15,7 +16,7 @@ export enum ScaleNameToDBScaleName {
   // "JEPQ" = "JEPQ",
   "SCL-90R" = "SCL_90R",
   "DSMD-A" = "DSMD_A",
-  "DSMD-C" = "DSMD_C",
+  // "DSMD-C" = "DSMD_C",
 }
 
 export enum DBScaleNameToScaleName {
@@ -28,8 +29,9 @@ export enum DBScaleNameToScaleName {
   "EPQ_R" = "EPQ-R",
   "JTCI" = "JTCI",
   // "JEPQ" = "JEPQ",
-  // "DSMD" = "DSMD",
-  "SCL_90R" = "SCL-90R"
+  "SCL_90R" = "SCL-90R",
+  "DSMD_A" = "DSMD-A",
+  // "DSMD_C" = "DSMD-C",
 }
 
 export interface Scale {
@@ -54,6 +56,7 @@ export interface SubscribedScale {
   labels: { name: string, value: number }[]
   expiresAt: string | null;
   updatedAt: string;
+  publishedAt: string;
 }
 /* MISC */
 export interface JWTToken {

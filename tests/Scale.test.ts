@@ -67,4 +67,14 @@ describe('Pentanary Scale Test', () => {
     const scale = "SCL-90R"
     expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
   });
+
+  /* test('DSMD Child Scale Test', () => {
+      const scale = "DSMD-C"
+      expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
+    }); */
+
+  test('DSMD Adolescent Scale Test', () => {
+    const scale = "DSMD-A"
+    expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
+  });
 })

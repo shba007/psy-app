@@ -57,10 +57,11 @@ onBeforeMount(execute)
       <!-- :extensions="['grid']" -->
       <Splide v-if="scales" ref="splide" :options="splideOption" tag="div" :has-track="false" :extensions="{ Grid }">
         <SplideTrack>
-          <SplideSlide v-for="{ name, type, count, subScales, expiresAt, updatedAt } in scales" :key="name"
+          <SplideSlide v-for="{ name, type, count, subScales, expiresAt, updatedAt, publishedAt } in scales" :key="name"
             class="w-full">
             <CardScale :name="name" :type="type" :count="count" :sub-scales="subScales" :expires-at="expiresAt"
-              :updated-at="updatedAt" @open-test="selectedScaleName = name; openedModel = 'scale'"
+              :updated-at="updatedAt" :published-at="publishedAt"
+              @open-test="selectedScaleName = name; openedModel = 'scale'"
               @open-payment="selectedScaleName = name; openedModel = 'payment'" />
           </SplideSlide>
         </SplideTrack>
