@@ -101,7 +101,7 @@ async function onPay() {
     <div v-else-if="tab === 'payment'"
       class="row-start-1 row-span-full col-start-1 col-span-full justify-self-center self-center flex flex-col gap-6 justify-center items-center p-4 pb-8">
       <h6 class="mx-auto text-lg">Scan to Pay</h6>
-      <div class="flex justify-center items-center mx-auto p-4 w-[224px] h-[224px] rounded-md"
+      <div class="flex justify-center items-center mx-auto p-2 w-[240px] h-[240px] rounded-md"
         :class="{ 'bg-white': !isLoading }">
         <NuxtIcon v-if="isLoading" name="loader" class="text-[36px]" />
         <img v-else :src="purchaseResponse?.qrImage" alt="qr" class="w-full h-full" />

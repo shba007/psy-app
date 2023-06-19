@@ -1,8 +1,17 @@
 import { PrismaClient } from "@prisma/client"
 import { createUPIPayment } from "~~/server/utils/payment";
 import { PurchaseStatus, DBScaleNameToScaleName } from "~/utils/models";
+import QRCode from 'qrcode'
 
 const prisma = new PrismaClient()
+
+async function generateQR(text: string) {
+  try {
+    return QRCode.toDataURL(text)
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export default defineProtectedEventHandler<{
   id: string;
@@ -68,13 +77,12 @@ export default defineProtectedEventHandler<{
       type: "qr",
     })
 
-    // console.log({ qr: gatewayResult.qr });
-
     return {
       id: purchase.id,
       purchasedAt: purchase.purchasedAt.toISOString(),
       status: purchase.status.toLowerCase() as PurchaseStatus,
-      qrImage: `data:image/png;base64,${gatewayResult.qr}!`,
+      // qrImage: `data:image/png;base64,${gatewayResult.qr}`,
+      qrImage: await generateQR(gatewayResult.intentUrl as string) as string,
     }
   } catch (error: any) {
     console.error("API purchase/index POST", error)

@@ -17,6 +17,7 @@ interface PaymentUPIIntentResponse {
       type: "UPI_COLLECT";
       vpa: string;
     } | {
+      qrData: any;
       type: "UPI_QR";
       qr: string;
     }
@@ -110,7 +111,7 @@ export async function createUPIPayment({ transactionId, amount, phone, type, dev
     success: response.success,
     code: response.code,
     type: response.data.instrumentResponse.type,
-    intentUrl: response.data.instrumentResponse.type === "UPI_INTENT" ? response.data.instrumentResponse.intentUrl : undefined,
+    intentUrl: response.data.instrumentResponse.type === "UPI_INTENT" || response.data.instrumentResponse.type === "UPI_QR" ? response.data.instrumentResponse.intentUrl : undefined,
     vpa: response.data.instrumentResponse.type === "UPI_COLLECT" ? vpa : undefined,
     qr: response.data.instrumentResponse.type === "UPI_QR" ? response.data.instrumentResponse.qrData : undefined,
   }

@@ -14,6 +14,7 @@
     "start": "node .output/server/index.mjs",
     "cleanup": "nuxt cleanup",
     "test": "vitest",
+    "database": "cockroach start-single-node --insecure --listen-addr=localhost --store=database",
     "seed": "prisma db seed",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"
@@ -29,9 +30,10 @@
     "@pinia/nuxt": "^0.4.11",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.0",
     "@vite-pwa/nuxt": "^0.1.0",
-    "@vueuse/core": "^10.1.2",
-    "@vueuse/nuxt": "^10.1.2",
+    "@vueuse/core": "^10.2.0",
+    "@vueuse/nuxt": "^10.2.0",
     "jsonwebtoken": "^9.0.0",
     "nuxt": "^3.5.3",
     "nuxt-icons": "^3.2.1",
@@ -43,6 +45,7 @@
     "@prisma/client": "^4.15.0",
     "@splidejs/splide-extension-grid": "^0.4.1",
     "@splidejs/vue-splide": "^0.6.12",
+    "qrcode": "^1.5.3",
     "vee-validate": "^4.9.6"
   }
 }
