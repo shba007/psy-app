@@ -54,8 +54,14 @@ onBeforeMount(execute)
   <main class="relative flex flex-col">
     <section class="relative">
       <h2 class="mb-2 text-lg">Tests</h2>
-      <!-- :extensions="['grid']" -->
-      <Splide v-if="scales" ref="splide" :options="splideOption" tag="div" :has-track="false" :extensions="{ Grid }">
+      <div v-if="pending" class="relative flex gap-2 justify-center items-center h-[75vh]">
+        <NuxtIcon name="loader" class="text-[24px]" />
+        Loading
+      </div>
+      <div v-else-if="error" class="relative flex justify-center items-center h-[75vh]">
+        Error
+      </div>
+      <Splide v-else ref="splide" :options="splideOption" tag="div" :has-track="false" :extensions="{ Grid }">
         <SplideTrack>
           <SplideSlide v-for="{ name, type, count, subScales, expiresAt, updatedAt, publishedAt } in scales" :key="name"
             class="w-full">
