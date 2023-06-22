@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     public: {
       authUrl: '',
       apiUrl: '',
+      anoyToken: ''
     },
     private: {
       corsUrl: '',
