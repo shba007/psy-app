@@ -46,6 +46,9 @@ export const useAuth = () => {
       } catch (error) {
         authToken.value = null
       }
+
+      // NOTE: Free User
+      accessToken.value = useRuntimeConfig().public.anoyToken
     }
 
     function setInfo(user: any) {
