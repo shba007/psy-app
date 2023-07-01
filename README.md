@@ -34,8 +34,9 @@ MMPI-RF         OK
 MPQ             OK
 TCI             OK
 SCL-90R         OK
+DSMD-A
 
-DSMD
+DSMD-C
 JEPQ
 LEYTON
 
@@ -46,3 +47,9 @@ Add 3 more Subscales
 PST - total item jegulo te 0 response day ni mane non zero item
 PSDI - Psdi holo total raw score ÷ pst
 Gsi - Gsi holo total raw score ÷ 90 
+
+pip install virtualenv
+virtualenv venv
+
+source venv/Scripts/activate
+pip install -r requirements.txt

@@ -13,7 +13,7 @@ interface Scale {
 
 const props = defineProps<Scale>()
 const emit = defineEmits<{
-  (event: 'openTest'): void,
+  (event: 'openTest', mode: 'auto' | 'manual'): void,
   (event: 'openPayment'): void
 }>()
 
@@ -35,7 +35,7 @@ const expiresIn = useTimeAgo(() => props.expiresAt ?? "", {
 const updatedIn = useTimeAgo(() => props.updatedAt, {
   messages: {
     invalid: 'Invalid Date',
-    past: (n: any) => n.match(/\d/) ? `Last Update ${n} ago` : n,
+    past: (n: any) => n.match(/\d/) ? `Updated ${n} ago` : n,
     justNow: 'Just Now',
     future: (n: any) => n.match(/\d/) ? `Next Update In ${n}` : n,
     month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
@@ -65,11 +65,11 @@ function messageColor(date: string | Date | null) {
     return 'text-primary-400'
 }
 
-function onOpenTest() {
-  if (props.expiresAt ? isExpired(props.expiresAt) : true)
+function onOpenTest(mode: 'auto' | 'manual') {
+  if (mode === 'auto' && (props.expiresAt ? isExpired(props.expiresAt) : true))
     emit('openPayment')
   else
-    emit('openTest')
+    emit('openTest', mode)
 }
 
 const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props.publishedAt).getTime() < 1000 * 60 * 60 * 24)
@@ -78,30 +78,34 @@ const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props
 <template>
   <div class="pr-[5px]">
     <div
-      class="relative grid gap-y-2 grid-rows-[repeat(min-content,2)_1fr_min-content] grid-cols-[repeat(auto,2)] rounded-2xl p-4 min-w-[272px] max-w-[300px] aspect-square bg-dark-500">
-      <div class="self-start justify-self-end flex gap-2 items-center row-start-1 col-start-2 col-span-1 w-fit h-fit">
+      class="relative grid gap-y-3 grid-rows-[repeat(2,min-content)_1fr_min-content] grid-cols-[repeat(2,auto)] rounded-2xl p-4 min-w-[272px] max-w-[300px] aspect-square bg-dark-500">
+      <!--  <div class="self-start justify-self-end flex gap-2 items-center row-start-1 col-start-2 col-span-1 w-fit h-fit">
         <BaseChips :title="!!expiresAt ? expiresIn : 'Recharge'" :class="messageColor(expiresAt)" class="cursor-pointer"
           @click="emit('openPayment')" />
-        <BaseButton icon="plus" :rounded="true" size="S" @click="emit('openPayment')" />
-      </div>
-      <h6 class="text-lg col-start-1">{{ name }}</h6>
-      <BaseRibbon :title="isRecentlyPublished ? 'new' : null" class="absolute -right-[5px] top-14 bg-dark-400 " />
-      <div class="col-start-1 col-span-2 flex gap-2 text-sm opacity-50">
+        <BaseButton icon="flash" :rounded="true" size="S" @click="emit('openPayment')" />
+      </div> -->
+      <h6 class="col-start-1 h-fit text-lg">{{ name }}</h6>
+      <BaseRibbon :title="isRecentlyPublished ? 'new' : null" class="absolute -right-[5px] top-14 bg-dark-400" />
+      <div class="col-start-1 col-span-2 flex gap-2 h-fit text-sm opacity-50">
         <span>Sub Scales {{ subScales.length }}</span>
         <span>&#x2022</span>
         <span class="capitalize">{{ type }}</span>
         <span>&#x2022</span>
         <span>Item {{ count }}</span>
       </div>
-      <div class="col-start-1 col-span-2">
-        <div class="flex flex-wrap gap-2 max-h-[104px] overflow-y-scroll scrollbar">
+      <div class="relative col-start-1 col-span-2 h-full">
+        <div class="flex flex-wrap gap-2 max-h-[128px] overflow-y-scroll scrollbar">
           <BaseChips v-for="subScale in subScales" :key="subScale" :title="subScale.replaceAll('-', ' ')"
             class="capitalize cursor-text" />
         </div>
       </div>
       <span class="row-start-4 col-start-1 col-span-2 self-center w-fit text-sm opacity-50">{{ updatedIn }}</span>
-      <BaseButton class="row-start-4 col-start-2 justify-self-end self-end !px-4 !py-[2px] h-fit" size="M" :rounded="true"
-        title="Start" @click="onOpenTest" />
+      <div class="row-start-4 col-start-2 justify-self-end self-end flex gap-2">
+        <BaseButton class="!p-[6px] hover:bg-primary-400" size="S" :rounded="true" icon="keyboard"
+          @click="onOpenTest('manual')" />
+        <BaseButton class="hover:bg-primary-400" size="S" :rounded="true" icon="scanner" title="Scan"
+          @click="onOpenTest('auto')" />
+      </div>
     </div>
   </div>
 </template>

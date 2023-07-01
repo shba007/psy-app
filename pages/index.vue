@@ -192,7 +192,7 @@ onBeforeMount(() => {
       <span v-html="hero" />
     </div>
     <ClientOnly>
-      <div class="realtive flex justify-center items-center px-20 w-[25rem] h-full bg-dark-500 ">
+      <div class="realtive flex justify-center items-center px-20 w-[25rem] h-full bg-dark-500">
         <article v-if="tab === 'login'" class="flex flex-col gap-4 w-full">
           <h1 class="text-xl mx-auto my-4">Welcome Back</h1>
           <section class="flex flex-col gap-3">

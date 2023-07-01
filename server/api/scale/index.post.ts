@@ -1,6 +1,5 @@
-import { PrismaClient, ScaleName as DBScaleName, ScaleType, ReportStatus } from "@prisma/client";
+import { PrismaClient, ScaleType, ReportStatus } from "@prisma/client";
 import { ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
-import { isExpired } from "~~/utils/helpers";
 
 const prisma = new PrismaClient()
 
@@ -11,25 +10,14 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
       data: { index: number; value: number; }[]
     }>(event)
 
-    const { expiresAt, scale: DBScale } = await prisma.subscription.findUniqueOrThrow({
+    const DBScale = await prisma.scale.findUniqueOrThrow({
       where: {
-        name_userId: {
-          name: ScaleNameToDBScaleName[scale],
-          userId
-        }
+        name: ScaleNameToDBScaleName[scale]
       },
       select: {
-        scale: {
-          select: {
-            type: true
-          }
-        },
-        expiresAt: true
+        type: true
       }
     })
-
-    if (isExpired(expiresAt))
-      throw createError({ statusCode: 400, statusMessage: 'Subscription Expired' })
 
     let result: {} = {}
     for (const item of data) {

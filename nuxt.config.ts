@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-icons',
   ],
+  typescript: {
+    shim: false,
+  },
   runtimeConfig: {
     public: {
       authUrl: '',
@@ -24,18 +27,14 @@ export default defineNuxtConfig({
       paymentUserId: '',
       paymentSecret: '',
     },
-  },
-  typescript: {
-    shim: false,
-  },
-  colorMode: {
-    classSuffix: '',
-    preference: 'dark'
-  },
-  imports: {
-    imports: [
-      { name: 'defineStore', from: 'pinia' },
-      { name: 'storeToRefs', from: 'pinia' },
-    ],
-  },
-})
+    colorMode: {
+      classSuffix: '',
+      preference: 'dark'
+    },
+    imports: {
+      imports: [
+        { name: 'defineStore', from: 'pinia' },
+        { name: 'storeToRefs', from: 'pinia' },
+      ],
+    },
+  })

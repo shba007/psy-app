@@ -69,19 +69,19 @@ const props = withDefaults(defineProps<{
   <button v-else-if="icon && title && size === 'S'"
     class="flex items-center gap-1 rounded-full pl-[0.625rem] pr-3 py-[0.3125rem] w-fit text-sm text-center text-white bg-primary-500 disabled:bg-light-500 disabled:text-black"
     v-bind="$attrs">
-    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px] mr-2" />
+    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px]" />
     {{ title }}
   </button>
   <button v-else-if="icon && title && size === 'XS' && !to"
     class="flex items-center gap-1 rounded-full pl-3 pr-[14px] py-[6px] w-fit text-sm text-center text-white bg-primary-500 disabled:bg-light-500 disabled:text-black"
     v-bind="$attrs">
-    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px] mr-2" />
+    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px]" />
     {{ title }}
   </button>
   <NuxtLink v-else-if="icon && title && size === 'XS' && to" :to="to"
     class="flex items-center gap-1 rounded-full pl-3 pr-[14px] py-[6px] w-fit text-sm text-center text-white bg-primary-500 disabled:bg-light-500 disabled:text-black"
     v-bind="$attrs">
-    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px] mr-2" />
+    <NuxtIcon :name="isLoading ? 'loader' : icon" class="text-[16px]" />
     {{ title }}
   </NuxtLink>
   <!-- Label button -->
@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<{
   <button v-else-if="!icon && title && size === 'S'"
     class="flex justify-center items-center rounded-full px-2 py-[0.3125rem] w-fit text-sm text-white bg-primary-500 disabled:bg-light-500 disabled:text-black"
     v-bind="$attrs">
-    <NuxtIcon v-if="isLoading" name="loader" class="text-[18px] mr-2" />
+    <NuxtIcon v-if="isLoading" name="loader" class="text-[18px]" />
     {{ title }}
   </button>
 </template>
