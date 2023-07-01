@@ -27,14 +27,15 @@ export default defineNuxtConfig({
       paymentUserId: '',
       paymentSecret: '',
     },
-    colorMode: {
-      classSuffix: '',
-      preference: 'dark'
-    },
-    imports: {
-      imports: [
-        { name: 'defineStore', from: 'pinia' },
-        { name: 'storeToRefs', from: 'pinia' },
-      ],
-    },
-  })
+  },
+  colorMode: {
+    classSuffix: '',
+    preference: 'dark'
+  },
+  imports: {
+    imports: [
+      { name: 'defineStore', from: 'pinia' },
+      { name: 'storeToRefs', from: 'pinia' },
+    ],
+  },
+})

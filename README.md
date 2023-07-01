@@ -1,6 +1,3 @@
-# TODO
-DSMD
-
 # Feature
 * MCMI Raw Score to BR Score
 * MACI Raw Score to BR Score
