@@ -280,7 +280,7 @@ function onPrint(data: { index: number; value: number | null; }[]) {
             </div>
           </SplideSlide>
           <SplideSlide v-if="result">
-            <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
+            <div class="relative max-h-[408px] overflow-y-scroll">
               <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
                 <tbody class="bg-dark-400">
                   <tr v-for="{ name, value }, index in result" :key="name">
