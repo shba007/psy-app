@@ -94,7 +94,7 @@ const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props
         <span>Item {{ count }}</span>
       </div>
       <div class="relative col-start-1 col-span-2 h-full">
-        <div class="flex flex-wrap gap-2 max-h-[128px] overflow-y-scroll scrollbar">
+        <div class="flex flex-wrap gap-2 max-h-[128px] overflow-y-auto">
           <BaseChips v-for="subScale in subScales" :key="subScale" :title="subScale.replaceAll('-', ' ')"
             class="capitalize cursor-text" />
         </div>

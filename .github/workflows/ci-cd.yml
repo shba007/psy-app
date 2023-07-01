@@ -57,6 +57,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           overwrite: true
-          source: '.output,python'
+          source: '.output,python,requirements.txt,deploy.sh'
           # The path is based on the directory where the user logged into the server starts
           target: '~/psy-app'
