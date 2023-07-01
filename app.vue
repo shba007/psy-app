@@ -26,27 +26,21 @@ useHead({
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
   /* IE and Edge */
-  scrollbar-width: none;
   /* Firefox */
-  color: white;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-*::-webkit-scrollbar {
-  display: none;
-}
-
-/* TODO: Add to Tailwind */
-.scrollbar {
   scrollbar-width: 6px;
+  @apply text-black dark:text-white;
 }
 
-.scrollbar::-webkit-scrollbar {
-  @apply block w-[6px];
+body {
+  @apply overflow-x-hidden;
 }
 
-.scrollbar::-webkit-scrollbar-thumb {
-  @apply rounded-md bg-light-500 dark:bg-dark-400;
+*::-webkit-scrollbar {
+  @apply block w-[6px] bg-light-500 dark:bg-dark-400;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply rounded-md bg-light-400 dark:bg-dark-600 ;
 }
 
 html {

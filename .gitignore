@@ -7,6 +7,7 @@ dist
 
 # Node dependencies
 node_modules
+__pycache__
 
 # Logs
 logs
@@ -24,3 +25,6 @@ logs
 
 docs
 database
+
+assets/documents
+temp

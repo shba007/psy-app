@@ -1,18 +1,76 @@
 <script setup lang="ts">
 import { Options, Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide';
 import { ScaleType } from '~/utils/models';
+import doc from "~~/assets/images/documents.svg?raw";
 
 const props = defineProps<{
   isOpen: boolean,
   name: string,
   type: ScaleType,
   count: number,
-  labels: { name: string, value: number }[]
+  labels: { name: string, value: number }[],
+  tab: 'auto' | 'manual',
 }>()
 const emit = defineEmits<{
-  (event: 'close',): void,
+  (event: 'close'): void,
   (event: 'calculate', data: { index: number; value: number | null; }[]): void
 }>()
+
+const tab = ref(props.tab)
+
+const dropZoneRef = ref<HTMLDivElement>()
+const documents = ref<string[]>([])
+
+function convertFileToDataURL(file: File) {
+  return new Promise<string | ArrayBuffer | null>((resolve) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  })
+}
+
+async function onDrop(files: File[] | null) {
+  if (!files)
+    return
+
+  const allowedFileTypes = ["image/png", "image/jpeg", "image/webp", "image/avif"];
+  const allAllowed = files.every((file) =>
+    allowedFileTypes.includes(file.type)
+  );
+
+  if (!allAllowed)
+    throw new Error("Some files are not allowed")
+  else if (!(files.length >= 1 && files.length <= 2))
+    throw new Error("Min 1 and Max 2 files allowed at a time")
+
+  documents.value = await Promise.all(files.map((file) => convertFileToDataURL(file))) as unknown as string[]
+  // console.log(documents.value);
+  // console.log("on drop");
+  // TODO: Start scan
+
+  isLoading.value = true
+  try {
+    const result = await $fetchAPI('/api/scale/scan', {
+      method: 'POST',
+      body: {
+        scale: props.name,
+        images: documents.value
+      }
+    })
+
+    choices.value = result.data
+    tab.value = 'manual'
+  } catch (error) {
+    console.error("Fetch API Scale/Scan", error);
+  }
+  isLoading.value = false
+}
+
+const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
 const dataSplideOption: Options = {
   arrows: true,
@@ -114,10 +172,12 @@ watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
     digit0, digit1, digit2, digit3, digit4, digit5]) => {
 
   if (left) {
-    const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1, minLimit.value) : minLimit.value
+    const dir = props.type === 'binary' ? -1 : 1
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.max(currentChoiceValue.value - 1 * dir, minLimit.value) : props.type === 'binary' ? maxLimit.value : minLimit.value
     onInput(currentChoiceIndex.value, nextChoiceValue)
   } else if (right) {
-    const nextChoiceValue = currentChoiceValue.value !== null ? Math.min(currentChoiceValue.value + 1, maxLimit.value) : minLimit.value
+    const dir = props.type === 'binary' ? -1 : 1
+    const nextChoiceValue = currentChoiceValue.value !== null ? Math.min(currentChoiceValue.value + 1 * dir, maxLimit.value) : props.type === 'binary' ? maxLimit.value : minLimit.value
     onInput(currentChoiceIndex.value, nextChoiceValue)
   } else if (up) {
     currentChoiceIndex.value -= currentChoiceIndex.value > 0 ? 1 : 0
@@ -162,66 +222,96 @@ async function onCalculate(data: { index: number; value: number; }[]) {
   isLoading.value = false
 }
 
-function onPrint(data: { index: number; value: number | null; }[]) {
+function onDownloadTemplate() {
+  const link = document.createElement('a');
 
+  link.href = `/template/${props.name}.pdf`;
+  link.download = `${props.name}.pdf`;
+
+  link.click();
+}
+
+function onPrint(data: { index: number; value: number | null; }[]) {
 }
 </script>
 
 <template>
   <ModelBase :is-open="isOpen" @close="result = undefined; emit('close')" id="scale"
     class="w-[700px] max-h-[550px] overflow-hidden">
-    <h4 class="text-xl ml-2 mt-2 mb-6">{{ name }}</h4>
-    <div class="absolute top-4 right-16 flex flex-col gap-1 w-fit text-sm">
-      <span>Use &#8592 / &#8594 keys to select {{ type === 'binary' ? "True / False" : "1/2/3/4/5" }}</span>
-      <span>Use &#8593 / &#8595 keys to move backward / forward</span>
-      <span v-if="type === 'binary'">Use T/F keys to select True / False</span>
-      <span v-else-if="type === 'pentanary'">Use 1/2/3/4/5 keys to select 1/2/3/4/5</span>
-    </div>
-    <Splide ref="splide" :options="dataSplideOption" tag="div" :has-track="false" @splide:pagination:updated="onMove">
-      <SplideTrack>
-        <SplideSlide v-for="(groups, slideIndex) in choicesSlides" :key="`choice-${slideIndex}`"
-          class="grid grid-flow-col grid-rows-2 gap-6 justify-items-center w-full"
-          :class="type == 'binary' ? 'grid-cols-3' : 'grid-cols-2'">
-          <div v-for="(group, groupIndex) in groups" :key="groupIndex" class="flex flex-col gap-2">
-            <template v-for="{ index, value } in group" :key="index">
-              <InputChoice :labels="labels" :index="index" :value="value ?? undefined"
-                :is-selected="currentChoiceIndex === index - 1" :is-invalid="invalidChoiceIndex === index - 1"
-                @click="result = undefined" @update="(value) => onInput(index - 1, value)" />
-            </template>
-          </div>
-        </SplideSlide>
-        <SplideSlide v-if="result">
-          <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
-            <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
-              <tbody class="bg-dark-400">
-                <tr v-for="{ name, value }, index in result" :key="name">
-                  <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
-                    {{ name.replaceAll('-', ' ') }}
-                  </td>
-                  <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
-                    {{ value }}
-                  </td>
-                  <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </SplideSlide>
-      </SplideTrack>
-      <div class="splide__arrows flex justify-between mt-4">
-        <button class="splide__arrow splide__arrow--prev">
-          <NuxtIcon name="chevron-bold" />
-        </button>
-        <button v-show="!isLastSlide" class="splide__arrow splide__arrow--next transform rotate-180">
-          <NuxtIcon name="chevron-bold" />
-        </button>
-        <BaseButton v-show="isLastSlide && !result" :is-loading="isLoading" title="Calculate" size="M"
-          class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onCalculate(choices)" />
-        <BaseButton v-show="isLastSlide && result" title="Print" size="M"
-          class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onPrint(choices)" />
+    <!-- Auto Tab  -->
+    <template v-if="tab === 'auto'">
+      <div ref="dropZoneRef" v-show="!documents.length"
+        class="upload mx-auto my-10 rounded-lg px-20 pb-16 w-fit transition-colors"
+        :class="{ 'bg-dark-400': isOverDropZone }">
+        <div v-html="doc" />
+        <div class="mx-auto flex flex-col gap-3 items-center">
+          <h2 class="w-fit">Upload Documents Here</h2>
+          <span class="uppercase text-sm">or</span>
+          <BaseButton title="Download Template" size="S" icon="plus"
+            class="!text-base transition-[width] ease-in-out duration-300" @click="onDownloadTemplate" />
+        </div>
       </div>
-    </Splide>
+      <div class="relative mx-auto my-5 w-fit" :class="{ 'blur-sm': isLoading }">
+        <img v-for="document in documents" :src="document" class="h-[464px]" />
+      </div>
+      <NuxtIcon v-if="isLoading" name="loader"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px]" />
+    </template>
+    <!-- Manual Tab  -->
+    <template v-else>
+      <h4 class="text-xl ml-2 mt-2 mb-6">{{ name }}</h4>
+      <div class="absolute top-4 right-16 flex flex-col gap-1 w-fit text-sm">
+        <span>Use &#8592 / &#8594 keys to select {{ type === 'binary' ? "True / False" : "1/2/3/4/5" }}</span>
+        <span>Use &#8593 / &#8595 keys to move backward / forward</span>
+        <span v-if="type === 'binary'">Use T/F keys to select True / False</span>
+        <span v-else-if="type === 'pentanary'">Use 1/2/3/4/5 keys to select 1/2/3/4/5</span>
+      </div>
+      <Splide ref="splide" :options="dataSplideOption" tag="div" :has-track="false" @splide:pagination:updated="onMove">
+        <SplideTrack>
+          <SplideSlide v-for="(groups, slideIndex) in choicesSlides" :key="`choice-${slideIndex}`"
+            class="grid grid-flow-col grid-rows-2 gap-6 justify-items-center w-full"
+            :class="type == 'binary' ? 'grid-cols-3' : 'grid-cols-2'">
+            <div v-for="(group, groupIndex) in groups" :key="groupIndex" class="flex flex-col gap-2">
+              <template v-for="{ index, value } in group" :key="index">
+                <InputChoice :labels="labels" :index="index" :value="value ?? undefined"
+                  :is-selected="currentChoiceIndex === index - 1" :is-invalid="invalidChoiceIndex === index - 1"
+                  @click="result = undefined" @update="(value) => onInput(index - 1, value)" />
+              </template>
+            </div>
+          </SplideSlide>
+          <SplideSlide v-if="result">
+            <div class="relative max-h-[408px] overflow-y-scroll scrollbar">
+              <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
+                <tbody class="bg-dark-400">
+                  <tr v-for="{ name, value }, index in result" :key="name">
+                    <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
+                      {{ name.replaceAll('-', ' ') }}
+                    </td>
+                    <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                      {{ value }}
+                    </td>
+                    <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SplideSlide>
+        </SplideTrack>
+        <div class="splide__arrows flex justify-between mt-4">
+          <button class="splide__arrow splide__arrow--prev">
+            <NuxtIcon name="chevron-bold" />
+          </button>
+          <button v-show="!isLastSlide" class="splide__arrow splide__arrow--next transform rotate-180">
+            <NuxtIcon name="chevron-bold" />
+          </button>
+          <BaseButton v-show="isLastSlide && !result" :is-loading="isLoading" title="Calculate" size="M"
+            class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onCalculate(choices)" />
+          <BaseButton v-show="isLastSlide && result" title="Print" size="M"
+            class="!px-3 !py-1 transition-[width] ease-in-out duration-300" @click="onPrint(choices)" />
+        </div>
+      </Splide>
+    </template>
   </ModelBase>
 </template>
 
@@ -244,5 +334,9 @@ function onPrint(data: { index: number; value: number | null; }[]) {
 
 :deep(.arrows) {
   @apply text-secondary-400
+}
+
+.upload {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23FFFFFFFF' stroke-width='3' stroke-dasharray='6%2c 6' stroke-dashoffset='16' stroke-linecap='round'/%3e%3c/svg%3e");
 }
 </style>

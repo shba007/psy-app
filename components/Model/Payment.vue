@@ -79,6 +79,7 @@ async function onPay() {
 <template>
   <ModelBase :is-open="isOpen" @close="emit('close')" id="payment"
     class="grid grid-rows-[repeat(3,auto)] grid-cols-[repeat(2,auto)] gap-6 w-[500px] h-[375px]">
+    <!-- Select Tab -->
     <template v-if="tab === 'select'">
       <h6 class="row-start-1 col-start-1 text-lg">Choose Scales to Recharge</h6>
       <div class="row-start-2 col-start-1 flex gap-3 flex-wrap">
@@ -98,6 +99,7 @@ async function onPay() {
       <BaseButton size="M" :rounded="true" title="Pay Now"
         class="self-end justify-self-end row-start-3 col-start-2 !py-1 h-fit" @click="onPay" :disabled="!totalPrice" />
     </template>
+    <!-- Payment Tab -->
     <div v-else-if="tab === 'payment'"
       class="row-start-1 row-span-full col-start-1 col-span-full justify-self-center self-center flex flex-col gap-6 justify-center items-center p-4 pb-8">
       <h6 class="mx-auto text-lg">Scan to Pay</h6>
@@ -107,6 +109,7 @@ async function onPay() {
         <img v-else :src="purchaseResponse?.qrImage" alt="qr" class="w-full h-full" />
       </div>
     </div>
+    <!-- Complete Tab -->
     <div v-else
       class="row-start-1 row-span-full col-start-1 col-span-full justify-self-center self-center flex flex-col gap-6 justify-center items-center p-4 pb-8">
       <div v-if="!!purchaseResponse" class="row-start-1 row-span-2 col-start-1 col-span-2 self-center p-4 mx-auto">
