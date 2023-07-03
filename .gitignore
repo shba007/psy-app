@@ -26,5 +26,6 @@ logs
 docs
 database
 
-assets/documents
+assets/documents/*
+!assets/documents/.gitkeep
 temp

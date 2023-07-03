@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     },
     private: {
       corsUrl: '',
+      omrUrl: '',
       authAccessSecret: '',
       authWebhook: '',
       paymentUrl: '',

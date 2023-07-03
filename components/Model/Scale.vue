@@ -21,16 +21,29 @@ const tab = ref(props.tab)
 const dropZoneRef = ref<HTMLDivElement>()
 const documents = ref<string[]>([])
 
-function convertFileToDataURL(file: File) {
-  return new Promise<string | ArrayBuffer | null>((resolve) => {
-    const reader = new FileReader();
+async function convertFileToDataURL(files: File[]) {
+  return await Promise.all(files.map((file) => {
+    return new Promise<string | ArrayBuffer | null>((resolve) => {
+      const reader = new FileReader();
 
-    reader.onloadend = () => {
-      resolve(reader.result);
-    };
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
 
-    reader.readAsDataURL(file);
-  })
+      reader.readAsDataURL(file);
+    })
+  }))
+}
+
+async function convertImagesToObjectURL(imageDatas: File[] | string[]): Promise<string[]> {
+  return await Promise.all(imageDatas.map((imageData) => {
+    // Create a blob from binary image data
+    const blob = new Blob([imageData], { type: 'image/jpeg' });
+
+    // Generate object URL
+    const objectURL = URL.createObjectURL(blob);
+    return objectURL
+  }))
 }
 
 async function onDrop(files: File[] | null) {
@@ -47,23 +60,21 @@ async function onDrop(files: File[] | null) {
   else if (!(files.length >= 1 && files.length <= 2))
     throw new Error("Min 1 and Max 2 files allowed at a time")
 
-  documents.value = await Promise.all(files.map((file) => convertFileToDataURL(file))) as unknown as string[]
-  // console.log(documents.value);
-  // console.log("on drop");
+  documents.value = await convertImagesToObjectURL(files)
   // TODO: Start scan
-
   isLoading.value = true
   try {
     const result = await $fetchAPI('/api/scale/scan', {
       method: 'POST',
       body: {
         scale: props.name,
-        images: documents.value
+        images: await convertFileToDataURL(files)
       }
     })
 
+    // documents.value = await convertImagesToObjectURL(result.highlights)
+    documents.value = result.highlights
     choices.value = result.data
-    tab.value = 'manual'
   } catch (error) {
     console.error("Fetch API Scale/Scan", error);
   }
@@ -72,6 +83,15 @@ async function onDrop(files: File[] | null) {
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
+function onReset() {
+  documents.value = []
+}
+
+function onContinue() {
+  tab.value = 'manual'
+}
+
+/* -------------------- */
 const dataSplideOption: Options = {
   arrows: true,
   pagination: true,
@@ -240,22 +260,30 @@ function onPrint(data: { index: number; value: number | null; }[]) {
     class="w-[700px] max-h-[550px] overflow-hidden">
     <!-- Auto Tab  -->
     <template v-if="tab === 'auto'">
-      <div ref="dropZoneRef" v-show="!documents.length"
+      <div ref="dropZoneRef" v-if="!documents.length"
         class="upload mx-auto my-10 rounded-lg px-20 pb-16 w-fit transition-colors"
         :class="{ 'bg-dark-400': isOverDropZone }">
         <div v-html="doc" />
         <div class="mx-auto flex flex-col gap-3 items-center">
           <h2 class="w-fit">Upload Documents Here</h2>
           <span class="uppercase text-sm">or</span>
-          <BaseButton title="Download Template" size="S" icon="plus"
-            class="!text-base transition-[width] ease-in-out duration-300" @click="onDownloadTemplate" />
+          <BaseButton title="Download Template" size="S" icon="plus" class="!text-base" @click="onDownloadTemplate" />
         </div>
       </div>
-      <div class="relative mx-auto my-5 w-fit" :class="{ 'blur-sm': isLoading }">
-        <img v-for="document in documents" :src="document" class="h-[464px]" />
+      <div v-else class="relative w-full h-[504px] text-[24px] ">
+        <NuxtIcon v-if="isLoading" name="loader"
+          class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30" />
+        <div class="mx-auto py-5 w-fit h-full" :class="{ 'blur-sm': isLoading }">
+          <div v-if="isLoading" class="absolute left-1 right-1 top-1 bottom-1 bg-dark-400/60 z-20 !text-white" />
+          <img v-for=" document in documents" :src="document" class="h-full" />
+        </div>
       </div>
-      <NuxtIcon v-if="isLoading" name="loader"
-        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[24px]" />
+      <div v-if="documents.length > 0 && !isLoading" class="absolute left-4 right-4 bottom-4 flex justify-between">
+        <BaseButton title="Reset" size="S" icon="chevron-bold" class="!text-base w-[110px] justify-center"
+          @click="onReset" />
+        <BaseButton title="Continue" size="S" icon="chevron-bold-right"
+          class="flex-row-reverse !pl-[14px] !pr-3 !text-base" @click="onContinue" />
+      </div>
     </template>
     <!-- Manual Tab  -->
     <template v-else>
