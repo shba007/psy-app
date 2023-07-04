@@ -6,7 +6,7 @@ interface Scale {
   count: number;
   monthlyPrice: number;
   subScales: string[];
-  labels: {
+  options: {
     name: string;
     value: number;
   }[];
@@ -19,7 +19,7 @@ const scales: Scale[] = [
     count: 101,
     monthlyPrice: 20,
     subScales: ['psychoticism', 'neuroticism', 'extraversion', 'lie-scale'],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -30,7 +30,7 @@ const scales: Scale[] = [
     count: 90,
     monthlyPrice: 18,
     subScales: ['psychoticism', 'neuroticism', 'extraversion', 'lie-scale'],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -56,7 +56,7 @@ const scales: Scale[] = [
       'self-transcendence-(2)',
       'validity',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -98,7 +98,7 @@ const scales: Scale[] = [
       'debasement',
       'reliability',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -137,7 +137,7 @@ const scales: Scale[] = [
       'delusional-disorder',
       'validity',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -199,7 +199,7 @@ const scales: Scale[] = [
       'NEGEr',
       'INTRr',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -220,7 +220,7 @@ const scales: Scale[] = [
       'personality-disorder',
       'k-(lie)',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -241,7 +241,7 @@ const scales: Scale[] = [
       'numb',
       'run',
     ],
-    labels: [
+    options: [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
@@ -262,7 +262,7 @@ const scales: Scale[] = [
       'phobia',
       'paranoid-ideation',
     ],
-    labels: [
+    options: [
       { name: '0', value: 0 },
       { name: '1', value: 1 },
       { name: '2', value: 2 },
@@ -283,7 +283,7 @@ const scales: Scale[] = [
       'autism',
       'acute-problem',
     ],
-    labels: [
+    options: [
       { name: 'N', value: 0 },
       { name: 'R', value: 1 },
       { name: 'O', value: 2 },

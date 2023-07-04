@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { ofetch } from 'ofetch'
 
 import { PrismaClient } from "@prisma/client";
-import { ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
+import { ScaleName, ScaleNameToDBScaleName, DBScaleNameToScaleName, ScaleType } from "~/utils/models";
 import { isExpired } from "~~/utils/helpers";
 
 const prisma = new PrismaClient()
@@ -29,66 +29,80 @@ async function saveImages(images: string[]): Promise<void> {
 }
 
 export default defineProtectedEventHandler<{
-  data: { index: number; value: number | null; }[],
-  highlights: string[]
+  data: {
+    name: ScaleName,
+    type: ScaleType,
+    count: number,
+    options: { name: string, value: number }[]
+    choices: { index: number, value: number | null }[]
+  },
+  highlights: string[];
 }>(async (event, userId) => {
   const config = useRuntimeConfig()
 
   try {
-    const { scale, images } = await readBody<{
-      scale: ScaleName,
-      images: string[]
-    }>(event)
+    const images = await readBody<string[]>(event)
 
     saveImages(images)
 
-    const { expiresAt, scale: DBScale } = await prisma.subscription.findUniqueOrThrow({
-      where: {
-        name_userId: {
-          name: ScaleNameToDBScaleName[scale],
-          userId
-        }
-      },
-      select: {
-        scale: {
-          select: {
-            type: true,
-            count: true
-          }
-        },
-        expiresAt: true,
-      }
-    })
-
-    if (isExpired(expiresAt))
-      throw createError({ statusCode: 400, statusMessage: 'Subscription Expired' })
-
     try {
-      const { data, highlights } = await ofetch<{ data: { index: number; value: number | null; }[], highlights: string[] }>('/scan', {
+      const { data, highlights } = await ofetch<{
+        data: {
+          name: ScaleName,
+          choices: { index: number; value: number | null; }[],
+        },
+        highlights: string[]
+      }>('/scan', {
         baseURL: config.private.omrUrl,
         method: 'POST',
-        body: {
-          scale,
-          itemCount: DBScale.count,
-          images
+        body: images
+      })
+
+      const { expiresAt, scale: DBScale } = await prisma.subscription.findUniqueOrThrow({
+        where: {
+          name_userId: {
+            name: ScaleNameToDBScaleName[data.name],
+            userId
+          }
+        },
+        select: {
+          scale: {
+            select: {
+              name: true,
+              type: true,
+              count: true,
+              options: true
+            }
+          },
+          expiresAt: true,
         }
       })
 
-      return { data, highlights }
-    } catch (error: any) {
-      if (error === 'scale_mismatched')
-        throw createError({ statusCode: 400, statusMessage: 'Scale Mismatched' })
-      else if (error === 'page_mismatched')
+      if (isExpired(expiresAt))
+        throw createError({ statusCode: 400, statusMessage: 'Subscription Expired' })
+
+      else if (Math.floor(DBScale.count / 90) !== images.length)
         throw createError({ statusCode: 400, statusMessage: 'Total Page Mismatched' })
-      else
-        throw new Error(error)
+
+      return {
+        data: {
+          name: DBScaleNameToScaleName[DBScale.name],
+          type: DBScale.type.toLowerCase() as ScaleType,
+          count: DBScale.count,
+          options: DBScale.options,
+          choices: data.choices
+        },
+        highlights
+      }
+    } catch (error: any) {
+      console.error("\nError: code ", error.statusCode, "message ", error.data);
+
+      throw createError({ statusCode: error.statusCode, statusMessage: error.data.detail })
     }
   } catch (error: any) {
     console.error("API scale/index POST", error)
 
-    if (error.statusCode === 400)
-      throw error
-    else if (error.statusCode === 500)
+    if (typeof error?.statusCode === 'number')
       throw error
     else if (error.code = "P2025")
       throw createError({ statusCode: 404, statusMessage: 'Subscription Not Found' })
