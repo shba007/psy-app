@@ -13,7 +13,7 @@ interface Scale {
 
 const props = defineProps<Scale>()
 const emit = defineEmits<{
-  (event: 'openTest', mode: 'auto' | 'manual'): void,
+  (event: 'openTest'): void,
   (event: 'openPayment'): void
 }>()
 
@@ -65,11 +65,11 @@ function messageColor(date: string | Date | null) {
     return 'text-primary-400'
 }
 
-function onOpenTest(mode: 'auto' | 'manual') {
-  if (mode === 'auto' && (props.expiresAt ? isExpired(props.expiresAt) : true))
+function onOpenTest() {
+  if (props.expiresAt ? isExpired(props.expiresAt) : true)
     emit('openPayment')
   else
-    emit('openTest', mode)
+    emit('openTest')
 }
 
 const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props.publishedAt).getTime() < 1000 * 60 * 60 * 24)
@@ -100,12 +100,8 @@ const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props
         </div>
       </div>
       <span class="row-start-4 col-start-1 col-span-2 self-center w-fit text-sm opacity-50">{{ updatedIn }}</span>
-      <div class="row-start-4 col-start-2 justify-self-end self-end flex gap-2">
-        <BaseButton class="!p-[6px] hover:bg-primary-400" size="S" :rounded="true" icon="keyboard"
-          @click="onOpenTest('manual')" />
-        <BaseButton class="hover:bg-primary-400" size="S" :rounded="true" icon="scanner" title="Scan"
-          @click="onOpenTest('auto')" />
-      </div>
+      <BaseButton class="row-start-4 col-start-2 justify-self-end self-end hover:bg-primary-400" size="S" :rounded="true"
+        icon="keyboard" title="Start" @click="onOpenTest" />
     </div>
   </div>
 </template>

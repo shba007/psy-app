@@ -29,7 +29,7 @@ enum ScaleType {
   Pentanary
 }
 
-model Label {
+model Option {
   name      String
   value     Int
   scale     Scale     @relation(fields: [scaleName], references: [name])
@@ -41,7 +41,7 @@ model Label {
 model Scale {
   name         ScaleName @id
   type         ScaleType
-  labels       Label[]
+  options      Option[]
   count        Int
   monthlyPrice Int
   subScales    String[]

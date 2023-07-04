@@ -11,7 +11,7 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
         type: true,
         count: true,
         subScales: true,
-        labels: {
+        options: {
           select: {
             name: true,
             value: true
@@ -35,14 +35,14 @@ export default defineProtectedEventHandler<SubscribedScale[]>(async (event, user
       }
     })
 
-    return scales.map(({ name, type, count, subScales, labels, monthlyPrice, publishedAt, updatedAt }) => {
+    return scales.map(({ name, type, count, subScales, options, monthlyPrice, publishedAt, updatedAt }) => {
       const subscribedScale = subscribedScales.find((subscribedScale) => subscribedScale.name === name)
 
       return {
         name: DBScaleNameToScaleName[name],
         type: type.toLowerCase() as ScaleType,
         count,
-        labels,
+        options,
         subScales,
         monthlyPrice,
         expiresAt: subscribedScale?.expiresAt.toISOString() ?? null,

@@ -17,9 +17,9 @@ async function createOrUpdateScales() {
         count: scale.count,
         monthlyPrice: scale.monthlyPrice,
         subScales: scale.subScales,
-        labels: {
+        options: {
           createMany: {
-            data: scale.labels.map(({ name, value }) => ({
+            data: scale.options.map(({ name, value }) => ({
               name,
               value
             }))

@@ -46,7 +46,6 @@ const selectedScaleName = ref<string | null>(null)
 const selectedScale = computed(() => selectedScaleName.value ? scales.value?.find(({ name }) => name === selectedScaleName.value) : undefined)
 
 const openedModel = ref<'scale' | 'payment' | null>(null)
-const selectedMode = ref<'auto' | 'manual'>('manual')
 
 onBeforeMount(execute)
 </script>
@@ -68,7 +67,7 @@ onBeforeMount(execute)
             class="w-full">
             <CardScale :name="name" :type="type" :count="count" :sub-scales="subScales" :expires-at="expiresAt"
               :updated-at="updatedAt" :published-at="publishedAt"
-              @open-test="(mode) => { selectedScaleName = name; openedModel = 'scale'; selectedMode = mode }"
+              @open-test="selectedScaleName = name; openedModel = 'scale'"
               @open-payment="selectedScaleName = name; openedModel = 'payment'" />
           </SplideSlide>
         </SplideTrack>
@@ -90,8 +89,8 @@ onBeforeMount(execute)
       <h2>Reports</h2>
     </section> -->
     <ModelScale v-if="openedModel === 'scale' && selectedScale" :is-open="openedModel === 'scale'"
-      :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count" :labels="selectedScale.labels"
-      :tab="selectedMode" @close="selectedScaleName = null; openedModel = null" />
+      :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count" :options="selectedScale.options"
+      @close="selectedScaleName = null; openedModel = null" />
     <ModelPayment v-else-if="openedModel === 'payment' && selectedScale" :is-open="openedModel === 'payment'"
       :scales="scales ?? []" :selected-scale="selectedScale.name"
       @close="selectedScaleName = null; openedModel = null; refresh()" />

@@ -7,7 +7,7 @@ const emit = defineEmits<{
 
 <template>
   <Teleport to="body">
-    <div v-if="isOpen" class="fixed inset-0 flex items-center bg-black/50 z-50">
+    <div v-if="isOpen" class="fixed inset-0 flex items-center bg-black/50 z-50 overflow-y-auto">
       <dialog open class="relative max-w-[700px] h-min rounded-xl bg-dark-500" v-bind="$attrs">
         <button class="absolute top-4 right-4" @click="emit('close')">
           <NuxtIcon name="cross" class="text-[24px]" />

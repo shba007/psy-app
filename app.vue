@@ -31,10 +31,6 @@ useHead({
   @apply text-black dark:text-white;
 }
 
-body {
-  @apply overflow-x-hidden;
-}
-
 *::-webkit-scrollbar {
   @apply block w-[6px] bg-light-500 dark:bg-dark-400;
 }
