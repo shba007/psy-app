@@ -7,7 +7,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     // '@vite-pwa/nuxt',
     '@vueuse/nuxt',
+    'nuxt-gtag',
     'nuxt-icons',
+    'nuxt-schema-org',
   ],
   typescript: {
     shim: false,
@@ -39,4 +41,7 @@ export default defineNuxtConfig({
       { name: 'storeToRefs', from: 'pinia' },
     ],
   },
+  gtag: {
+    id: 'G-YPSNKTWEYP'
+  }
 })

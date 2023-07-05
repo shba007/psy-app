@@ -2,6 +2,24 @@
 useHead({
   titleTemplate: (titleChunk) => (titleChunk ? `Psy - ${titleChunk}` : 'Psy')
 })
+
+useSchemaOrg([
+  defineOrganization({
+    name: 'Psy',
+    logo: '/logo.png',
+  }),
+  defineWebSite({
+    name: 'Psy',
+    description: `Psy is a app that modernize psychological calculations. It can 
+    easily calculate scores for popular psychological scales like DSMD, SCL-90R, TCI, MPQ, MMPI-RF, MCMI, MACI, JTCI, EPQ-R, EPQ, 
+    and many more coming, all in one convenient tool.`
+  }),
+  defineWebPage({
+    datePublished: new Date(2, 7, 2020).toISOString(),
+    dateModified: new Date(5, 7, 2020).toISOString(),
+    author: 'Shirsendu Bairagi',
+  }),
+])
 </script>
 
 <template>
@@ -36,7 +54,7 @@ useHead({
 }
 
 *::-webkit-scrollbar-thumb {
-  @apply rounded-md bg-light-400 dark:bg-dark-600 ;
+  @apply rounded-md bg-light-400 dark:bg-dark-600;
 }
 
 html {
@@ -49,5 +67,17 @@ html {
 
 .text-shadow {
   text-shadow: #1e1d2a80 0px 2px 6px;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
 }
 </style>
