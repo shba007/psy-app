@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SubscribedScale } from "utils/models";
 import doc from "~~/assets/images/documents.svg?raw";
 
 const scale = ref<{
@@ -81,19 +82,36 @@ onChange((files) => {
   const fileIndexes = Array.from({ length: files?.length ?? 0 }, (_, index) => index);
   const fileArray = fileIndexes.map((index) => files?.item(index) ?? null).filter(file => !!file) as File[]
 
+  useTrackEvent('upload_files', {
+    count: fileArray.length
+  })
   uploadFile(fileArray)
 })
 
 const { isOverDropZone } = useDropZone(dropZoneRef, uploadFile)
 
+function onDownload() {
+  useTrackEvent('model_download_open')
+  openModel.value = 'download'
+}
+
 function onReset() {
+  useTrackEvent('scan_reset')
   documents.value = []
   fileDialogReset()
 }
 
 function onContinue() {
+  useTrackEvent('scan_continue')
   openModel.value = 'scale'
 }
+
+const { pending, error, data: scales, execute } = await useAsyncData<SubscribedScale[]>('scales', async () =>
+  $fetchAPI('/api/scale', {
+    method: 'GET',
+  }), { immediate: false })
+
+onBeforeMount(execute)
 </script>
 
 <template>
@@ -106,7 +124,7 @@ function onContinue() {
         <BaseButton title="Upload Documents" size="S" icon="upload" class="!text-base" @click="openFileDialog" />
         <span class="uppercase text-sm">or</span>
         <BaseButton title="Download Templates" size="S" icon="download" class="!text-base !bg-dark-500 hover:!bg-dark-600"
-          @click="openModel = 'download'" />
+          @click="onDownload" />
       </div>
     </div>
     <div v-else class="relative w-full h-[504px] text-[24px] ">
@@ -122,7 +140,8 @@ function onContinue() {
       <BaseButton title="Continue" size="S" icon="chevron-bold-right" class="flex-row-reverse !pl-[14px] !pr-3 !text-base"
         @click="onContinue" />
     </div>
-    <ModelDownload v-if="openModel === 'download'" :is-open="openModel === 'download'" @close="openModel = null" />
+    <ModelDownload v-if="openModel === 'download'" :is-open="openModel === 'download'" :scales="scales"
+      @close="openModel = null" />
     <ModelScale v-if="openModel === 'scale' && !!scale" :is-open="openModel === 'scale' && !!scale" :name="scale.name"
       :type="scale.type" :count="scale.count" :options="scale.options" :choices="scale.choices"
       @close="scale = null; openModel = null; onReset()" />

@@ -80,14 +80,7 @@ onBeforeMount(execute)
           </button>
         </div>
       </Splide>
-      <!--  
-      <div class="flex gap-6 flex-wrap">
-      </div> 
-      -->
     </section>
-    <!--  <section>
-      <h2>Reports</h2>
-    </section> -->
     <ModelScale v-if="openedModel === 'scale' && selectedScale" :is-open="openedModel === 'scale'"
       :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count" :options="selectedScale.options"
       @close="selectedScaleName = null; openedModel = null" />

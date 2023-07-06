@@ -61,6 +61,10 @@ const { resume, pause } = useIntervalFn(async () => {
 }, 3000, { immediate: false })
 
 async function onPay() {
+  useTrackEvent('pay_init', {
+    scales: Array.from(selectedScales.value.keys())
+  })
+
   tab.value = 'payment'
   isLoading.value = true
   const response = await $fetchAPI('/api/purchase', {
@@ -74,10 +78,18 @@ async function onPay() {
   isLoading.value = false
   resume()
 }
+
+function onClose() {
+  useTrackEvent('model_payment_close', {
+    scales: Array.from(selectedScales.value.keys())
+  })
+
+  emit('close')
+}
 </script>
 
 <template>
-  <ModelBase :is-open="isOpen" @close="emit('close')" id="payment"
+  <ModelBase :is-open="isOpen" @close="onClose" id="payment"
     class="grid grid-rows-[repeat(3,auto)] grid-cols-[repeat(2,auto)] gap-6 w-[500px] h-[375px]">
     <!-- Select Tab -->
     <template v-if="tab === 'select'">
