@@ -66,10 +66,10 @@ function messageColor(date: string | Date | null) {
 }
 
 function onOpenTest() {
-  if (props.expiresAt ? isExpired(props.expiresAt) : true)
-    emit('openPayment')
-  else
-    emit('openTest')
+  useTrackEvent('model_test_open', {
+    scale: props.name
+  })
+  emit('openTest')
 }
 
 const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props.publishedAt).getTime() < 1000 * 60 * 60 * 24)

@@ -149,6 +149,10 @@ watchArray([arrowLeft, arrowRight, arrowUp, arrowDown,
 })
 
 async function onCalculate(data: { index: number; value: number; }[]) {
+  useTrackEvent('calculate', {
+    scale: props.name,
+  })
+
   if (!checkScaleItemValidity({ minLimit: minLimit.value, maxLimit: maxLimit.value }, data))
     return
 
@@ -174,11 +178,19 @@ async function onCalculate(data: { index: number; value: number; }[]) {
 
 function onPrint(data: { index: number; value: number | null; }[]) {
 }
+
+function onClose() {
+  useTrackEvent('model_test_close', {
+    scale: props.name
+  })
+
+  result.value = undefined;
+  emit('close')
+}
 </script>
 
 <template>
-  <ModelBase :is-open="isOpen" @close="result = undefined; emit('close')" id="scale"
-    class="w-[700px] max-h-[550px] overflow-hidden">
+  <ModelBase :is-open="isOpen" @close="onClose" id="scale" class="w-[700px] max-h-[550px] overflow-hidden">
     <h4 class="text-xl ml-2 mt-2 mb-6">{{ name }}</h4>
     <div class="absolute top-4 right-16 flex flex-col gap-1 w-fit text-sm">
       <span>Use &#8592 / &#8594 keys to select {{ type === 'binary' ? "True / False" : "1/2/3/4/5" }}</span>

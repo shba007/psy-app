@@ -3,15 +3,12 @@ import { SubscribedScale } from 'utils/models';
 
 const props = defineProps<{
   isOpen: boolean,
+  scales: SubscribedScale[]
 }>()
 const emit = defineEmits<{
   (event: 'close'): void,
 }>()
 
-const { pending, error, data: scales, execute, refresh } = await useAsyncData<SubscribedScale[]>('scales', async () =>
-  $fetchAPI('/api/scale', {
-    method: 'GET',
-  }), { immediate: false })
 const selectedScales = ref(new Set<string>([]))
 
 function toggle(scale: string) {
@@ -19,9 +16,9 @@ function toggle(scale: string) {
 }
 
 function onMassSelect(type: 'select' | 'deselect') {
-  if (!scales.value)
+  if (!props.scales)
     return
-  scales.value.forEach(({ name }) => {
+  props.scales.forEach(({ name }) => {
     if (type === 'select')
       selectedScales.value.add(name)
     else
@@ -30,6 +27,10 @@ function onMassSelect(type: 'select' | 'deselect') {
 }
 
 function onDownload() {
+  useTrackEvent('download_templates', {
+    scales: Array.from(selectedScales.value.keys())
+  })
+
   for (const scale of Array.from(selectedScales.value.keys())) {
     const link = document.createElement('a');
 
@@ -40,11 +41,16 @@ function onDownload() {
   }
 }
 
-onBeforeMount(execute)
+function onClose() {
+  useTrackEvent('model_download_close')
+
+  emit('close')
+}
+
 </script>
 
 <template>
-  <ModelBase :is-open="isOpen" @close="emit('close')" id="download"
+  <ModelBase :is-open="isOpen" @close="onClose" id="download"
     class="grid grid-rows-[repeat(3,auto)] grid-cols-[repeat(2,auto)] gap-6 w-[500px] h-[375px]">
     <h6 class="row-start-1 col-start-1 text-lg">Choose Scales to Download</h6>
     <div class="row-start-2 col-start-1 flex gap-3 flex-wrap">

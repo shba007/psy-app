@@ -20,6 +20,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -38,11 +43,6 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
@@ -57,6 +57,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           overwrite: true
-          source: '.output,python,requirements.txt,deploy.sh'
+          source: '.output'
           # The path is based on the directory where the user logged into the server starts
           target: '~/psy-app'
