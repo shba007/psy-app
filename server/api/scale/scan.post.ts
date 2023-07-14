@@ -95,16 +95,17 @@ export default defineProtectedEventHandler<{
         highlights
       }
     } catch (error: any) {
-      console.error("\nError: code ", error.statusCode, "message ", error.data);
+      if (error?.code)
+        throw error
 
       throw createError({ statusCode: error.statusCode, statusMessage: error.data.detail })
     }
   } catch (error: any) {
-    console.error("API scale/index POST", error)
+    console.error("API scale/scan POST", error)
 
     if (typeof error?.statusCode === 'number')
       throw error
-    else if (error.code = "P2025")
+    else if (error.code === "P2025")
       throw createError({ statusCode: 404, statusMessage: 'Subscription Not Found' })
 
     throw createError({ statusCode: 500, statusMessage: 'Some Unknown Error Found' })

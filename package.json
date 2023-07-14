@@ -1,5 +1,7 @@
 {
-  "name": "psy-app",
+  "name": "psy",
+  "description": "An psychoanalytical calculator for various assessments and an scanner for automatic analysis",
+  "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
   "version": "0.2.0",
   "private": true,
   "engines": {
@@ -25,7 +27,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxt/test-utils": "^3.6.1",
+    "@nuxt/test-utils": "^3.6.2",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.4.11",
@@ -35,14 +37,14 @@
     "@vite-pwa/nuxt": "^0.1.0",
     "@vueuse/core": "^10.2.1",
     "@vueuse/nuxt": "^10.2.1",
-    "jsonwebtoken": "^9.0.0",
-    "nuxt": "^3.6.1",
+    "jsonwebtoken": "^9.0.1",
+    "nuxt": "^3.6.2",
     "nuxt-gtag": "^0.5.7",
     "nuxt-icons": "^3.2.1",
     "nuxt-schema-org": "^2.2.0",
     "prisma": "^4.16.2",
     "ts-node": "^10.9.1",
-    "vitest": "~0.32.4"
+    "vitest": "^0.32.4"
   },
   "dependencies": {
     "@prisma/client": "^4.16.2",
@@ -50,6 +52,6 @@
     "@splidejs/vue-splide": "^0.6.12",
     "canvas": "^2.11.2",
     "qrcode": "^1.5.3",
-    "vee-validate": "^4.10.4"
+    "vee-validate": "^4.10.6"
   }
 }

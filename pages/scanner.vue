@@ -2,6 +2,10 @@
 import { SubscribedScale } from "utils/models";
 import doc from "~~/assets/images/documents.svg?raw";
 
+useHead({
+  title: 'Scanner',
+})
+
 const scale = ref<{
   name: string, type: 'binary' | 'pentanary', count: number,
   options: {

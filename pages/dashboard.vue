@@ -6,6 +6,9 @@ import { SubscribedScale } from '~/utils/models';
 definePageMeta({
   middleware: "auth"
 })
+useHead({
+  title: 'Dashboard',
+})
 
 const splideOption: Options = {
   arrows: true,
