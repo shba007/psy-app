@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { Scale } from '~/utils/models';
+// import { Scale } from 'utils/models';
 
 interface Scale {
   name: string;
@@ -23,10 +23,10 @@ const expiresIn = useTimeAgo(() => props.expiresAt ?? "", {
     past: 'Recharge',
     justNow: 'Recharge',
     future: (n: any) => n.match(/\d/) ? `${n} Left` : n,
-    month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
     year: (n: number) => `${n} year${n > 1 ? 's' : ''}`,
-    day: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
+    month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
     week: (n: number) => `${n} week${n > 1 ? 's' : ''}`,
+    day: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
     hour: (n: number) => `${n} hour${n > 1 ? 's' : ''}`,
     minute: (n: number) => `${n} min`,
     second: (n: number) => `${n} sec`,
@@ -38,10 +38,10 @@ const updatedIn = useTimeAgo(() => props.updatedAt, {
     past: (n: any) => n.match(/\d/) ? `Updated ${n} ago` : n,
     justNow: 'Just Now',
     future: (n: any) => n.match(/\d/) ? `Next Update In ${n}` : n,
-    month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
     year: (n: number) => `${n} year${n > 1 ? 's' : ''}`,
-    day: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
+    month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
     week: (n: number) => `${n} week${n > 1 ? 's' : ''}`,
+    day: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
     hour: (n: number) => `${n} hour${n > 1 ? 's' : ''}`,
     minute: (n: number) => `${n} min`,
     second: (n: number) => `${n} sec`,

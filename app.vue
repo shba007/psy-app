@@ -65,10 +65,6 @@ html {
   @apply !m-0;
 }
 
-.text-shadow {
-  text-shadow: #1e1d2a80 0px 2px 6px;
-}
-
 .scrollbar-hidden {
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
