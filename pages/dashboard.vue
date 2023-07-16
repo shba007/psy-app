@@ -48,7 +48,7 @@ const { pending, error, data: scales, execute, refresh } = await useAsyncData<Su
 const selectedScaleName = ref<string | null>(null)
 const selectedScale = computed(() => selectedScaleName.value ? scales.value?.find(({ name }) => name === selectedScaleName.value) : undefined)
 
-const openedModel = ref<'scale' | 'payment' | null>(null)
+const openedModel = ref<'scale' | 'payment' | 'feedback' | null>(null)
 
 onBeforeMount(execute)
 </script>
