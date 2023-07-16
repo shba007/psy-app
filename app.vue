@@ -3,16 +3,28 @@ useHead({
   titleTemplate: (titleChunk) => (titleChunk ? `Psy - ${titleChunk}` : 'Psy')
 })
 
+useSeoMeta({
+  ogType: 'website',
+  title: 'Psy - Psychological Assessment Toolkit',
+  ogTitle: 'Psy - Psychological Assessment Toolkit',
+  description: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
+  ogDescription: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
+  ogImage: '/logo.png',
+  ogImageWidth: 540,
+  ogImageHeight: 720,
+  ogUrl: '/',
+  fbAppId: 966242223397117,
+  twitterCard: 'summary_large_image',
+})
+
 useSchemaOrg([
   defineOrganization({
     name: 'Psy',
     logo: '/logo.png',
   }),
   defineWebSite({
-    name: 'Psy',
-    description: `Psy is a app that modernize psychological calculations. It can 
-    easily calculate scores for popular psychological scales like DSMD, SCL-90R, TCI, MPQ, MMPI-RF, MCMI, MACI, JTCI, EPQ-R, EPQ, 
-    and many more coming, all in one convenient tool.`
+    name: 'Psy - Psychological Assessment Toolkit',
+    description: `Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.`
   }),
   defineWebPage({
     datePublished: new Date(2, 7, 2020).toISOString(),

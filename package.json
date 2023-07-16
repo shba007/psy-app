@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxt/test-utils": "^3.6.2",
+    "@nuxt/test-utils": "^3.6.3",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.4.11",
@@ -38,13 +38,13 @@
     "@vueuse/core": "^10.2.1",
     "@vueuse/nuxt": "^10.2.1",
     "jsonwebtoken": "^9.0.1",
-    "nuxt": "^3.6.2",
+    "nuxt": "^3.6.3",
     "nuxt-gtag": "^0.5.7",
     "nuxt-icons": "^3.2.1",
     "nuxt-schema-org": "^2.2.0",
     "prisma": "^4.16.2",
     "ts-node": "^10.9.1",
-    "vitest": "^0.32.4"
+    "vitest": "^0.33.0"
   },
   "dependencies": {
     "@prisma/client": "^4.16.2",

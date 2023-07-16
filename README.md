@@ -1,5 +1,5 @@
 # Psy
-An psychoanalytical calculator for various assessments and an scanner for automatic analysis
+A psychoanalytical calculator for various assessments and a scanner for automatic analysis
 
 ![Dashboard](public/previews/dashboard.jpg)
 ![Scanner](public/previews/scanner.jpg)
@@ -21,12 +21,29 @@ An psychoanalytical calculator for various assessments and an scanner for automa
 | JEPQ    |   -     |   -    |     -     |
 | LEYTON  |   -     |   -    |     -     |
 
----
 
-## SCL-90R
+## Todos
 ---
-Add 3 more Subscales
+- Add Error/Warning Toast
+- Add Feedback Form
+- In SCL-90R Add 3 more Subscales
+  PST - Total Non-Zero Item Count
+  PSDI - Raw Score ÷ PST
+  Gsi - Raw Score ÷ 90 
 
-PST - Total Non-Zero Item Count
-PSDI - Raw Score ÷ PST
-Gsi - Raw Score ÷ 90 
+## Keywords
+- psychology tool - 3,600
+- beck anxiety inventory scoring - 720
+- free psychological assessment tools list - 210
+- beck anxiety inventory scoring interpretation - 170
+- psyc tools - 140
+- psychotherapy tools - 70
+- psychological measurement tools - 50
+
+
+- psychology tool - 3,600
+- free psychological assessment tools list - 210
+- psyc tools - 140
+- psychotherapy tools - 70
+- psychological measurement tools - 50
+
