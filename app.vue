@@ -23,14 +23,14 @@ useHead({
 
 useSeoMeta({
   ogType: 'website',
-  title: 'Psy - Psychological Assessment Toolkit',
-  ogTitle: 'Psy - Psychological Assessment Toolkit',
+  title: 'Psychological Assessment Toolkit',
+  ogTitle: 'Psychological Assessment Toolkit',
   description: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
   ogDescription: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
-  ogImage: '/logo.png',
-  ogImageWidth: 540,
-  ogImageHeight: 720,
-  ogUrl: '/',
+  ogImage: '/preview/dashboard.jpg',
+  ogImageWidth: 1280,
+  ogImageHeight: 640,
+  ogUrl: 'https://psy.shirsendu-bairagi.dev',
   fbAppId: 966242223397117,
   twitterCard: 'summary_large_image',
 })

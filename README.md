@@ -2,7 +2,6 @@
 A psychoanalytical calculator for various assessments and a scanner for automatic analysis
 
 ![Dashboard](public/previews/dashboard.jpg)
-![Scanner](public/previews/scanner.jpg)
 
 # Scales
 | Scale   | Created | Tested | Published |
@@ -20,12 +19,22 @@ A psychoanalytical calculator for various assessments and a scanner for automati
 | DSMD-C  |   -     |   -    |     -     |
 | JEPQ    |   -     |   -    |     -     |
 | LEYTON  |   -     |   -    |     -     |
+| BAI     |   -     |   -    |     -     |
 
 
 ## Todos
 ---
+- Add a Landing Page
+- Trigger A Feedback form after every scan and calculation
+- Using anonymous login mechanisms to create user
+- Create login model and let anonymous user convert to loggedin user
+- Include the fullform of every scale
 - Add Error/Warning Toast
-- Add Feedback Form
+- Improve Feedback Form
+- Upload documents to firestore
+- Add responsiveness
+- Deploy Psy-OMR to VPS
+- Add Beck Anxiety Inventory
 - In SCL-90R Add 3 more Subscales
   PST - Total Non-Zero Item Count
   PSDI - Raw Score ÷ PST

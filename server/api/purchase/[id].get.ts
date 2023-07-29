@@ -4,7 +4,7 @@ import { PurchaseStatus } from "~/utils/models";
 const prisma = new PrismaClient()
 
 export default defineProtectedEventHandler<{ status: PurchaseStatus }>(async (event, userId) => {
-  const id: string = getRouterParam(event, 'id');
+  const id = getRouterParam(event, 'id') ?? "";
   try {
     const purchase = await prisma.purchase.findUniqueOrThrow({
       where: {
