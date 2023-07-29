@@ -52,6 +52,10 @@ async function uploadFile(files: File[] | null) {
   if (!files)
     return
 
+  useTrackEvent('upload_files', {
+    count: files.length
+  })
+
   const allowedFileTypes = ["image/png", "image/jpeg", "image/webp", "image/avif"];
   const allAllowed = files.every((file) =>
     allowedFileTypes.includes(file.type)
@@ -63,7 +67,6 @@ async function uploadFile(files: File[] | null) {
     throw new Error("Min 1 and Max 2 files allowed at a time")
 
   documents.value = await convertImagesToObjectURL(files)
-  // TODO: Start scan
   isLoading.value = true
   try {
     const result = await $fetchAPI('/api/scale/scan', {
@@ -73,7 +76,6 @@ async function uploadFile(files: File[] | null) {
 
     documents.value = result.highlights
     scale.value = result.data
-
   } catch (error) {
     console.error("Fetch API Scale/Scan", error);
   }
@@ -86,9 +88,7 @@ onChange((files) => {
   const fileIndexes = Array.from({ length: files?.length ?? 0 }, (_, index) => index);
   const fileArray = fileIndexes.map((index) => files?.item(index) ?? null).filter(file => !!file) as File[]
 
-  useTrackEvent('upload_files', {
-    count: fileArray.length
-  })
+
   uploadFile(fileArray)
 })
 

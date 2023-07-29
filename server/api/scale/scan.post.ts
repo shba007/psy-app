@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "node:fs";
 import { randomUUID } from "node:crypto";
-import { ofetch } from 'ofetch'
+import { ofetch } from "ofetch"
 
 import { PrismaClient } from "@prisma/client";
 import { ScaleName, ScaleNameToDBScaleName, DBScaleNameToScaleName, ScaleType } from "~/utils/models";

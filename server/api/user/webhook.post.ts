@@ -1,4 +1,4 @@
-import { Gender, PrismaClient, } from '@prisma/client';
+import { PrismaClient, Gender } from '@prisma/client';
 import { addTimeToNow, validateSignature } from '~~/server/utils/helpers';
 import { capitalize } from "~~/utils/helpers";
 
