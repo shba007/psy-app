@@ -27,7 +27,7 @@ useSeoMeta({
   ogTitle: 'Psychological Assessment Toolkit',
   description: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
   ogDescription: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
-  ogImage: '/preview/dashboard.jpg',
+  ogImage: 'https://psy.shirsendu-bairagi.dev/preview/dashboard.jpg',
   ogImageWidth: 1280,
   ogImageHeight: 640,
   ogUrl: 'https://psy.shirsendu-bairagi.dev',
@@ -38,18 +38,29 @@ useSeoMeta({
 useSchemaOrg([
   defineOrganization({
     name: 'Psy',
-    logo: '/logo.png',
+    logo: 'https://psy.shirsendu-bairagi.dev/logo.png',
   }),
   defineWebSite({
     name: 'Psy - Psychological Assessment Toolkit',
     description: `Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.`
   }),
   defineWebPage({
-    datePublished: new Date(2, 7, 2020).toISOString(),
-    dateModified: new Date(5, 7, 2020).toISOString(),
+    datePublished: new Date(2020, 6, 2).toISOString(),
+    dateModified: new Date(2020, 6, 5).toISOString(),
     author: 'Shirsendu Bairagi',
   }),
 ])
+
+const config = useRuntimeConfig()
+// OMR Service Pinging
+function ping() {
+  $fetch('/health', {
+    baseURL: config.public.omrUrl,
+    method: 'GET',
+  })
+}
+
+setInterval(ping, 10 * 60 * 1000)
 </script>
 
 <template>
@@ -72,7 +83,6 @@ useSchemaOrg([
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
   scrollbar-width: 6px;
-  @apply text-black dark:text-white;
 }
 
 *::-webkit-scrollbar {
@@ -83,7 +93,7 @@ useSchemaOrg([
   @apply rounded-md bg-light-400 dark:bg-dark-600;
 }
 
-html {
+body{
   @apply text-black dark:text-white font-body bg-white dark:bg-black;
 }
 

@@ -121,9 +121,10 @@ onBeforeMount(execute)
 <template>
   <main class="relative flex items-center justify-center w-full h-full">
     <!-- <Toast /> -->
-    <div ref="dropZoneRef" v-if="!documents.length" class="upload rounded-lg px-20 pb-16 w-fit transition-colors"
+    <div ref="dropZoneRef" v-if="!documents.length"
+      class="flex flex-col gap-4 md:gap-0 upload rounded-lg px-12 md:px-20 pb-12 md:pb-16 w-fit transition-colors"
       :class="{ 'bg-dark-400': isOverDropZone }">
-      <div v-html="doc" />
+      <div v-html="doc" class="mx-auto w-[50vw] md:w-screen max-w-[256px]" />
       <div class="mx-auto flex flex-col gap-3 items-center">
         <BaseButton title="Upload Documents" size="S" icon="upload" class="!text-base" @click="openFileDialog" />
         <span class="uppercase text-sm">or</span>
@@ -135,7 +136,7 @@ onBeforeMount(execute)
       <NuxtIcon v-if="isLoading" name="loader" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30" />
       <div class="mx-auto py-5 w-fit h-full" :class="{ 'blur-sm': isLoading }">
         <div v-if="isLoading" class="absolute left-1 right-1 top-1 bottom-1 bg-dark-400/60 z-20 !text-white" />
-        <img v-for=" document in documents" :src="document" class="h-full" />
+        <img v-for="document in documents" :src="document" class="h-full object-contain" />
       </div>
     </div>
     <div v-if="documents.length > 0 && !isLoading" class="absolute left-4 right-4 bottom-4 flex justify-between">

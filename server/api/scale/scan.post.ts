@@ -53,7 +53,7 @@ export default defineProtectedEventHandler<{
         },
         highlights: string[]
       }>('/scan', {
-        baseURL: config.private.omrUrl,
+        baseURL: config.public.omrUrl,
         method: 'POST',
         body: images
       })
