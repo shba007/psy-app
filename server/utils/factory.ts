@@ -122,30 +122,32 @@ class ShiftScale {
   }
 }
 
-class BinaryCountScale {
+class CountScale {
   private start: number;
   private count: number;
-  private type: boolean;
+  private label: boolean | number;
+  private inverse: boolean;
 
-  constructor(start: number, count: number, type = true) {
+  constructor(start: number, count: number, label: boolean | number = true, inverse: boolean = false) {
     this.start = start;
     this.count = count;
-    this.type = type;
+    this.label = label;
+    this.inverse = inverse;
   }
 
-  score(responses: { index: number; value: boolean }[]): number {
+  score(responses: { index: number; value: boolean | number }[]): number {
     return responses.slice(this.start - 1, this.start - 1 + this.count)
-      .reduce((sum, response) => sum + Number(response.value === this.type), 0);
+      .reduce((sum, response) => sum + Math.abs(Number(this.inverse) - Number(response.value === this.label)), 0);
   }
 }
 
-class PentanaryAverageScale {
+class AverageScale {
   private indices: number[];
-  private modifier: number;
+  // private weight: number;
 
-  constructor(indices: number[], modifier: number) {
+  constructor(indices: number[], weight: number) {
     this.indices = indices
-    this.modifier = modifier;
+    // this.weight = weight
   }
 
   score(responses: { index: number; value: number }[]): number {
@@ -153,7 +155,7 @@ class PentanaryAverageScale {
   }
 }
 
-class PentanaryCountScale {
+class SumScale {
   private indices: number[];
 
   constructor(indices: number[]) {
@@ -165,4 +167,7 @@ class PentanaryCountScale {
   }
 }
 
-export { SingleScale, SingleWeightedScale, PairScale, ShiftScale, BinaryCountScale, PentanaryAverageScale, PentanaryCountScale };
+export {
+  SingleScale, SingleWeightedScale, PairScale, ShiftScale,
+  CountScale, AverageScale, SumScale
+};
