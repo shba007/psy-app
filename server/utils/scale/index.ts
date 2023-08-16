@@ -16,7 +16,7 @@ import JTCI from './JTCI';
 import JTCIData from './JTCI.data';
 import JEPQ from './JEPQ';
 import JEPQData from './JEPQ.data';
-import SCL90R from './SCL-90R';
+import SCL90R, { CompositeFunction as SCL90RCompositeFunction } from './SCL-90R';
 import SCL90RData from './SCL-90R.data';
 // import DSMDC from './DSMD-C';
 // import DSMDCData from './DSMD-C.data';
@@ -38,4 +38,8 @@ const Data = {
   'DSMD-A': DSMDAData
 } as const;
 type ScaleNames = keyof typeof Scales
-export { Scales, Data };
+const CompositeFunctions = {
+  'SCL-90R': SCL90RCompositeFunction
+} as const
+
+export { Scales, Data, CompositeFunctions };

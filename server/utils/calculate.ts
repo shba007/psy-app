@@ -1,6 +1,6 @@
 import { ScaleName } from '../../utils/models';
-import { BinaryCountScale, PairScale, PentanaryAverageScale, PentanaryCountScale, ShiftScale, SingleScale, SingleWeightedScale } from './class';
-import { Scales } from "./scale";
+import { CountScale, PairScale, AverageScale, SumScale, ShiftScale, SingleScale, SingleWeightedScale } from './factory';
+import { CompositeFunctions, Scales } from "./scale";
 
 function BinaryCalculate(scale: ScaleName, data: { index: number; value: boolean; }[]) {
   const result: { name: string, score: number }[] = []
@@ -9,7 +9,7 @@ function BinaryCalculate(scale: ScaleName, data: { index: number; value: boolean
     try {
       // @ts-ignore
       const SubScaleMeta = Scales[scale][SubScaleName];
-      let SubScale: SingleScale | SingleWeightedScale | PairScale | ShiftScale | BinaryCountScale;
+      let SubScale: SingleScale | SingleWeightedScale | PairScale | ShiftScale | CountScale;
 
       switch (SubScaleMeta.type) {
         case 'single':
@@ -24,8 +24,8 @@ function BinaryCalculate(scale: ScaleName, data: { index: number; value: boolean
         case 'shift':
           SubScale = new ShiftScale()
           break;
-        case 'binary-count':
-          SubScale = new BinaryCountScale(SubScaleMeta.start, SubScaleMeta.count)
+        case 'count':
+          SubScale = new CountScale(SubScaleMeta.start, SubScaleMeta.count)
           break;
       }
 
@@ -46,24 +46,30 @@ function PentanaryCalculate(scale: ScaleName, data: { index: number; value: numb
   for (const SubScaleName in Scales[scale]) {
     // @ts-ignore
     const SubScaleMeta = Scales[scale][SubScaleName];
-    let SubScale: PentanaryAverageScale | PentanaryCountScale;
+    let SubScale: AverageScale | SumScale | CountScale;
 
     switch (SubScaleMeta.type) {
-      case 'pentanary-average':
-        if (typeof SubScaleMeta.modifier === 'number')
-          SubScale = new PentanaryAverageScale(SubScaleMeta.items, SubScaleMeta.modifier)
+      case 'average':
+        if (typeof SubScaleMeta.weight === 'number')
+          SubScale = new AverageScale(SubScaleMeta.items, SubScaleMeta.weight)
         else
-          SubScale = new PentanaryAverageScale(SubScaleMeta.items, result.find((scale) => scale === SubScaleMeta.modifier)?.score ?? 0)
+          SubScale = new AverageScale(SubScaleMeta.items, result.find((scale) => scale === SubScaleMeta.weight)?.score ?? 0)
         break;
-      case 'pentanary-count':
-        SubScale = new PentanaryCountScale(SubScaleMeta.items,)
+      case 'sum':
+        SubScale = new SumScale(SubScaleMeta.items)
         break
+      case 'count':
+        SubScale = new CountScale(SubScaleMeta.start, SubScaleMeta.count, SubScaleMeta.label, SubScaleMeta.inverse)
+        break;
     }
 
     // @ts-ignore
     result.push({ name: SubScaleName, score: SubScale.score(data) })
   }
 
+  if (scale in CompositeFunctions)
+    // @ts-ignore
+    result.push(...CompositeFunctions[scale](result))
   return result.reduce((a, v) => ({ ...a, [v.name]: v.score }), {})
 }
 

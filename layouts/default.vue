@@ -23,11 +23,12 @@ function onHelp() {
 </script>
 
 <template>
-  <div class="flex gap-5 w-screen h-screen bg-dark-400">
-    <BaseButton icon="question" size="M" title="Need Help" class="fixed top-3 right-2 scale-95" @click="onHelp" />
+  <div class="flex flex-col-reverse sm:flex-row sm:gap-5 w-screen h-screen bg-dark-400">
+    <BaseButton icon="question" size="M" title="Need Help" class="fixed top-3 right-0 md:right-2 scale-75 md:scale-95"
+      @click="onHelp" />
     <!-- Navbar -->
     <NavBar :is-transition="isTransition" :route="(route.name?.toString() as 'dashboard' | 'feedbacks')" />
-    <div class="flex-grow py-8 pr-2 overflow-y-auto">
+    <div class="flex-grow py-8 px-4 sm:pl-0 overflow-y-auto">
       <slot />
     </div>
     <ModelFeedback v-if="openedModel === 'feedback'" :is-open="openedModel === 'feedback'" @close="openedModel = null" />

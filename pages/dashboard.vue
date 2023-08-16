@@ -22,8 +22,8 @@ const splideOption: Options = {
     rows: 2,
     cols: 4,
     gap: {
-      row: '0.5rem',
-      col: '0.5rem',
+      row: '0.75rem',
+      col: '0.75rem',
     },
   }, breakpoints: {
     1280: {
@@ -31,9 +31,24 @@ const splideOption: Options = {
         cols: 3
       }
     },
-    1024: {
+    1120: {
       grid: {
         cols: 2
+      }
+    },
+    1024: {
+      grid: {
+        cols: 3
+      }
+    },
+    960: {
+      grid: {
+        cols: 2
+      }
+    },
+    690: {
+      grid: {
+        cols: 1
       }
     }
   }
@@ -56,7 +71,7 @@ onBeforeMount(execute)
 <template>
   <main class="relative flex flex-col">
     <section class="relative">
-      <h2 class="mb-2 text-lg">Tests</h2>
+      <h2 class="mb-3 md:mb-2 text-lg">Tests</h2>
       <div v-if="pending" class="relative flex gap-2 justify-center items-center h-[75vh]">
         <NuxtIcon name="loader" class="text-[24px]" />
         Loading
@@ -67,7 +82,7 @@ onBeforeMount(execute)
       <Splide v-else ref="splide" :options="splideOption" tag="div" :has-track="false" :extensions="{ Grid }">
         <SplideTrack>
           <SplideSlide v-for="{ name, type, count, subScales, expiresAt, updatedAt, publishedAt } in scales" :key="name"
-            class="w-full">
+            class="">
             <CardScale :name="name" :type="type" :count="count" :sub-scales="subScales" :expires-at="expiresAt"
               :updated-at="updatedAt" :published-at="publishedAt"
               @open-test="selectedScaleName = name; openedModel = 'scale'"
