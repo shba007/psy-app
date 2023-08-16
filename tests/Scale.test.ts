@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { setup, $fetch } from '@nuxt/test-utils'
 
 import { Data } from '../server/utils/scale';
-import { BinaryCalculate, PentanaryCalculate } from "../server/utils/calculation";
+import { BinaryCalculate, PentanaryCalculate } from "../server/utils/calculate";
 
 describe('Helper Functions Test', () => {
   test('Mapper Function', () => {
@@ -68,12 +68,12 @@ describe('Pentanary Scale Test', () => {
     expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
   });
 
-  /* test('DSMD Child Scale Test', () => {
+  /* test('DSMD-C Scale Test', () => {
       const scale = "DSMD-C"
       expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
     }); */
 
-  test('DSMD Adolescent Scale Test', () => {
+  test('DSMD-A Scale Test', () => {
     const scale = "DSMD-A"
     expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
   });

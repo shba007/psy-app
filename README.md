@@ -24,6 +24,7 @@ A psychoanalytical calculator for various assessments and a scanner for automati
 
 ## Todos
 ---
+- Add responsiveness
 - Add a Landing Page
 - Trigger A Feedback form after every scan and calculation
 - Using anonymous login mechanisms to create user
@@ -32,13 +33,8 @@ A psychoanalytical calculator for various assessments and a scanner for automati
 - Add Error/Warning Toast
 - Improve Feedback Form
 - Upload documents to firestore
-- Add responsiveness
 - Deploy Psy-OMR to VPS
 - Add Beck Anxiety Inventory
-- In SCL-90R Add 3 more Subscales
-  PST - Total Non-Zero Item Count
-  PSDI - Raw Score ÷ PST
-  Gsi - Raw Score ÷ 90 
 
 ## Keywords
 - psychology tool - 3,600

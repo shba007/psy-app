@@ -20,11 +20,11 @@ export default defineNuxtConfig({
     public: {
       authUrl: '',
       apiUrl: '',
+      omrUrl: '',
       anoyToken: ''
     },
     private: {
       corsUrl: '',
-      omrUrl: '',
       authAccessSecret: '',
       authWebhook: '',
       paymentUrl: '',

@@ -261,6 +261,10 @@ const scales: Scale[] = [
       'interpersonal',
       'phobia',
       'paranoid-ideation',
+      'raw',
+      'pst',
+      'psdi',
+      'gsi'
     ],
     options: [
       { name: '0', value: 0 },
