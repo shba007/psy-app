@@ -23,12 +23,12 @@ function onLogout() {
 <template>
   <!-- TODO: Make it collapsable -->
   <nav
-    class="shrink-0 grow-1 bottom-0 px-[1.25rem] py-[0.75rem] sm:py-8 rounded-t-[1.5rem] sm:rounded-l-none sm:rounded-r-[1.5rem] w-screen sm:w-[100px] lg:w-[252px] bg-dark-500 overflow-hidden z-50">
+    class="relative shrink-0 bottom-0 flex flex-col px-[1.25rem] py-[0.75rem] sm:py-8 rounded-t-[1.5rem] sm:rounded-l-none sm:rounded-r-[1.5rem] w-screen sm:w-[100px] lg:w-[252px] md:max-w-[252px] bg-dark-500 overflow-hidden z-50">
     <div class="hidden sm:flex items-center justify-center mx-auto w-fit !text-primary-400">
       <NuxtIcon name="psy" class="text-[56px]" />
       <h1 class="font-brand text-[28px] uppercase">Psy</h1>
     </div>
-    <ul class="flex sm:flex-col gap-4 sm:mt-12 sm:w-[220px] md:h-5/6 overflow-hidden z-10">
+    <ul class="grow flex sm:flex-col gap-4 sm:my-12 sm:w-[220px] md:max-h-1/2 overflow-hidden z-10">
       <li v-for="{ icon }, route in routes" :key="route" :ref="route" @click="route === 'logout' ? onLogout() : null"
         :class="{ 'justify-self-end self-center mt-auto': route === 'logout' }">
         <NuxtLink :to="route === 'logout' ? '/' : `/${route}`" :replace="route !== 'dashboard'"
@@ -45,6 +45,10 @@ function onLogout() {
         </NuxtLink>
       </li>
     </ul>
+    <!-- Ads -->
+    <div class="hidden lg:block absolute left-0 bottom-0 w-full max-h-[252px] aspect-square">
+      <adsbygoogle v-if="true" ad-slot="7441778929" class="bg-dark-600" />
+    </div>
   </nav>
 </template>
 

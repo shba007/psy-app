@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: [
     // '@nuxt/image',
     '@nuxtjs/color-mode',
+    '@nuxtjs/google-adsense',
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@tresjs/nuxt',
@@ -37,6 +38,9 @@ export default defineNuxtConfig({
     preference: 'system',
     fallback: 'light',
     classSuffix: '',
+  },
+  'google-adsense': {
+    id: 'ca-pub-5100235454344872'
   },
   imports: {
     imports: [
