@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@tresjs/nuxt',
-    '@vite-pwa/nuxt',
+    // '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     'nuxt-gtag',
     'nuxt-icons',
@@ -22,7 +22,8 @@ export default defineNuxtConfig({
       authUrl: '',
       apiUrl: '',
       omrUrl: '',
-      anoyToken: ''
+      anoyToken: '',
+      anoyRefreshToken: ''
     },
     private: {
       corsUrl: '',
