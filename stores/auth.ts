@@ -49,6 +49,7 @@ export const useAuth = () => {
 
       // NOTE: Free User
       accessToken.value = useRuntimeConfig().public.anoyToken
+      refreshToken.value = useRuntimeConfig().public.anoyRefreshToken
     }
 
     function setInfo(user: any) {
