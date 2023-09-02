@@ -70,10 +70,6 @@ module.exports = {
         600: '#9F1239',
       },
     },
-    maxLine: {
-      1: '1',
-      3: '3',
-    },
     extend: {
       keyframes: {
         'spin-once': {
