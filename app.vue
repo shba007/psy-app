@@ -61,6 +61,10 @@ function ping() {
 }
 
 setInterval(ping, 10 * 60 * 1000)
+
+onBeforeMount(() => {
+  localStorage.clear();
+})
 </script>
 
 <template>
