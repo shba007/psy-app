@@ -61,6 +61,10 @@ function ping() {
 }
 
 setInterval(ping, 10 * 60 * 1000)
+
+onBeforeMount(() => {
+  localStorage.clear();
+})
 </script>
 
 <template>
@@ -93,7 +97,7 @@ setInterval(ping, 10 * 60 * 1000)
   @apply rounded-md bg-light-400 dark:bg-dark-600;
 }
 
-body{
+body {
   @apply text-black dark:text-white font-body bg-white dark:bg-black;
 }
 
