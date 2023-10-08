@@ -2,7 +2,7 @@
   "name": "psy",
   "description": "An psychoanalytical calculator for various assessments and an scanner for automatic analysis",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "engines": {
     "node": "^18.16.0"
