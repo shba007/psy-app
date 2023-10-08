@@ -64,6 +64,8 @@ setInterval(ping, 10 * 60 * 1000)
 
 onBeforeMount(() => {
   localStorage.clear();
+  // FIXME: remove when dark mode added
+  localStorage.setItem("nuxt-color-mode", 'dark')
 })
 </script>
 
