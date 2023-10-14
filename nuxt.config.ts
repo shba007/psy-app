@@ -43,12 +43,6 @@ export default defineNuxtConfig({
   'google-adsense': {
     id: 'ca-pub-5100235454344872'
   },
-  imports: {
-    imports: [
-      { name: 'defineStore', from: 'pinia' },
-      { name: 'storeToRefs', from: 'pinia' },
-    ],
-  },
   pwa: {
     /* your pwa options */
   },
