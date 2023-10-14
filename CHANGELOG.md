@@ -1,5 +1,11 @@
 # psy
 
+## 0.2.2
+
+### Patch Changes
+
+- 890a8fc: packages updated
+
 ## 0.2.1
 
 ### Patch Changes
