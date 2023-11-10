@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Options, Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide';
-import { ScaleType } from '~/utils/models';
+import { type Options, Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide';
+import { type ScaleType } from '~/utils/models';
 
 const props = defineProps<{
   isOpen: boolean,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Options, Splide, SplideTrack, SplideSlide } from '@splidejs/vue-splide';
+import { type Options, Splide, SplideTrack, SplideSlide } from '@splidejs/vue-splide';
 import { Grid } from '@splidejs/splide-extension-grid';
-import { SubscribedScale } from '~/utils/models';
+import { type SubscribedScale } from '~/utils/models';
 
 definePageMeta({
   middleware: "auth"

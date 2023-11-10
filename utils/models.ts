@@ -1,5 +1,5 @@
 // "JEPQ" | "DSMD"
-export type ScaleName = "MACI" | "MCMI" | "TCI" | "MPQ" | "EPQ" | "JTCI" | "EPQ-R" | "MMPI-RF" | "SCL-90R" | "DSMD-A"
+export type ScaleName = "MACI" | "MCMI" | "TCI" | "MPQ" | "EPQ" | "JTCI" | "EPQ-R" | "MMPI-RF" | "SCL-90R" | "DSMD-C" | "DSMD-A"
 // | "DSMD-C"
 
 export type ScaleType = "binary" | "pentanary"
@@ -15,8 +15,8 @@ export enum ScaleNameToDBScaleName {
   "JTCI" = "JTCI",
   // "JEPQ" = "JEPQ",
   "SCL-90R" = "SCL_90R",
+  "DSMD-C" = "DSMD_C",
   "DSMD-A" = "DSMD_A",
-  // "DSMD-C" = "DSMD_C",
 }
 
 export enum DBScaleNameToScaleName {
@@ -30,8 +30,8 @@ export enum DBScaleNameToScaleName {
   "JTCI" = "JTCI",
   // "JEPQ" = "JEPQ",
   "SCL_90R" = "SCL-90R",
+  "DSMD_C" = "DSMD-C",
   "DSMD_A" = "DSMD-A",
-  // "DSMD_C" = "DSMD-C",
 }
 
 export interface Scale {

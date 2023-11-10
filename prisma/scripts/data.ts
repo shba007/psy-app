@@ -295,6 +295,27 @@ const scales: Scale[] = [
       { name: 'VF', value: 4 },
     ],
   },
+  {
+    name: 'DSMD-C',
+    type: 'pentanary',
+    count: 111,
+    monthlyPrice: 33,
+    subScales: [
+      'conduct',
+      'attention',
+      'anxiety',
+      'depression',
+      'autism',
+      'acute-problem',
+    ],
+    options: [
+      { name: 'N', value: 0 },
+      { name: 'R', value: 1 },
+      { name: 'O', value: 2 },
+      { name: 'F', value: 3 },
+      { name: 'VF', value: 4 },
+    ],
+  },
 ];
 
 export { scales as dataScales };

@@ -58,25 +58,6 @@ export default {
   },
 };
 
-/* class CompositeScale {
-  result: { name: string, score: number }[];
-  raw: number;
-  pst: number;
-
-  constructor(result: { name: string, score: number }[]) {
-    this.result = []
-    this.raw = result.find(({ name }) => name === 'raw')?.score ?? 0
-    this.pst = result.find(({ name }) => name === 'pst')?.score ?? 0
-  }
-
-  score() {
-    this.result.push({ name: 'psdi', score: this.raw / this.pst })
-    this.result.push({ name: 'gsi', score: this.raw / 90 })
-
-    return this.result
-  }
-} */
-
 function CompositeFunction(_result: { name: string, score: number }[]) {
   const result: { name: string, score: number }[] = []
   const raw = _result.find(({ name }) => name === 'raw')?.score ?? 0

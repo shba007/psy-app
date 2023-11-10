@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PurchaseStatus, SubscribedScale } from '~/utils/models';
+import { type PurchaseStatus, type SubscribedScale } from '~/utils/models';
 
 const props = defineProps<{ isOpen: boolean, selectedScale: string, scales: SubscribedScale[] }>()
 const emit = defineEmits<{

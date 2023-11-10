@@ -18,8 +18,8 @@ import JEPQ from './JEPQ';
 import JEPQData from './JEPQ.data';
 import SCL90R, { CompositeFunction as SCL90RCompositeFunction } from './SCL-90R';
 import SCL90RData from './SCL-90R.data';
-// import DSMDC from './DSMD-C';
-// import DSMDCData from './DSMD-C.data';
+import DSMDC from './DSMD-C';
+import DSMDCData from './DSMD-C.data';
 import DSMDA from './DSMD-A';
 import DSMDAData from './DSMD-A.data';
 // import LEYTON from './LEYTON';
@@ -28,13 +28,13 @@ import DSMDAData from './DSMD-A.data';
 const Scales = {
   MCMI, MACI, 'MMPI-RF': MMPIRF, TCI, MPQ, EPQ,
   'EPQ-R': EPQR, JTCI, JEPQ, 'SCL-90R': SCL90R,
-  // 'DSMD-C': DSMDC, 
+  'DSMD-C': DSMDC,
   'DSMD-A': DSMDA
 } as const;
 const Data = {
   MCMI: MCMIData, MACI: MACIData, 'MMPI-RF': MMPIRFData, TCI: TCIData,
   MPQ: MPQData, EPQ: EPQData, 'EPQ-R': EPQRData, JTCI: JTCIData, JEPQ: JEPQData, 'SCL-90R': SCL90RData,
-  // 'DSMD-C': DSMDCData, 
+  'DSMD-C': DSMDCData,
   'DSMD-A': DSMDAData
 } as const;
 type ScaleNames = keyof typeof Scales

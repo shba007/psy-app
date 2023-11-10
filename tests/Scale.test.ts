@@ -68,10 +68,10 @@ describe('Pentanary Scale Test', () => {
     expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
   });
 
-  /* test('DSMD-C Scale Test', () => {
-      const scale = "DSMD-C"
-      expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
-    }); */
+  test('DSMD-C Scale Test', () => {
+    const scale = "DSMD-C"
+    expect(PentanaryCalculate(scale, Data[scale].responses)).toMatchObject(Data[scale].result)
+  });
 
   test('DSMD-A Scale Test', () => {
     const scale = "DSMD-A"

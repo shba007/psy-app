@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SubscribedScale } from 'utils/models';
+import { type SubscribedScale } from '~/utils/models';
 
 const props = defineProps<{
   isOpen: boolean,

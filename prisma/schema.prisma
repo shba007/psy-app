@@ -21,6 +21,7 @@ enum ScaleName {
   JTCI
   SCL_90R
   // JEPQ
+  DSMD_C
   DSMD_A
 }
 
