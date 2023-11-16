@@ -16,7 +16,7 @@ A psychoanalytical calculator for various assessments and a scanner for automati
 | TCI     |   ✓     |   ✓    |     ✓     |
 | SCL-90R |   ✓     |   ✓    |     ✓     |
 | DSMD-A  |   ✓     |   ✓    |     ✓     |
-| DSMD-C  |   -     |   -    |     -     |
+| DSMD-C  |   ✓     |   ✓    |     ✓     |
 | JEPQ    |   -     |   -    |     -     |
 | LEYTON  |   -     |   -    |     -     |
 | BAI     |   -     |   -    |     -     |

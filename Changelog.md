@@ -1,5 +1,11 @@
 # psy
 
+## 0.2.3
+
+### Patch Changes
+
+- c66ac04: feat: dsmd-c added
+
 ## 0.2.2
 
 ### Patch Changes
