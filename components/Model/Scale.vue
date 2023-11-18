@@ -215,15 +215,18 @@ function onClose() {
         <SplideSlide v-if="result">
           <div class="relative max-h-[408px] overflow-y-scroll">
             <table class="rounded-md w-[calc(100%-0.5rem)] table-auto overflow-hidden">
-              <tbody class="bg-dark-400">
+              <tbody class="bg-light-400 dark:bg-dark-400">
                 <tr v-for="{ name, value }, index in result" :key="name">
-                  <td class="border-black p-2 pr-8 capitalize" :class="{ 'border-b': index !== result.length - 1 }">
+                  <td class="border-white dark:border-black p-2 pr-8 capitalize"
+                    :class="{ 'border-b': index !== result.length - 1 }">
                     {{ name.replaceAll('-', ' ') }}
                   </td>
-                  <td class="border-black border-x p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                  <td class="border-white dark:border-black border-x p-2 pr-8"
+                    :class="{ 'border-b': index !== result.length - 1 }">
                     {{ value }}
                   </td>
-                  <td class=" border-black p-2 pr-8" :class="{ 'border-b': index !== result.length - 1 }">
+                  <td class="border-white dark:border-black p-2 pr-8"
+                    :class="{ 'border-b': index !== result.length - 1 }">
                   </td>
                 </tr>
               </tbody>
@@ -231,7 +234,7 @@ function onClose() {
           </div>
         </SplideSlide>
       </SplideTrack>
-      <div class="splide__arrows flex justify-between mt-4">
+      <div class="splide__arrows flex justify-between mt-4 h-8">
         <button class="splide__arrow splide__arrow--prev">
           <NuxtIcon name="chevron-bold" />
         </button>

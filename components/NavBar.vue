@@ -23,7 +23,7 @@ function onLogout() {
 <template>
   <!-- TODO: Make it collapsable -->
   <nav
-    class="relative shrink-0 bottom-0 flex flex-col px-[1.25rem] py-[0.75rem] sm:py-8 rounded-t-[1.5rem] sm:rounded-l-none sm:rounded-r-[1.5rem] w-screen sm:w-[100px] lg:w-[252px] md:max-w-[252px] bg-dark-500 overflow-hidden z-50">
+    class="relative shrink-0 bottom-0 flex flex-col px-[1.25rem] py-[0.75rem] sm:py-8 rounded-t-[1.5rem] sm:rounded-l-none sm:rounded-r-[1.5rem] w-screen sm:w-[100px] lg:w-[252px] md:max-w-[252px] bg-light-500 dark:bg-dark-500 overflow-hidden z-50">
     <div class="hidden sm:flex items-center justify-center mx-auto w-fit !text-primary-400">
       <NuxtIcon name="psy" class="text-[56px]" />
       <h1 class="font-brand text-[28px] uppercase">Psy</h1>
@@ -32,7 +32,7 @@ function onLogout() {
       <li v-for="{ icon }, route in routes" :key="route" :ref="route" @click="route === 'logout' ? onLogout() : null"
         :class="{ 'justify-self-end self-center mt-auto': route === 'logout' }">
         <NuxtLink :to="route === 'logout' ? '/' : `/${route}`" :replace="route !== 'dashboard'"
-          class="flex items-center p-2 sm:px-0 gap-2 rounded-2xl font-semi-bold bg-dark-500 overflow-hidden opacity-50 cursor-pointer"
+          class="flex items-center p-2 sm:px-0 gap-2 rounded-2xl font-semi-bold bg-light-600 dark:bg-dark-600 overflow-hidden opacity-50 cursor-pointer"
           :class="{ 'justify-self-center self-end': route === 'logout' }"
           active-class="bg-dark-600 text-primary-400 transition-all duration-500 !opacity-100">
           <svg width="21" height="32" viewBox="0 0 21 32" fill="none" xmlns="http://www.w3.org/2000/svg"

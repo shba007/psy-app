@@ -78,7 +78,7 @@ const isRecentlyPublished = computed(() => new Date().getTime() - new Date(props
 <template>
   <div>
     <div
-      class="relative grid gap-y-3 grid-rows-[repeat(2,min-content)_1fr_min-content] grid-cols-[repeat(2,auto)] mx-auto rounded-2xl p-4 w-full min-w-[272px] md:max-w-[300px] max-h-[300px] md:max-h-[500px] aspect-square bg-dark-500">
+      class="relative grid gap-y-3 grid-rows-[repeat(2,min-content)_1fr_min-content] grid-cols-[repeat(2,auto)] mx-auto rounded-2xl p-4 w-full min-w-[272px] md:max-w-[300px] max-h-[300px] md:max-h-[500px] aspect-square bg-light-500 dark:bg-dark-500">
       <!--  <div class="self-start justify-self-end flex gap-2 items-center row-start-1 col-start-2 col-span-1 w-fit h-fit">
         <BaseChips :title="!!expiresAt ? expiresIn : 'Recharge'" :class="messageColor(expiresAt)" class="cursor-pointer"
           @click="emit('openPayment')" />

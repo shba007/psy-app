@@ -51,7 +51,7 @@ function onClose() {
 
 <template>
   <ModelBase :is-open="isOpen" @close="onClose" id="download"
-    class="grid grid-rows-[repeat(3,auto)] grid-cols-[repeat(2,auto)] gap-6 w-[500px] h-[375px]">
+    class="grid grid-rows-[repeat(3,auto)] grid-cols-[repeat(2,auto)] gap-6 w-[500px] h-[375px] text-black dark:text-white">
     <h6 class="row-start-1 col-start-1 text-lg">Choose Scales to Download</h6>
     <div class="row-start-2 col-start-1 flex gap-3 flex-wrap">
       <BaseChips v-for="{ name } in scales" :title="name" class="!px-4 !py-1 cursor-pointer"
