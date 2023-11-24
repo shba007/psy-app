@@ -5,7 +5,7 @@
   "version": "0.3.0",
   "private": true,
   "engines": {
-    "node": "^20.9.0"
+    "node": "^20.10.0"
   },
   "scripts": {
     "dev": "nuxt dev",
@@ -30,19 +30,19 @@
     "@nuxt/test-utils": "^3.8.1",
     "@nuxtjs/color-mode": "^3.3.2",
     "@nuxtjs/google-adsense": "^3.0.0",
-    "@nuxtjs/tailwindcss": "^6.9.5",
-    "@nuxtseo/module": "^2.0.0-beta.43",
+    "@nuxtjs/tailwindcss": "^6.10.1",
+    "@nuxtseo/module": "^2.0.0-beta.45",
     "@pinia/nuxt": "^0.5.1",
     "@tresjs/nuxt": "^1.2.2",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.5",
-    "@types/three": "^0.158.2",
+    "@types/three": "^0.158.3",
     "@vite-pwa/nuxt": "^0.2.3",
     "@vueuse/core": "^10.6.1",
     "@vueuse/nuxt": "^10.6.1",
     "jsonwebtoken": "^9.0.2",
-    "nuxt": "^3.8.1",
+    "nuxt": "^3.8.2",
     "nuxt-gtag": "^1.1.1",
     "nuxt-icons": "^3.2.1",
     "prisma": "^5.6.0",
@@ -50,7 +50,7 @@
     "vitest": "^0.33.0"
   },
   "dependencies": {
-    "@nuxt/image": "^1.0.0",
+    "@nuxt/image": "^1.1.0",
     "@prisma/client": "^5.6.0",
     "@splidejs/splide-extension-grid": "^0.4.1",
     "@splidejs/vue-splide": "^0.6.12",
