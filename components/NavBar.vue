@@ -45,10 +45,6 @@ function onLogout() {
         </NuxtLink>
       </li>
     </ul>
-    <!-- Ads -->
-    <div class="hidden lg:block absolute left-0 bottom-0 w-full max-h-[252px] aspect-square">
-      <adsbygoogle v-if="true" ad-slot="7441778929" class="bg-dark-600" />
-    </div>
   </nav>
 </template>
 

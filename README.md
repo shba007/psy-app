@@ -1,7 +1,17 @@
-# Psy
-A psychoanalytical calculator for various assessments and a scanner for automatic analysis
+<p align="center">
+  <img src="./public/logo.png" lt="Logo" width="80" />
+<p>
 
-![Dashboard](public/previews/dashboard.jpg)
+# Psy
+> Psychological Assessment Toolkit
+
+<p align="center">
+  <a href="https://uptime.betterstack.com/?utm_source=status_badge">
+    <img src="https://uptime.betterstack.com/status-badges/v3/monitor/10aqw.svg" alt="uptime status">
+  </a>
+</p>
+
+![Landing](public/previews/dashboard.jpg)
 
 # Scales
 | Scale   | Created | Tested | Published |
@@ -29,7 +39,7 @@ A psychoanalytical calculator for various assessments and a scanner for automati
 - Trigger A Feedback form after every scan and calculation
 - Using anonymous login mechanisms to create user
 - Create login model and let anonymous user convert to loggedin user
-- Include the fullform of every scale
+- Include the full form of every scale
 - Add Error/Warning Toast
 - Improve Feedback Form
 - Upload documents to firestore

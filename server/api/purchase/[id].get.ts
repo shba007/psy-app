@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { PurchaseStatus } from "~/utils/models";
+import { type PurchaseStatus } from "~/utils/models";
 
 const prisma = new PrismaClient()
 

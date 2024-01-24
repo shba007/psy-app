@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const title = `Psy - Psychological Assessment Toolkit`
+const description = `Psy is a Psychological Assessment Toolkit which includes various assessments 
+scales like EPQ, MACI, MCMI, TCI, JEPQ etc and a scanner for automatic analysis multiple scales like`
+const url = "https://psy.monalisa-bairagi.com"
+
 useHead({
   titleTemplate: (titleChunk) => (titleChunk ? `Psy - ${titleChunk}` : 'Psy'),
   link: [
@@ -16,51 +21,35 @@ useHead({
       href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Source+Sans+3:wght@300;400;500&display=swap',
     },
   ],
-  htmlAttrs: {
-    lang: 'en'
-  }
 })
 
 useSeoMeta({
-  ogType: 'website',
-  title: 'Psychological Assessment Toolkit',
-  ogTitle: 'Psychological Assessment Toolkit',
-  description: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
-  ogDescription: 'Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.',
-  ogImage: 'https://psy.shirsendu-bairagi.dev/preview/dashboard.jpg',
+  ogType: "profile",
+  title: title,
+  ogTitle: title,
+  description: description,
+  ogDescription: description,
+  ogImage: url + "/previews/landing.webp",
   ogImageWidth: 1280,
   ogImageHeight: 640,
-  ogUrl: 'https://psy.shirsendu-bairagi.dev',
+  ogUrl: url,
   fbAppId: 966242223397117,
-  twitterCard: 'summary_large_image',
+  twitterCard: "summary_large_image",
+  colorScheme: "dark light",
 })
 
 useSchemaOrg([
-  defineOrganization({
-    name: 'Psy',
-    logo: 'https://psy.shirsendu-bairagi.dev/logo.png',
-  }),
-  defineWebSite({
-    name: 'Psy - Psychological Assessment Toolkit',
-    description: `Discover a powerful collection of psychology tools, including various assessments and a scanner for automatic analysis. Explore our extensive list of free psychological assessment tools for accurate evaluations. Utilize our innovative scanner for automatic analysis, providing insightful results and valuable insights for professionals and individuals alike.`
-  }),
   defineWebPage({
     datePublished: new Date(2020, 6, 2).toISOString(),
     dateModified: new Date(2020, 6, 5).toISOString(),
     author: 'Shirsendu Bairagi',
   }),
+  defineWebSite({
+    url: url,
+    name: title,
+    description: description,
+  }),
 ])
-
-const config = useRuntimeConfig()
-// OMR Service Pinging
-function ping() {
-  $fetch('/health', {
-    baseURL: config.public.omrUrl,
-    method: 'GET',
-  })
-}
-
-setInterval(ping, 10 * 60 * 1000)
 
 onBeforeMount(() => {
   localStorage.clear();
@@ -70,6 +59,8 @@ onBeforeMount(() => {
 </script>
 
 <template>
+  <NuxtPwaManifest />
+  <!-- <NuxtLoadingIndicator /> -->
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
@@ -100,7 +91,7 @@ onBeforeMount(() => {
 }
 
 body {
-  @apply text-black dark:text-white font-body bg-white dark:bg-black;
+  @apply text-black dark:text-white font-body bg-white dark:bg-dark-400;
 }
 
 .nuxt-icon>svg {

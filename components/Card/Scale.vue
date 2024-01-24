@@ -6,7 +6,6 @@ interface Scale {
   type: 'binary' | 'pentanary'
   count: number;
   subScales: string[];
-  expiresAt: string | null;
   updatedAt: string;
   publishedAt: string;
 }
@@ -17,21 +16,6 @@ const emit = defineEmits<{
   (event: 'openPayment'): void
 }>()
 
-const expiresIn = useTimeAgo(() => props.expiresAt ?? "", {
-  messages: {
-    invalid: 'Invalid Date',
-    past: 'Recharge',
-    justNow: 'Recharge',
-    future: (n: any) => n.match(/\d/) ? `${n} Left` : n,
-    year: (n: number) => `${n} year${n > 1 ? 's' : ''}`,
-    month: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
-    week: (n: number) => `${n} week${n > 1 ? 's' : ''}`,
-    day: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
-    hour: (n: number) => `${n} hour${n > 1 ? 's' : ''}`,
-    minute: (n: number) => `${n} min`,
-    second: (n: number) => `${n} sec`,
-  }
-})
 const updatedIn = useTimeAgo(() => props.updatedAt, {
   messages: {
     invalid: 'Invalid Date',

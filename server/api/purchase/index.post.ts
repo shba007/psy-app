@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { createUPIPayment } from "~~/server/utils/payment";
-import { PurchaseStatus, DBScaleNameToScaleName } from "~/utils/models";
+import { type PurchaseStatus, DBScaleNameToScaleName } from "~/utils/models";
 import { renderSVG as generateQR } from 'uqr'
 
 const prisma = new PrismaClient()

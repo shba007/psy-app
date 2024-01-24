@@ -1,4 +1,4 @@
-import { ScaleName } from '../../utils/models';
+import type { ScaleName } from '~/utils/models';
 
 interface Scale {
   name: ScaleName;
@@ -10,6 +10,8 @@ interface Scale {
     name: string;
     value: number;
   }[];
+  publishedAt: string,
+  updatedAt: string,
 }
 
 const scales: Scale[] = [
@@ -23,6 +25,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'EPQ-R',
@@ -34,12 +38,13 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   /* {
   name: "JEPQ",
   count: 108,
   subScales: ["Psychoticism", "Neuroticism", "Lie Scale", "Extraversion"],
-  expiresAt: new Date("2023-06-14T02:02:53Z")
 }, */ {
     name: 'JTCI',
     type: 'binary',
@@ -60,6 +65,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'MACI',
@@ -102,6 +109,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'MCMI',
@@ -141,6 +150,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'MMPI-RF',
@@ -203,6 +214,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'MPQ',
@@ -224,6 +237,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'TCI',
@@ -245,6 +260,8 @@ const scales: Scale[] = [
       { name: 'False', value: 0 },
       { name: 'True', value: 1 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'SCL-90R',
@@ -273,6 +290,8 @@ const scales: Scale[] = [
       { name: '3', value: 3 },
       { name: '4', value: 4 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'DSMD-A',
@@ -294,6 +313,8 @@ const scales: Scale[] = [
       { name: 'F', value: 3 },
       { name: 'VF', value: 4 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
   {
     name: 'DSMD-C',
@@ -315,6 +336,8 @@ const scales: Scale[] = [
       { name: 'F', value: 3 },
       { name: 'VF', value: 4 },
     ],
+    publishedAt: '2024-02-23T14:08:44.658Z',
+    updatedAt: '2024-02-23T14:08:44.658Z'
   },
 ];
 

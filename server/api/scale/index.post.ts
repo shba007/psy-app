@@ -1,5 +1,5 @@
 import { PrismaClient, ScaleType, ReportStatus } from "@prisma/client";
-import { ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
+import { type ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
 
 const prisma = new PrismaClient()
 

@@ -268,6 +268,6 @@ function onClose() {
 }
 
 :deep(.arrows) {
-  @apply text-secondary-400
+  @apply text-primary-400
 }
 </style>

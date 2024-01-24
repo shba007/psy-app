@@ -3,7 +3,7 @@ import { type SubscribedScale } from '~/utils/models';
 
 const props = defineProps<{
   isOpen: boolean,
-  scales: SubscribedScale[]
+  scales: SubscribedScale[] | null
 }>()
 const emit = defineEmits<{
   (event: 'close'): void,

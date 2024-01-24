@@ -55,17 +55,18 @@ const splideOption: Options = {
 };
 const splide = ref()
 
-const { pending, error, data: scales, execute, refresh } = await useAsyncData<SubscribedScale[]>('scales', async () =>
+/* const { pending, error, data: scales, execute, refresh } = await useAsyncData<SubscribedScale[]>('scales', async () =>
   $fetchAPI('/api/scale', {
     method: 'GET',
-  }), { immediate: false })
+  })) */
+const { pending, error, data: scales } = useFetch('/api/scale', { method: 'GET' })
 
 const selectedScaleName = ref<string | null>(null)
 const selectedScale = computed(() => selectedScaleName.value ? scales.value?.find(({ name }) => name === selectedScaleName.value) : undefined)
 
 const openedModel = ref<'scale' | 'payment' | 'feedback' | null>(null)
 
-onBeforeMount(execute)
+// onBeforeMount(execute)
 </script>
 
 <template>
@@ -77,15 +78,13 @@ onBeforeMount(execute)
         Loading
       </div>
       <div v-else-if="error" class="relative flex justify-center items-center h-[75vh]">
-        Error
+        {{ error }}
       </div>
       <Splide v-else ref="splide" :options="splideOption" tag="div" :has-track="false" :extensions="{ Grid }">
         <SplideTrack>
-          <SplideSlide v-for="{ name, type, count, subScales, expiresAt, updatedAt, publishedAt } in scales" :key="name"
-            class="">
-            <CardScale :name="name" :type="type" :count="count" :sub-scales="subScales" :expires-at="expiresAt"
-              :updated-at="updatedAt" :published-at="publishedAt"
-              @open-test="selectedScaleName = name; openedModel = 'scale'"
+          <SplideSlide v-for="{ name, type, count, subScales, updatedAt, publishedAt } in scales" :key="name" class="">
+            <CardScale :name="name" :type="type" :count="count" :sub-scales="subScales" :updated-at="updatedAt"
+              :published-at="publishedAt" @open-test="selectedScaleName = name; openedModel = 'scale'"
               @open-payment="selectedScaleName = name; openedModel = 'payment'" />
           </SplideSlide>
         </SplideTrack>
@@ -103,8 +102,7 @@ onBeforeMount(execute)
       :name="selectedScale.name" :type="selectedScale.type" :count="selectedScale.count" :options="selectedScale.options"
       @close="selectedScaleName = null; openedModel = null" />
     <ModelPayment v-else-if="openedModel === 'payment' && selectedScale" :is-open="openedModel === 'payment'"
-      :scales="scales ?? []" :selected-scale="selectedScale.name"
-      @close="selectedScaleName = null; openedModel = null; refresh()" />
+      :scales="scales ?? []" :selected-scale="selectedScale.name" @close="selectedScaleName = null; openedModel = null" />
   </main>
 </template>
 

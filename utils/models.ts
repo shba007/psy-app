@@ -54,7 +54,7 @@ export interface SubscribedScale {
   monthlyPrice: number;
   subScales: string[];
   options: { name: string, value: number }[]
-  expiresAt: string | null;
+  // expiresAt: string | null;
   updatedAt: string;
   publishedAt: string;
 }

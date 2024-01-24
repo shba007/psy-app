@@ -1,5 +1,11 @@
 import { useStorage } from '@vueuse/core'
-import { AuthResponse } from "~~/utils/models";
+import type { AuthResponse } from "~~/utils/models";
+
+function anonymousLogin() {
+  return $fetchAuth<{ accessToken: string, refreshToken: string }>("/anonymous", {
+    method: "GET",
+  })
+}
 
 // Update
 function refetchToken(refreshToken: string) {
@@ -36,10 +42,12 @@ export const useAuth = () => {
 
     const isLoggedIn = computed(() => !!accessToken.value)
 
-    function init() {
+    async function init() {
       if (process.server || isInit.value)
         return
       isInit.value = true
+
+      console.log("authToken", authToken.value, "accessToken", accessToken.value, "refreshToken", refreshToken.value)
 
       try {
         parseJWT(getToken('auth'))
@@ -47,9 +55,19 @@ export const useAuth = () => {
         authToken.value = null
       }
 
-      // NOTE: Free User
-      accessToken.value = useRuntimeConfig().public.anoyToken
-      refreshToken.value = useRuntimeConfig().public.anoyRefreshToken
+      if (accessToken.value === useRuntimeConfig().public.anoyToken ||
+        refreshToken.value === useRuntimeConfig().public.anoyRefreshToken)
+        resetToken()
+
+      if (!accessToken.value || !refreshToken.value) {
+        console.log("No Access Token Found");
+
+        const { accessToken: access, refreshToken: refresh } = await anonymousLogin()
+        setToken({ isRegistered: true, token: { access, refresh } })
+        console.log("get", getToken('access'), "\n", getToken('refresh'))
+      }
+
+      console.log("get", getToken('access'), "\n", getToken('refresh'))
     }
 
     function setInfo(user: any) {
@@ -88,6 +106,7 @@ export const useAuth = () => {
 
     function resetToken() {
       // TODO: sent logout to auth api
+      console.log("token reset")
 
       authToken.value = null
       accessToken.value = null

@@ -1,4 +1,4 @@
-import { Feedback, Preference, PrismaClient, Report, Subscription } from "@prisma/client";
+import { type Feedback, type Preference, PrismaClient, type Report, type Subscription } from "@prisma/client";
 
 const prisma = new PrismaClient()
 

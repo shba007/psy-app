@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { ofetch } from "ofetch"
 
 import { PrismaClient } from "@prisma/client";
-import { ScaleName, ScaleNameToDBScaleName, DBScaleNameToScaleName, ScaleType } from "~/utils/models";
+import { type ScaleName, ScaleNameToDBScaleName, DBScaleNameToScaleName, type ScaleType } from "~/utils/models";
 import { isExpired } from "~~/utils/helpers";
 
 const prisma = new PrismaClient()

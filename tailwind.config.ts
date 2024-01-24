@@ -1,5 +1,3 @@
-const plugin = require('tailwindcss/plugin');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -40,19 +38,14 @@ module.exports = {
       },
       black: '#000000',
       dark: {
-        400: '#1E1D2B',
-        500: '#252736',
-        600: '#2F3042',
+        400: '#181B1B',
+        500: '#1D2020',
+        600: '#232929',
       },
       primary: {
-        400: '#3B82F6',
-        500: '#2563EB',
-        600: '#1E40AF',
-      },
-      secondary: {
-        400: '#38BDF8',
-        500: '#0EA5E9',
-        600: '#0284C7',
+        400: '#8BDAD4',
+        500: '#37B1A7',
+        600: '#29706A',
       },
       success: {
         400: '#4ADE80',

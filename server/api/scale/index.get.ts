@@ -1,53 +1,35 @@
 import { PrismaClient } from "@prisma/client"
-import { ScaleType, SubscribedScale, DBScaleNameToScaleName } from "~/utils/models"
+import { type ScaleType, type SubscribedScale } from "~/utils/models"
+import { dataScales } from "~/server/utils/data"
 
 const prisma = new PrismaClient()
 
-export default defineProtectedEventHandler<SubscribedScale[]>(async (event, userId) => {
+export default defineEventHandler<Promise<SubscribedScale[]>>(async () => {
   try {
-    const scales = await prisma.scale.findMany({
-      select: {
-        name: true,
-        type: true,
-        count: true,
-        subScales: true,
-        options: {
+    const scales = dataScales
+    /*     const subscribedScales = await prisma.subscription.findMany({
+          where: {
+            userId
+          },
           select: {
             name: true,
-            value: true
+            expiresAt: true
           }
-        },
-        monthlyPrice: true,
-        publishedAt: true,
-        updatedAt: true,
-      },
-      orderBy: {
-        publishedAt: 'desc'
-      }
-    })
-    const subscribedScales = await prisma.subscription.findMany({
-      where: {
-        userId
-      },
-      select: {
-        name: true,
-        expiresAt: true
-      }
-    })
+        }) */
 
     return scales.map(({ name, type, count, subScales, options, monthlyPrice, publishedAt, updatedAt }) => {
-      const subscribedScale = subscribedScales.find((subscribedScale) => subscribedScale.name === name)
+      // const subscribedScale = subscribedScales.find((subscribedScale) => subscribedScale.name === name)
 
       return {
-        name: DBScaleNameToScaleName[name],
+        name: name,
         type: type.toLowerCase() as ScaleType,
         count,
         options,
         subScales,
         monthlyPrice,
-        expiresAt: subscribedScale?.expiresAt.toISOString() ?? null,
-        updatedAt: updatedAt.toISOString(),
-        publishedAt: publishedAt.toISOString()
+        // expiresAt: subscribedScale?.expiresAt.toISOString() ?? null,
+        updatedAt: updatedAt,
+        publishedAt: publishedAt
       }
     })
   } catch (error: any) {

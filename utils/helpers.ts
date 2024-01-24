@@ -37,8 +37,10 @@ function isExpired(dateTime: string | Date) {
   return new Date().getTime() > dateTime.getTime()
 }
 
-function capitalize(str: string) {
+function capitalize(str: string | null) {
   let result = '';
+  if (str === null)
+    return null
 
   for (const word of str.split(' ')) {
     result += ' ' + word.charAt(0).toUpperCase() + word.slice(1);

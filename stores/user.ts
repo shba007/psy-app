@@ -37,7 +37,6 @@ export const useUser = () => {
       colorMode: 'light',
       payment: "upi",
     })
-    const isMainDrawerOpen = ref(false)
 
     async function init() {
       if (process.server || isInit.value)
@@ -53,11 +52,10 @@ export const useUser = () => {
         phone.value = data.phone
         // dob.value
         // gender.value
-        $addresses.value = data.addresses
         payment.value = data.payment
         preference.value = data.preference
 
-        data.queries.forEach(q => searchStore.searches.set(q.title, q.time))
+        // data.queries.forEach(q => searchStore.searches.set(q.title, q.time))
       } catch (error) {
         console.error("User Store", error);
       }
@@ -89,19 +87,11 @@ export const useUser = () => {
       $preference.value = { ...value }
     })
 
-    function toggleMainDrawer(context: 'page' | 'menu') {
-      if (context === 'page') {
-        if (isMainDrawerOpen.value)
-          isMainDrawerOpen.value = false
-      } else {
-        isMainDrawerOpen.value = !isMainDrawerOpen.value
-      }
-    }
 
     return {
       // ,dob, gender
-      name, email, phone, image, payment, preference, isMainDrawerOpen,
-      init, setInfo, toggleMainDrawer
+      name, email, phone, image, payment, preference,
+      init, setInfo
     }
   })
 

@@ -19,7 +19,7 @@ const selectedChoice = computed(() => props.value)
 <template>
   <div class="w-max text-white">
     <label class="inline-flex justify-center rounded-full py-1 w-[50px]"
-      :class="isInvalid && selectedChoice === undefined ? 'bg-alert-500' : (isSelected ? 'bg-secondary-500' : (selectedChoice !== undefined ? 'bg-success-500' : 'bg-white text-black dark:bg-black dark:text-white'))">
+      :class="isInvalid && selectedChoice === undefined ? 'bg-alert-500' : (isSelected ? 'bg-primary-500' : (selectedChoice !== undefined ? 'bg-success-500' : 'bg-white text-black dark:bg-black dark:text-white'))">
       {{ index }}
     </label>
     <div class="inline-flex gap-[6px] ml-2" :class="{ 'flex-row-reverse': options.length === 2 }">

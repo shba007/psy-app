@@ -14,9 +14,10 @@ export const $fetchAPI = <T = unknown, R extends NitroFetchRequest = NitroFetchR
     async onRequest({ request, options }) {
       console.log("Intercepted API", request);
 
-      if (!authStore.getToken("access"))
+      if (!authStore.getToken("access")) {
+        console.log({ accessToken: authStore.getToken("access") })
         throw createError({ "message": "No Access Token Found" })
-
+      }
       // check access token is expired
       try {
         parseJWT(authStore.getToken('access'))

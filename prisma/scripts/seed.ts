@@ -1,5 +1,5 @@
 import { PrismaClient, ScaleName, ScaleType } from "@prisma/client";
-import { dataScales } from "./data";
+import { dataScales } from "../../server/utils/data";
 import { capitalize } from "../../utils/helpers";
 import { ScaleNameToDBScaleName } from "../../utils/models";
 

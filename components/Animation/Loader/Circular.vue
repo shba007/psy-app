@@ -8,8 +8,7 @@ const props = withDefaults(defineProps<{
 <template>
   <div class="flex items-center justify-center">
     <div
-      class="loader inline-block relative my-4 w-11 h-11 before:absolute before:block before:rounded-[50%] before:w-[6px] before:h-[6px] "
-      :class="isDark ? 'before:bg-primary-400' : 'before:bg-secondary-400'">
+      class="loader inline-block relative my-4 w-11 h-11 before:absolute before:block before:rounded-[50%] before:w-[6px] before:h-[6px] before:bg-primary-400">
       <svg viewBox="0 0 80 80" class="block w-full h-full">
         <circle cx="40" cy="40" r="32" class="fill-none " :class="isDark ? 'stroke-black' : 'stroke-white'" />
       </svg>
