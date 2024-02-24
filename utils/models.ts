@@ -82,3 +82,35 @@ export interface AuthResponse {
     phone: string,
   }
 }
+
+export interface User {
+  name: string;
+  email: string | null,
+  phone: string | null,
+  subscriptions: Subscription[];
+  reports: Report[];
+  preference: Preference | null;
+  // feedbacks: Feedback[];
+}
+
+export interface Subscription {
+  id: string;
+  name: 'Free' | 'Basic' | 'Pro';
+  expiresAt: Date;
+}
+
+export interface Report {
+  id: string;
+  scale: ScaleName;
+  status: 'Draft' | 'Complete';
+  data: Object;
+  value: Object;
+  patientId: string | null;
+  createdAt: Date | null;
+  modifiedAt: Date | null;
+}
+
+export interface Preference {
+  colorMode: 'light' | 'dark',
+  payment: 'upi'
+}

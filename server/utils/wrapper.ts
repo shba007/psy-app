@@ -1,9 +1,9 @@
-import { EventHandlerResponse, H3Event } from "h3";
+import type { EventHandlerResponse, H3Event } from "h3";
 import JWT from "jsonwebtoken";
-import { JWTToken } from "~~/utils/models";
+import type { JWTToken } from "~~/utils/models";
 
 export function defineProtectedEventHandler<T>(handler: (event: H3Event, userId: string) => EventHandlerResponse<T>) {
-  return defineEventHandler<T>(async (event) => {
+  return defineEventHandler<Promise<T | undefined>>(async (event) => {
     try {
       const config = useRuntimeConfig()
       const authHeader = event.node.req.headers['authorization']

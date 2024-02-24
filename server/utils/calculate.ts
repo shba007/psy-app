@@ -1,4 +1,4 @@
-import { ScaleName } from '../../utils/models';
+import type { ScaleName } from '../../utils/models';
 import { CountScale, PairScale, AverageScale, SumScale, ShiftScale, SingleScale, SingleWeightedScale } from './factory';
 import { CompositeFunctions, Scales } from "./scale";
 

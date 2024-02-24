@@ -1,5 +1,5 @@
-import { NitroFetchRequest, TypedInternalResponse } from "nitropack";
-import { FetchOptions } from "ofetch";
+import type { NitroFetchRequest, TypedInternalResponse } from "nitropack";
+import type { FetchOptions } from "ofetch";
 import { calculateChecksum } from "./helpers";
 import { trimObject } from "../../utils/helpers";
 

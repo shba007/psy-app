@@ -8,7 +8,7 @@ export default defineEventHandler((event) => {
     "Access-Control-Allow-Headers": config.private.corsUrl,
     "Access-Control-Expose-Headers": config.private.corsUrl
   })
-  if (getMethod(event) === 'OPTIONS') {
+  if (event.method === 'OPTIONS') {
     event.node.res.statusCode = 204
     event.node.res.statusMessage = "No Content."
     return 'OK'

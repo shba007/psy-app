@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Options, Splide, SplideTrack, SplideSlide } from '@splidejs/vue-splide';
 import { Grid } from '@splidejs/splide-extension-grid';
-import { type SubscribedScale } from '~/utils/models';
+import { useUser } from "~/stores/user";
 
 definePageMeta({
   middleware: "auth"
@@ -54,23 +54,19 @@ const splideOption: Options = {
   }
 };
 const splide = ref()
+const userStore = useUser()
 
-/* const { pending, error, data: scales, execute, refresh } = await useAsyncData<SubscribedScale[]>('scales', async () =>
-  $fetchAPI('/api/scale', {
-    method: 'GET',
-  })) */
 const { pending, error, data: scales } = useFetch('/api/scale', { method: 'GET' })
 
 const selectedScaleName = ref<string | null>(null)
 const selectedScale = computed(() => selectedScaleName.value ? scales.value?.find(({ name }) => name === selectedScaleName.value) : undefined)
 
 const openedModel = ref<'scale' | 'payment' | 'feedback' | null>(null)
-
-// onBeforeMount(execute)
 </script>
 
 <template>
   <main class="relative flex flex-col">
+    <!-- <section class="w-full h-5 bg-alert-400">Name: `{{ userStore.name }}`</section> -->
     <section class="relative">
       <h2 class="mb-3 md:mb-2 text-lg">Tests</h2>
       <div v-if="pending" class="relative flex gap-2 justify-center items-center h-[75vh]">

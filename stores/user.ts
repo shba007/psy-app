@@ -1,4 +1,10 @@
-import { PaymentInterfaces, Preference, User } from "~~/utils/models";
+import type { User } from "~/utils/models";
+
+interface PaymentInterfaces {
+  upis: string[];
+  banks: string[];
+  cards: string[];
+}
 
 // Read
 function getUser(): Promise<User> {
@@ -16,19 +22,24 @@ const updatePreference = useDebounceFn(async (preference:
 
 export const useUser = () => {
   const innerStore = defineStore('user', () => {
+    const authStore = useAuth()
     const isInit = ref(false)
-    // Cache It
+
     const name = ref<string>()
     const email = ref<string | null>()
-    const phone = ref<string>()
-    // const dob = ref<string>()
-    // const gender = ref<string>()
-    const image = ref<string | null>()
+    const phone = ref<string | null>()
+    // const dob = ref<Date | null>()
+    // const gender = ref<string | null>()
     const payment = ref<PaymentInterfaces>({
       upis: [],
       banks: [],
       cards: []
     })
+    const a = {
+      upis: [],
+      banks: [],
+      cards: []
+    }
     const preference = ref<Preference>({
       colorMode: 'light',
       payment: "upi",
@@ -45,19 +56,19 @@ export const useUser = () => {
 
       try {
         const data = await getUser();
+        // {id, name, email,phone,gender,dob }
 
         name.value = data.name
-        image.value = data.image
         email.value = data.email
         phone.value = data.phone
-        // dob.value
-        // gender.value
-        payment.value = data.payment
-        preference.value = data.preference
+        // dob.value = data.dob
+        // gender.value = data.gender
+        // payment.value = data.payment
+        // preference.value = data.preference
 
-        // data.queries.forEach(q => searchStore.searches.set(q.title, q.time))
       } catch (error) {
         console.error("User Store", error);
+        authStore.resetToken()
       }
     }
 
@@ -90,7 +101,7 @@ export const useUser = () => {
 
     return {
       // ,dob, gender
-      name, email, phone, image, payment, preference,
+      name, email, phone, payment, preference,
       init, setInfo
     }
   })
