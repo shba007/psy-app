@@ -23,6 +23,8 @@ logs
 !.env.example
 
 database
+prisma/data/*
+!prisma/data/.gitkeep
 
 assets/documents/*
 !assets/documents/.gitkeep

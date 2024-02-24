@@ -4,7 +4,6 @@
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
   "version": "0.4.0",
   "private": true,
-  "type": "module",
   "engines": {
     "node": "^20.11.0"
   },
@@ -21,10 +20,11 @@
     "seed": "prisma db seed",
     "migrate:create": "prisma migrate dev --create-only",
     "migrate:apply": "prisma migrate dev",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "backup": "npx ts-node --project prisma/tsconfig.json prisma/scripts/backup.ts"
   },
   "prisma": {
-    "seed": "ts-node --project prisma/tsconfig.json prisma/scripts/seed.ts"
+    "seed": "npx ts-node --project prisma/tsconfig.json prisma/scripts/seed.ts"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

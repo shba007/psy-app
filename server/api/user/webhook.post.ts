@@ -1,10 +1,11 @@
-import { PrismaClient, Gender } from '@prisma/client';
+import { PrismaClient, Gender, Plan } from '@prisma/client';
 import { addTimeToNow, validateSignature } from '~~/server/utils/helpers';
 import { capitalize } from "~~/utils/helpers";
+import { dataScales } from "~/server/utils/data"
 
 const prisma = new PrismaClient()
 
-export default defineEventHandler<{ id: string, name: string }>(async (event) => {
+export default defineEventHandler<Promise<{ id: string, name: string }>>(async (event) => {
   const config = useRuntimeConfig()
   try {
     const signature = event.node.req.headers["signature"] as string
@@ -24,14 +25,14 @@ export default defineEventHandler<{ id: string, name: string }>(async (event) =>
     if (!validateSignature(JSON.stringify(body), signature, config.private.authWebhook))
       throw createError({ statusCode: 403, statusMessage: "Invalid Signature" })
 
-    const scales = await prisma.scale.findMany()
+    const scales = dataScales
     const user = await prisma.user.create({
       data: {
         id: body.id,
         name: body.name.toLowerCase(),
         email: body.email,
         phone: body.phone,
-        dob: new Date(body.dob).toISOString(),
+        dob: body.dob ? new Date(body.dob).toISOString() : null,
         gender: capitalize(body.gender) as Gender,
         preference: {
           create: {
@@ -40,8 +41,9 @@ export default defineEventHandler<{ id: string, name: string }>(async (event) =>
           }
         },
         subscriptions: {
-          createMany: {
-            data: scales.map(({ name }) => ({ name, expiresAt: addTimeToNow({ days: 3 }) }))
+          create: {
+            name: Plan.Free,
+            expiresAt: addTimeToNow({ days: 3650 })
           }
         }
       }

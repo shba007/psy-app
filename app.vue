@@ -50,12 +50,6 @@ useSchemaOrg([
     description: description,
   }),
 ])
-
-onBeforeMount(() => {
-  localStorage.clear();
-  // FIXME: remove when dark mode added
-  localStorage.setItem("nuxt-color-mode", 'dark')
-})
 </script>
 
 <template>

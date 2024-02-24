@@ -1,5 +1,6 @@
-import { PrismaClient, ScaleType, ReportStatus } from "@prisma/client";
+import { PrismaClient, ReportStatus } from "@prisma/client";
 import { type ScaleName, ScaleNameToDBScaleName } from "~/utils/models";
+import { dataScales } from "~/server/utils/data"
 
 const prisma = new PrismaClient()
 
@@ -10,14 +11,10 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
       data: { index: number; value: number; }[]
     }>(event)
 
-    const DBScale = await prisma.scale.findUniqueOrThrow({
-      where: {
-        name: ScaleNameToDBScaleName[scale]
-      },
-      select: {
-        type: true
-      }
-    })
+    const DBScale = dataScales.find(({ name }) => name === scale)
+
+    if (DBScale == undefined)
+      throw createError({ statusCode: 404, statusMessage: `${scale} Scale not found` });
 
     let result: {} = {}
     for (const item of data) {
@@ -26,9 +23,9 @@ export default defineProtectedEventHandler<{ name: string; value: number; }[]>(a
     }
 
     // Calculate
-    if (DBScale.type === ScaleType.Binary)
+    if (DBScale.type === 'binary')
       result = BinaryCalculate(scale, data.map(({ index, value }) => ({ index, value: !!value })))
-    else if (DBScale.type === ScaleType.Pentanary)
+    else if (DBScale.type === 'pentanary')
       result = PentanaryCalculate(scale, data)
 
     const formattedResult = Object.entries(result).map(([name, value]) => ({ name, value: value as number }));

@@ -90,7 +90,7 @@ export const useAuth = () => {
       }
     }
 
-    function setToken({ isRegistered, token }: Omit<AuthResponse, 'user'>) {
+    function setToken({ isRegistered, token }: Omit<AuthResponse, 'user' | 'timeoutAt' | 'retryTimeoutAt'>) {
       if (isRegistered && "access" in token) {
         accessToken.value = token.access
         refreshToken.value = token.refresh
