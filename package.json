@@ -2,7 +2,7 @@
   "name": "psy",
   "description": "Psychological Assessment Toolkit",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "engines": {
     "node": "^20.11.0"
