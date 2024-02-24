@@ -1,5 +1,11 @@
 # psy
 
+## 0.4.1
+
+### Patch Changes
+
+- 49e0f51: refactor: scale colom droped from table, backup added
+
 ## 0.4.0
 
 ### Minor Changes
