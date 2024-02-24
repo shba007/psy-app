@@ -61,7 +61,7 @@ export default defineNuxtConfig({
       background_color: '#37B1A7',
       orientation: 'portrait',
       shortcuts: [
-        {
+        /* {
           'name': 'Scan Document',
           'short_name': 'Scan',
           'description': 'Scan Document',
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
               purpose: 'maskable'
             }
           ]
-        },
+        }, */
       ],
       icons: [
         {
@@ -169,7 +169,7 @@ export default defineNuxtConfig({
         },
       ],
       screenshots: [
-        {
+        /* {
           src: '/pwa/screenshot-desktop-1.webp',
           sizes: '1024x576',
           type: 'image/webp',
@@ -210,7 +210,7 @@ export default defineNuxtConfig({
           type: 'image/webp',
           form_factor: 'narrow',
           label: 'Screenshot 3'
-        },
+        }, */
       ]
     },
     workbox: {
