@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const title = `Psy - Psychological Assessment Toolkit`
-const description = `Psy is a Psychological Assessment Toolkit which includes various assessments 
-scales like EPQ, MACI, MCMI, TCI, JEPQ etc and a scanner for automatic analysis multiple scales like`
+const description = `A psychoanalytical web tool for diverse assessments and automatic analysis with a built-in scanner. 
+It includes various assessments scales like EPQ, MACI, MCMI, TCI, JEPQ.`
 const url = "https://psy.monalisa-bairagi.com"
 
 useHead({

@@ -3,7 +3,7 @@
 <p>
 
 # Psy
-> Psychological Assessment Toolkit
+> A psychoanalytical web tool for diverse assessments and automatic analysis with a built-in scanner. Explore the depths of psychology with ease.
 
 <p align="center">
   <a href="https://uptime.betterstack.com/?utm_source=status_badge">
@@ -33,14 +33,9 @@
 
 
 ## Todos
----
-- Add responsiveness
-- Add a Landing Page
-- Trigger A Feedback form after every scan and calculation
-- Using anonymous login mechanisms to create user
+
 - Create login model and let anonymous user convert to loggedin user
 - Include the full form of every scale
-- Add Error/Warning Toast
 - Improve Feedback Form
 - Upload documents to firestore
 - Deploy Psy-OMR to VPS
