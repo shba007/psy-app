@@ -1,5 +1,11 @@
 # psy
 
+## 0.4.2
+
+### Patch Changes
+
+- 683a248: fix: cached token cleaned
+
 ## 0.4.1
 
 ### Patch Changes
