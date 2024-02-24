@@ -1,5 +1,15 @@
 # psy
 
+## 0.4.0
+
+### Minor Changes
+
+- 3c79649: refactor: theme changed, scale get changed, pkgs upgraded
+
+### Patch Changes
+
+- 34ace49: chore: pwa assets added
+
 ## 0.3.0
 
 ### Minor Changes
