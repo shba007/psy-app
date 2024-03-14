@@ -2,6 +2,8 @@ import { useStorage } from '@vueuse/core'
 import type { AuthResponse } from "~~/utils/models";
 
 function anonymousLogin() {
+  console.log('Anonymous Login');
+
   return $fetchAuth<{ accessToken: string, refreshToken: string }>("/anonymous", {
     method: "GET",
   })
@@ -107,7 +109,6 @@ export const useAuth = () => {
     function resetToken() {
       // TODO: sent logout to auth api
       console.log("token reset")
-
       authToken.value = null
       accessToken.value = null
       refreshToken.value = null

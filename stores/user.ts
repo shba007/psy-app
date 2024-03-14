@@ -68,7 +68,6 @@ export const useUser = () => {
 
       } catch (error) {
         console.error("User Store", error);
-        authStore.resetToken()
       }
     }
 
