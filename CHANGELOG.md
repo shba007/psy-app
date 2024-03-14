@@ -1,5 +1,11 @@
 # psy
 
+## 0.4.3
+
+### Patch Changes
+
+- b156df7: chore: removed token reset from userStore
+
 ## 0.4.2
 
 ### Patch Changes
