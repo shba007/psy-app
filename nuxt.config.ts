@@ -169,14 +169,14 @@ export default defineNuxtConfig({
         },
       ],
       screenshots: [
-        /* {
+        {
           src: '/pwa/screenshot-desktop-1.webp',
           sizes: '1024x576',
           type: 'image/webp',
           form_factor: 'wide',
           label: 'Screenshot 1'
         },
-        {
+        /* {
           src: '/pwa/screenshot-desktop-2.webp',
           sizes: '1024x576',
           type: 'image/webp',
@@ -189,7 +189,7 @@ export default defineNuxtConfig({
           type: 'image/webp',
           form_factor: 'wide',
           label: 'Screenshot 3'
-        },
+        }, */
         {
           src: '/pwa/screenshot-mobile-1.webp',
           sizes: '576x1024',
@@ -197,7 +197,7 @@ export default defineNuxtConfig({
           form_factor: 'narrow',
           label: 'Screenshot 1'
         },
-        {
+        /* {
           src: '/pwa/screenshot-mobile-2.webp',
           sizes: '576x1024',
           type: 'image/webp',

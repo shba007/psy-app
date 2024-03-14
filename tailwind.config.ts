@@ -1,21 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './components/**/*.{js,vue,ts}',
-    './layouts/**/*.vue',
-    './pages/**/*.vue',
+    'components/**/*.{vue,js,ts}',
+    'layouts/**/*.vue',
+    'pages/**/*.vue',
+    'App.{js,ts,vue}',
+    'app.{js,ts,vue}',
+    'Error.{js,ts,vue}',
+    'error.{js,ts,vue}',
+    'content/**/*.md'
   ],
   darkMode: 'class',
   theme: {
     fontSize: {
-      '2xs': ['0.5rem', '0.5625rem'],
-      xs: ['0.625rem', '0.75rem'],
-      sm: ['0.75rem', '0.875rem'],
+      xs: ['0.75rem', '0.875rem'],
+      sm: ['0.875rem', '1.0625rem'],
       base: ['1rem', '1.5rem'],
       lg: ['1.25rem', '1.5625rem'],
       xl: ['1.5rem', '1.875rem'],
       '2xl': ['2rem', '2.5rem'],
       '3xl': ['2.5rem', '3.125rem'],
+      '4xl': ['3rem', '3.625rem'],
+      '5xl': ['3.5rem', '4.1875rem'],
     },
     fontFamily: {
       brand: ['Arkhip', 'sans-serif'],
@@ -61,21 +67,6 @@ module.exports = {
         400: '#E11D48',
         500: '#BE123C',
         600: '#9F1239',
-      },
-    },
-    extend: {
-      keyframes: {
-        'spin-once': {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(180deg)' },
-        }
-      },
-      animation: {
-        pop: 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1',
-        'spin-once': 'spin-once 300ms ease-in-out infinite',
-      },
-      aspectRatio: {
-        card: '268 / 169',
       },
     },
   },
