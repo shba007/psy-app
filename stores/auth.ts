@@ -49,27 +49,20 @@ export const useAuth = () => {
         return
       isInit.value = true
 
-      console.log("authToken", authToken.value, "accessToken", accessToken.value, "refreshToken", refreshToken.value)
-
       try {
         parseJWT(getToken('auth'))
       } catch (error) {
         authToken.value = null
       }
 
-      if (accessToken.value === useRuntimeConfig().public.anoyToken ||
-        refreshToken.value === useRuntimeConfig().public.anoyRefreshToken)
-        resetToken()
-
-      if (!accessToken.value || !refreshToken.value) {
-        console.log("No Access Token Found");
+      if (!accessToken.value && !!refreshToken.value) {
+        console.warn("No Access Token Found");
+      } else if (!accessToken.value && !refreshToken.value) {
+        console.warn("No Access and Refreash Token Found");
 
         const { accessToken: access, refreshToken: refresh } = await anonymousLogin()
         setToken({ isRegistered: true, token: { access, refresh } })
-        console.log("get", getToken('access'), "\n", getToken('refresh'))
       }
-
-      console.log("get", getToken('access'), "\n", getToken('refresh'))
     }
 
     function setInfo(user: any) {
